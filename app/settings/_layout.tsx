@@ -1,25 +1,28 @@
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { Pressable } from 'react-native';
 
+import { IconSymbol } from '@/components/ui/icon-symbol';
+import { Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
+
 export default function SettingsLayout() {
-  const navigation = useNavigation();
   const colorScheme = useColorScheme();
+  const navigation = useNavigation<DrawerNavigationProp<any>>();
 
   return (
     <Stack
       screenOptions={{
         headerShown: true,
-        headerLeft: () => (
+        headerBackTitle: '',
+        headerRight: () => (
           <Pressable
-            onPress={() => navigation.goBack()}
-            style={{ marginLeft: 8, padding: 8 }}>
+            onPress={() => navigation.toggleDrawer()}
+            style={{ marginRight: 16, padding: 8 }}>
             <IconSymbol
-              name="chevron.left"
+              name="line.3.horizontal"
               size={24}
               color={Colors[colorScheme ?? 'light'].text}
             />
