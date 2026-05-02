@@ -20,11 +20,7 @@ export default function TabLayout() {
         headerShown: true,
         tabBarButton: HapticTab,
         tabBarStyle: {
-          paddingBottom: 0,
-          height: 64,
-        },
-        tabBarItemStyle: {
-          paddingVertical: 6,
+          display: 'none', // Hide the tab bar since we have a persistent one at root level
         },
         headerLeft: () => (
           <Pressable

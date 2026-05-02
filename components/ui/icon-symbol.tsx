@@ -17,6 +17,7 @@ const MAPPING = {
   'house.fill': 'home',
   'sun.max.fill': 'brightness-high',
   'chevron.left.forwardslash.chevron.right': 'code',
+  'chevron.left': 'chevron-left',
   'chevron.right': 'chevron-right',
   'thermometer.variable': 'thermostat',
   'sparkle': 'auto-awesome',
