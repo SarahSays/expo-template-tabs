@@ -22,10 +22,10 @@ export default function TabLayout() {
         tabBarStyle: {
           display: 'none', // Hide the tab bar since we have a persistent one at root level
         },
-        headerLeft: () => (
+        headerRight: () => (
           <Pressable
             onPress={() => navigation.toggleDrawer()}
-            style={{ marginLeft: 16, padding: 8 }}>
+            style={{ marginRight: 16, padding: 8 }}>
             <IconSymbol
               name="line.3.horizontal"
               size={24}

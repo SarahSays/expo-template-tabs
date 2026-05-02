@@ -30,7 +30,11 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <View style={{ flex: 1 }}>
-          <Drawer>
+          <Drawer
+            screenOptions={{
+              drawerType: 'front',
+              drawerPosition: 'right',
+            }}>
             <Drawer.Screen
               name="(tabs)"
               options={{
