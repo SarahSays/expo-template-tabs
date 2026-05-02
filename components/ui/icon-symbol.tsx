@@ -21,6 +21,7 @@ const MAPPING = {
   'thermometer.variable': 'thermostat',
   'sparkle': 'auto-awesome',
   'bookmark.fill': 'bookmark',
+  'line.3.horizontal': 'menu',
 } as IconMapping;
 
 /**
