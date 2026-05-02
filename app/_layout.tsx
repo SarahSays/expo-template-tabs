@@ -1,10 +1,13 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
 import { usePathname, useRouter } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+import { Fonts } from '@/constants/theme';
 
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
@@ -15,6 +18,12 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    OpenDyslexic3Regular: require('../assets/fonts/OpenDyslexic3-Regular.ttf'),
+    OpenDyslexic3Bold: require('../assets/fonts/OpenDyslexic3-Bold.ttf'),
+    OpenDyslexicMonoRegular: require('../assets/fonts/OpenDyslexicMono-Regular.ttf'),
+  });
+
   const colorScheme = useColorScheme();
   const router = useRouter();
   const pathname = usePathname();
@@ -26,6 +35,10 @@ export default function RootLayout() {
     return pathname.includes(tabName);
   };
 
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -34,6 +47,12 @@ export default function RootLayout() {
             screenOptions={{
               drawerType: 'front',
               drawerPosition: 'right',
+              drawerLabelStyle: {
+                fontFamily: Fonts.sans,
+              },
+              headerTitleStyle: {
+                fontFamily: Fonts.sans,
+              },
             }}>
             <Drawer.Screen
               name="(tabs)"
@@ -155,5 +174,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 2,
     textAlign: 'center',
+    fontFamily: Fonts.sans,
   },
 });

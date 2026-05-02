@@ -5,7 +5,7 @@ import React from 'react';
 import { Pressable } from 'react-native';
 
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
+import { Colors, Fonts } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function SettingsLayout() {
@@ -17,6 +17,9 @@ export default function SettingsLayout() {
       screenOptions={{
         headerShown: true,
         headerBackTitle: '',
+        headerTitleStyle: {
+          fontFamily: Fonts.sans,
+        },
         headerRight: () => (
           <Pressable
             onPress={() => navigation.toggleDrawer()}
