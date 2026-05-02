@@ -71,7 +71,7 @@ export default function RootLayout() {
               onPress={() => router.replace('/(tabs)')}
               style={styles.tabItem}>
               <IconSymbol
-                name="house.fill"
+                name="atom"
                 size={24}
                 color={isTabActive('home') ? Colors[colorScheme ?? 'light'].tint : Colors[colorScheme ?? 'light'].text}
               />
@@ -83,7 +83,7 @@ export default function RootLayout() {
               onPress={() => router.replace('/(tabs)/explore')}
               style={styles.tabItem}>
               <IconSymbol
-                name="sun.max.fill"
+                name="rotate.3d"
                 size={24}
                 color={isTabActive('explore') ? Colors[colorScheme ?? 'light'].tint : Colors[colorScheme ?? 'light'].text}
               />

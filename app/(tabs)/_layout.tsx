@@ -37,15 +37,15 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Orbits',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="atom" color={color} />,
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
           title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="sun.max.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="rotate.3d" color={color} />,
         }}
       />
       <Tabs.Screen
@@ -58,7 +58,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="starchart"
         options={{
-          title: 'Starchart',
+          title: 'Star Chart',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="sparkle" color={color} />,
         }}
       />

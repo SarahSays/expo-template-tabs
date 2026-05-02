@@ -23,6 +23,8 @@ const MAPPING = {
   'sparkle': 'auto-awesome',
   'bookmark.fill': 'bookmark',
   'line.3.horizontal': 'menu',
+  'rotate.3d': '360',
+  'atom': 'sunny',
 } as IconMapping;
 
 /**
