@@ -2,11 +2,11 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
-export const screenOptions = {
+/* export const screenOptions = {
   title: 'Cadences',
   headerBackTitle: '',
   headerRight: undefined,
-};
+}; */
 
 export default function CadencesScreen() {
   return (

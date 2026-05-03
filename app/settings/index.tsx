@@ -11,9 +11,9 @@ const menuItems = [
   { title: 'Help', description: 'View support resources and FAQs.', href: '/settings/help' },
 ] as const;
 
-export const screenOptions = {
+/* export const screenOptions = {
   title: 'Settings',
-};
+}; */
 
 export default function SettingsScreen() {
   const router = useRouter();
@@ -54,13 +54,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   menu: {
-    marginTop: 24,
+    marginTop: 10,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 16,
+    paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 12,
     backgroundColor: 'rgba(0,0,0,0.04)',

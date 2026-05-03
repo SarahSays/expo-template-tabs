@@ -49,23 +49,28 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
+    flexGrow: 1,
     padding: 16,
+    justifyContent: 'flex-start',
   },
   menu: {
-    gap: 16,
-    marginTop: 16,
+    marginTop: 6,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 8,
+    justifyContent: 'space-between',
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    backgroundColor: 'rgba(0,0,0,0.04)',
+    marginBottom: 12,
   },
   menuItemPressed: {
     backgroundColor: 'rgba(0,0,0,0.1)',
   },
   menuText: {
     flex: 1,
+    marginRight: 12,
   },
 });
