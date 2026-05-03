@@ -20,7 +20,8 @@ const SCENE_SIZE = 320;
 export default function StarchartScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const { width } = useWindowDimensions();
-  const trackWidth = Math.min(360, width - 40);
+  const trackWidth = Math.min(540, Math.max(280, width - 40));
+  const sceneSize = Math.min(SCENE_SIZE, width - 40);
   const [timeLabel, setTimeLabel] = useState('1 Day');
   const progress = useSharedValue(0);
 
@@ -156,8 +157,8 @@ export default function StarchartScreen() {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <ThemedView style={styles.container}>
         {/* <ThemedText type="title">Star Chart</ThemedText> */}
-        <View style={styles.sceneWrapper}>
-          <Animated.View style={[styles.scene, sceneStyle]}>
+        <View style={[styles.sceneWrapper, { minHeight: sceneSize }]}> 
+          <Animated.View style={[styles.scene, { width: sceneSize, height: sceneSize, borderRadius: sceneSize / 2 }, sceneStyle]}>
             <View style={styles.spaceBackground} />
             <View style={styles.stars}>
               {[
@@ -208,9 +209,28 @@ export default function StarchartScreen() {
           <Animated.View style={[styles.sliderThumb, thumbStyle]} />
         </Animated.View>
 
-        <View style={styles.endLabels}>
-          <ThemedText>Day</ThemedText>
-          <ThemedText>10 Years</ThemedText>
+        <View style={[styles.sliderTickRow, { width: trackWidth }]}> 
+          {[
+            { label: 'Day', position: 0, align: 'flex-start' as const },
+            { label: 'Week', position: 0.12 },
+            { label: 'Month', position: 0.28 },
+            { label: 'Year', position: 0.55 },
+            { label: '10 Years', position: 1, align: 'flex-end' as const },
+          ].map((tick) => (
+            <View
+              key={tick.label}
+              style={[
+                styles.tickItem,
+                {
+                  left: tick.position * trackWidth,
+                  alignItems: tick.align ?? 'center',
+                  transform: tick.position === 0 || tick.position === 1 ? [] : [{ translateX: -32 }],
+                },
+              ]}>
+              <View style={styles.tickMark} />
+              <ThemedText style={styles.tickLabel}>{tick.label}</ThemedText>
+            </View>
+          ))}
         </View>
       </ThemedView>
     </ScrollView>
@@ -332,9 +352,26 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 2 },
   },
-  endLabels: {
+  sliderTickRow: {
     marginTop: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    height: 48,
+    position: 'relative',
+  },
+  tickItem: {
+    position: 'absolute',
+    minWidth: 56,
+    alignItems: 'center',
+    gap: 4,
+  },
+  tickMark: {
+    width: 2,
+    height: 10,
+    borderRadius: 1,
+    backgroundColor: '#c7dcff',
+    marginBottom: 4,
+  },
+  tickLabel: {
+    fontSize: 12,
+    color: '#dce7ff',
   },
 });
