@@ -12,8 +12,6 @@ export default function OrbitsLayout() {
         headerTitleStyle: {
           fontFamily: Fonts.sans,
         },
-        headerRight: undefined,
-        headerLeft: undefined,
       }}
     />
   );

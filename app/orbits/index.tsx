@@ -5,10 +5,10 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
 const menuItems = [
-  { title: 'Cadences', description: 'Manage your social interaction rhythms.', href: './cadences' },
-  { title: 'Friends', description: 'Manage your friend list and connections.', href: './friends' },
-  { title: 'Groups', description: 'Manage your group memberships and settings.', href: './groups' },
-  { title: 'Self', description: 'Manage your profile.', href: './self' }
+  { title: 'Cadences', description: 'Circular orbital paths', href: '/orbits/cadences' },
+  { title: 'Friends', description: 'Planets/Satellites/Comets', href: '/orbits/friends' },
+  { title: 'Groups', description: 'Moons/Clusters', href: '/orbits/groups' },
+  { title: 'Self', description: 'Sun/Center', href: '/orbits/self' }
 ] as const;
 
 export const screenOptions = {

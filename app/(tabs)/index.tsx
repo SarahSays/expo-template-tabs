@@ -8,10 +8,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Link, useRouter } from 'expo-router';
 
 const menuItems = [
-  { title: 'Cadences', description: 'Circular orbital paths', href: './orbits/cadences' },
-  { title: 'Friends', description: 'Planets/Satellites/Comets', href: './orbits/friends' },
-  { title: 'Groups', description: 'Moons/Clusters', href: './orbits/groups' },
-  { title: 'Self', description: 'Sun/Center', href: './orbits/self' }
+  { title: 'Bodies', description: 'Celestial bodies', href: '/orbits/' },
 ] as const;
 
 export default function HomeScreen() {
