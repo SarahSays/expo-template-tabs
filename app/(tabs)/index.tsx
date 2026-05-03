@@ -1,13 +1,22 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
+
+const menuItems = [
+  { title: 'Cadences', description: 'Circular orbital paths', href: './orbits/cadences' },
+  { title: 'Friends', description: 'Planets/Satellites/Comets', href: './orbits/friends' },
+  { title: 'Groups', description: 'Moons/Clusters', href: './orbits/groups' },
+  { title: 'Self', description: 'Sun/Center', href: './orbits/self' }
+] as const;
 
 export default function HomeScreen() {
+  const router = useRouter();
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -18,9 +27,30 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
       </ThemedView>
+      <ThemedView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <View style={styles.menu}>
+            {menuItems.map((item) => (
+              <Pressable
+                key={item.title}
+                style={({ pressed }) => [
+                  styles.menuItem,
+                  pressed ? styles.menuItemPressed : null,
+                ]}
+                onPress={() => router.push(item.href)}>
+                <View style={styles.menuText}>
+                  <ThemedText type="subtitle">{item.title}</ThemedText>
+                  <ThemedText>{item.description}</ThemedText>
+                </View>
+                <ThemedText type="link">›</ThemedText>
+              </Pressable>
+            ))}
+          </View>
+        </ScrollView>
+      </ThemedView>
+      <ThemedText type="title">Welcome!</ThemedText>
+        <HelloWave />
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
         <ThemedText>
@@ -94,5 +124,33 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: 'absolute',
+  },
+  container: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    padding: 2,
+    justifyContent: 'flex-start',
+  },
+  menu: {
+    marginTop: 0,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    backgroundColor: 'rgba(0,0,0,0.04)',
+    marginBottom: 12,
+  },
+  menuItemPressed: {
+    backgroundColor: 'rgba(0,0,0,0.08)',
+  },
+  menuText: {
+    flex: 1,
+    marginRight: 12,
   },
 });
