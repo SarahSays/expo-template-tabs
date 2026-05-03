@@ -99,15 +99,15 @@ export default function RootLayout() {
               </Text>
             </Pressable>
             <Pressable
-              onPress={() => router.replace('/(tabs)/explore')}
+              onPress={() => router.replace('/orbits')}
               style={styles.tabItem}>
               <IconSymbol
                 name="rotate.3d"
                 size={24}
-                color={isTabActive('explore') ? Colors[colorScheme ?? 'light'].tint : Colors[colorScheme ?? 'light'].text}
+                color={isTabActive('orbits') ? Colors[colorScheme ?? 'light'].tint : Colors[colorScheme ?? 'light'].text}
               />
-              <Text style={[styles.tabLabel, { color: isTabActive('explore') ? Colors[colorScheme ?? 'light'].tint : Colors[colorScheme ?? 'light'].text }]}>
-                Explore
+              <Text style={[styles.tabLabel, { color: isTabActive('orbits') ? Colors[colorScheme ?? 'light'].tint : Colors[colorScheme ?? 'light'].text }]}>
+                Orbits
               </Text>
             </Pressable>
             <Pressable

@@ -40,14 +40,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Orbits',
+          title: 'Home',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="atom" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="orbits"
         options={{
-          title: 'Explore',
+          title: 'Orbits',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="rotate.3d" color={color} />,
         }}
       />
