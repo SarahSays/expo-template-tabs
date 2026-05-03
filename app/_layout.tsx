@@ -31,6 +31,7 @@ export default function RootLayout() {
   const isTabActive = (tabName: string) => {
     if (tabName === 'home') {
       return pathname === '/' || pathname.startsWith('/(tabs)');
+      // TO-DO: improve this logic to handle edge cases (e.g. a file at this level that we don't want to include in the drawer)
     }
     return pathname.includes(tabName);
   };
@@ -75,13 +76,13 @@ export default function RootLayout() {
                 headerShown: false,
               }}
             />
-            <Drawer.Screen
+            {/* <Drawer.Screen
               name="modal"
               options={{
                 drawerLabel: 'Modal',
                 title: 'Modal',
               }}
-            />
+            /> */}
           </Drawer>
 
           {/* Persistent Tab Bar */}

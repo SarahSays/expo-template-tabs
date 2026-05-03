@@ -11,9 +11,9 @@ const menuItems = [
   { title: 'Self', description: 'Sun/Center', href: '/orbits/self' }
 ] as const;
 
-export const screenOptions = {
+/* export const screenOptions = {
   title: 'Orbits',
-};
+}; */
 
 export default function OrbitsScreen() {
   const router = useRouter();
@@ -21,7 +21,7 @@ export default function OrbitsScreen() {
   return (
     <ThemedView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ThemedText type="title">Orbits</ThemedText>
+        {/* <ThemedText type="title">Orbits</ThemedText> */}
         <View style={styles.menu}>
           {menuItems.map((item) => (
             <Pressable
