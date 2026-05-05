@@ -47,7 +47,7 @@ export default function HomeScreen() {
           </View>
         </ScrollView> */}
       </ThemedView>
-      <ThemedText type="title">Welcome!</ThemedText>
+      <ThemedText type="title">"Orbits!"</ThemedText>
       <HelloWave />
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>

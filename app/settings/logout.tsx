@@ -2,18 +2,12 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
-export const screenOptions = {
-  title: 'Friends',
-  headerBackTitle: '',
-  headerRight: undefined,
-};
-
-export default function FriendsScreen() {
+export default function LogOutScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">Friends</ThemedText>
+      <ThemedText type="title">Log Out</ThemedText>
       <ThemedText style={styles.body}>
-        See list view of connections here.
+        Log out of your app account from here.
       </ThemedText>
     </ThemedView>
   );

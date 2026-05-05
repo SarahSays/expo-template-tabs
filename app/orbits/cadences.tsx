@@ -13,8 +13,9 @@ export default function CadencesScreen() {
     <ThemedView style={styles.container}>
       <ThemedText type="title">Cadences</ThemedText>
       <ThemedText style={styles.body}>
-        What are cadences? {/* Rhythms, patterns. Daily, weekly, yearly. Cadences help you manage your presence and can make it easier to stay consistent with your social habits. 
-        You can customize your cadences to fit your lifestyle and preferences, making it easier to connect with others in a way that feels natural to you. */}
+        Rhythms, patterns. Daily, weekly, yearly. 
+        We make it easier to stay in touch.
+        Connect in ways that feels natural to you.
       </ThemedText>
     </ThemedView>
   );

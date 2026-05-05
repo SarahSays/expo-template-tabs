@@ -5,10 +5,11 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
 const menuItems = [
-  { title: 'Cadences', description: 'Circular orbital paths', href: '/orbits/cadences' },
-  { title: 'Friends', description: 'Planets/Satellites/Comets', href: '/orbits/friends' },
-  { title: 'Groups', description: 'Moons/Clusters', href: '/orbits/groups' },
-  { title: 'Self', description: 'Sun/Center', href: '/orbits/self' }
+  { title: 'Self ☀️', description: 'My Sunny Profile', href: '/orbits/self' },
+  { title: 'Friends 🪐🛰️', description: 'My Planetary Connections', href: '/orbits/friends' },
+  { title: 'Groups 🌕', description: 'My Clusters & Moons', href: '/orbits/groups' },
+  { title: 'Cadences 💫', description: 'My Orbital Patterns', href: '/orbits/cadences' },
+
 ] as const;
 
 /* export const screenOptions = {

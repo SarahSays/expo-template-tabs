@@ -9,6 +9,7 @@ const menuItems = [
   { title: 'Appearance', description: 'Change theme, colors, and layout.', href: '/settings/appearance' },
   { title: 'Privacy & Security', description: 'Manage privacy and security settings.', href: '/settings/privacy-security' },
   { title: 'Help', description: 'View support resources and FAQs.', href: '/settings/help' },
+  { title: 'Log Out', description: 'Sign out of your account.', href: '/settings/logout' },
 ] as const;
 
 /* export const screenOptions = {

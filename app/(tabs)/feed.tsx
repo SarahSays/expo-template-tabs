@@ -5,10 +5,10 @@ import { StyleSheet } from 'react-native';
 export default function FeedScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">Feed</ThemedText>
+      <ThemedText type="title">Inbox</ThemedText>
       <ThemedView style={styles.section}>
-        <ThemedText type="subtitle">General</ThemedText>
-        <ThemedText>Feed options coming soon...</ThemedText>
+        <ThemedText type="subtitle">"Thermometer"</ThemedText>
+        <ThemedText>Keep track of when was the last time you reached out to a friend, and on what platform.</ThemedText>
       </ThemedView>
     </ThemedView>
   );

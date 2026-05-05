@@ -13,7 +13,8 @@ export default function SelfScreen() {
     <ThemedView style={styles.container}>
       <ThemedText type="title">Self</ThemedText>
       <ThemedText style={styles.body}>
-        Manage your profile settings. Sun, center
+        Manage your profile settings. Update default profile pic.
+        Name, username, status. More account details.
       </ThemedText>
     </ThemedView>
   );

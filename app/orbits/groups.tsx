@@ -13,7 +13,9 @@ export default function GroupsScreen() {
     <ThemedView style={styles.container}>
       <ThemedText type="title">Groups</ThemedText>
       <ThemedText style={styles.body}>
-        What are groups? Moons, clusters, constellations.
+        See list view of groups here. Groups can help you 
+        organize your connections into different categories, 
+        such as family, close friends, work colleagues, or hobby groups.
       </ThemedText>
     </ThemedView>
   );

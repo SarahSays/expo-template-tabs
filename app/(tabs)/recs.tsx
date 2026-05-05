@@ -5,10 +5,10 @@ import { StyleSheet } from 'react-native';
 export default function RecsScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">Recs</ThemedText>
+      <ThemedText type="title">Personalized Recommendations</ThemedText>
       <ThemedView style={styles.section}>
-        <ThemedText type="subtitle">General</ThemedText>
-        <ThemedText>Recs options coming soon...</ThemedText>
+        <ThemedText type="subtitle">Personalized Recommendations - From Your Friends!</ThemedText>
+        <ThemedText>Who recommended it?</ThemedText>
       </ThemedView>
     </ThemedView>
   );
