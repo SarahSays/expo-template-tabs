@@ -5,23 +5,24 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
 const menuItems = [
-  { title: 'Thermometer', description: 'Keep track of contact temperature', href: '/feed/placeholder' },
+  { title: 'Share', description: 'Share to social media', href: '/starchart/share' },
+  { title: 'Pinch & Zoom', description: 'Zoom in on celestial objects', href: '/starchart/pinch-zoom' },
+  { title: 'Time slider', description: 'Adjust the time to see celestial changes', href: '/starchart/starchart' },
 
 ] as const;
 
  export const screenOptions = {
-  title: 'Feed',
-  headerBackTitle: '',
-  headerShown: true,
+  title: 'Recs',
+  headerShown: false,
 }; 
 
-export default function FeedScreen() {
+export default function StarChartScreen() {
   const router = useRouter();
 
   return (
     <ThemedView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ThemedText type="title">Feed</ThemedText>
+        {/* <ThemedText type="title">Star Chart</ThemedText> */}
         <View style={styles.menu}>
           {menuItems.map((item) => (
             <Pressable

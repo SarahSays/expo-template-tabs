@@ -55,7 +55,7 @@ const DrawerLayout = () => {
                 },
             }}>
             <Drawer.Screen
-                name="home"
+                name="(tabs)"
                 options={{
                     drawerLabel: 'Home',
                     headerShown: false,
@@ -72,14 +72,14 @@ const DrawerLayout = () => {
                 name="settings"
                 options={{
                     drawerLabel: 'Settings',
-                    headerShown: false,
+                    //headerShown: false,
                 }}
             />
             <Drawer.Screen
                 name="logout"
                 options={{
                     drawerLabel: 'Log Out',
-                    headerShown: false,
+                    //headerShown: false,
                 }}
             />
         </Drawer>

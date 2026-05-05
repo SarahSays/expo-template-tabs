@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ExternalLink } from '@/components/external-link';
 import { HelloWave } from '@/components/hello-wave';
@@ -10,9 +10,9 @@ import { Collapsible } from '@/components/ui/collapsible';
 import { Fonts } from '@/constants/theme';
 import { Link, useRouter } from 'expo-router';
 
-/* const menuItems = [
+const menuItems = [
   { title: 'Bodies', description: 'Celestial bodies', href: '/home/explore' },
-] as const; */
+] as const;
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -27,7 +27,7 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.container}>
-        {/* <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.menu}>
             {menuItems.map((item) => (
               <Pressable
@@ -45,7 +45,7 @@ export default function HomeScreen() {
               </Pressable>
             ))}
           </View>
-        </ScrollView> */}
+        </ScrollView>
       </ThemedView>
       <ThemedText type="title">"Orbits!"</ThemedText>
       <HelloWave />

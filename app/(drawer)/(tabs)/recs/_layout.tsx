@@ -8,7 +8,7 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors, Fonts } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
-export default function FeedLayout() {
+export default function RecsLayout() {
   const colorScheme = useColorScheme();
   const navigation = useNavigation<DrawerNavigationProp<any>>();
 
