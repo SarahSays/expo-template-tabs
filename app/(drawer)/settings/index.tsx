@@ -5,11 +5,10 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
 const menuItems = [
-  { title: 'Preferences', description: 'Adjust app behavior and defaults.', href: '/settings/preferences' },
-  { title: 'Appearance', description: 'Change theme, colors, and layout.', href: '/settings/appearance' },
-  { title: 'Privacy & Security', description: 'Manage privacy and security settings.', href: '/settings/privacy-security' },
-  { title: 'Help', description: 'View support resources and FAQs.', href: '/settings/help' },
-  { title: 'Log Out', description: 'Sign out of your account.', href: '/settings/logout' },
+  { title: 'Preferences', description: 'Adjust app behavior and defaults.', href: '/(drawer)/settings/preferences' },
+  { title: 'Appearance', description: 'Change theme, colors, and layout.', href: '/(drawer)/settings/appearance' },
+  { title: 'Privacy & Security', description: 'Manage privacy and security settings.', href: '/(drawer)/settings/privacy-security' },
+  { title: 'Help', description: 'View support resources and FAQs.', href: '/(drawer)/settings/help' },
 ] as const;
 
 /* export const screenOptions = {

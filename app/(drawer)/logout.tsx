@@ -7,7 +7,7 @@ export default function LogOutScreen() {
     <ThemedView style={styles.container}>
       <ThemedText type="title">Log Out</ThemedText>
       <ThemedText style={styles.body}>
-        Log out of your app account from here.
+        Are you sure you want to log out?
       </ThemedText>
     </ThemedView>
   );

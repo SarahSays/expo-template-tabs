@@ -77,13 +77,6 @@ export default function RootLayout() {
                 headerShown: false,
               }}
             />
-            <Drawer.Screen
-              name="modal"
-              options={{
-                drawerLabel: 'Modal',
-                title: 'Modal',
-              }}
-            />
           </Drawer>
 
           {/* Persistent Tab Bar */}
