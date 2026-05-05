@@ -5,25 +5,22 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
 const menuItems = [
-  { title: 'Self ☀️', description: 'My Sunny Profile', href: '/orbits/self' },
-  { title: 'Friends 🪐🛰️', description: 'My Planetary Connections', href: '/orbits/friends' },
-  { title: 'Groups 🌕', description: 'My Clusters & Moons', href: '/orbits/groups' },
-  { title: 'Cadences 💫', description: 'My Orbital Patterns', href: '/orbits/cadences' },
+  { title: 'Fake Home', description: 'Fake Home placeholder text', href: '/home/explore' },
 
 ] as const;
 
  export const screenOptions = {
-  title: 'Orbits',
+  title: 'Fake Home',
   headerShown: false,
 }; 
 
-export default function OrbitsScreen() {
+export default function FeedScreen() {
   const router = useRouter();
 
   return (
     <ThemedView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* <ThemedText type="title">Orbits</ThemedText> */}
+        <ThemedText type="title">Fake Home</ThemedText>
         <View style={styles.menu}>
           {menuItems.map((item) => (
             <Pressable

@@ -8,7 +8,7 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors, Fonts } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
-export default function SettingsLayout() {
+export default function StarChartLayout() {
   const colorScheme = useColorScheme();
   const navigation = useNavigation<DrawerNavigationProp<any>>();
 

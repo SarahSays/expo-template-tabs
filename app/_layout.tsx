@@ -30,7 +30,7 @@ export default function RootLayout() {
 
   const isTabActive = (tabName: string) => {
     if (tabName === 'home') {
-      return pathname === '/' || pathname.startsWith('/(tabs)');
+      return pathname === '/home' || pathname.startsWith('/(tabs)');
       // TO-DO: improve this logic to handle edge cases (e.g. a file at this level that we don't want to include in the drawer)
     }
     return pathname.includes(tabName);
@@ -46,6 +46,7 @@ export default function RootLayout() {
         <View style={{ flex: 1 }}>
           <Drawer
             screenOptions={{
+              headerShown: false,
               drawerType: 'front',
               drawerPosition: 'right',
               drawerLabelStyle: {
@@ -56,7 +57,7 @@ export default function RootLayout() {
               },
             }}>
             <Drawer.Screen
-              name="(tabs)"
+              name="home"
               options={{
                 drawerLabel: 'Home',
                 headerShown: false,
@@ -76,19 +77,19 @@ export default function RootLayout() {
                 headerShown: false,
               }}
             />
-            {/* <Drawer.Screen
+            <Drawer.Screen
               name="modal"
               options={{
                 drawerLabel: 'Modal',
                 title: 'Modal',
               }}
-            /> */}
+            />
           </Drawer>
 
           {/* Persistent Tab Bar */}
           <View style={[styles.tabBar, { backgroundColor: Colors[colorScheme ?? 'light'].background, borderTopColor: 'rgba(0,0,0,0.1)' }]}>
             <Pressable
-              onPress={() => router.replace('/(tabs)')}
+              onPress={() => router.replace('/home')}
               style={styles.tabItem}>
               <IconSymbol
                 name="atom"
@@ -112,7 +113,7 @@ export default function RootLayout() {
               </Text>
             </Pressable>
             <Pressable
-              onPress={() => router.replace('/(tabs)/feed')}
+              onPress={() => router.replace('/feed')}
               style={styles.tabItem}>
               <IconSymbol
                 name="thermometer.variable"
@@ -124,7 +125,7 @@ export default function RootLayout() {
               </Text>
             </Pressable>
             <Pressable
-              onPress={() => router.replace('/(tabs)/starchart')}
+              onPress={() => router.replace('/starchart')}
               style={styles.tabItem}>
               <IconSymbol
                 name="sparkle"
@@ -136,7 +137,7 @@ export default function RootLayout() {
               </Text>
             </Pressable>
             <Pressable
-              onPress={() => router.replace('/(tabs)/recs')}
+              onPress={() => router.replace('/recs')}
               style={styles.tabItem}>
               <IconSymbol
                 name="bookmark.fill"

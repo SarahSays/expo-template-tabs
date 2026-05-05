@@ -28,7 +28,7 @@ export default function TabLayout() {
         headerRight: () => (
           <Pressable
             onPress={() => navigation.toggleDrawer()}
-            style={{ marginRight: 16, padding: 8 }}>
+            style={{ marginRight: 6, padding: 8 }}>
             <IconSymbol
               name="line.3.horizontal"
               size={24}

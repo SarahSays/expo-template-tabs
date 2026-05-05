@@ -2,13 +2,13 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
-export default function ChatAccountsScreen() {
+export default function ShareScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">Chat Accounts</ThemedText>
+      <ThemedText type="title">Placeholder</ThemedText>
       <ThemedView style={styles.section}>
         <ThemedText type="subtitle">General</ThemedText>
-        <ThemedText>Chat accounts options coming soon...</ThemedText>
+        <ThemedText>Placeholder text...</ThemedText>
       </ThemedView>
     </ThemedView>
   );

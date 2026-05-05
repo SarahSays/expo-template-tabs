@@ -5,25 +5,24 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
 const menuItems = [
-  { title: 'Self ☀️', description: 'My Sunny Profile', href: '/orbits/self' },
-  { title: 'Friends 🪐🛰️', description: 'My Planetary Connections', href: '/orbits/friends' },
-  { title: 'Groups 🌕', description: 'My Clusters & Moons', href: '/orbits/groups' },
-  { title: 'Cadences 💫', description: 'My Orbital Patterns', href: '/orbits/cadences' },
-
+  { title: 'Instagram', href: '/chat-accounts/instagram' },
+  { title: 'Messenger', href: '/chat-accounts/messenger' },
+  { title: 'Signal', href: '/chat-accounts/signal' },
+  { title: 'SMS', href: '/chat-accounts/sms' },
+  { title: 'WhatsApp', href: '/chat-accounts/whatsapp' },
 ] as const;
 
- export const screenOptions = {
-  title: 'Orbits',
-  headerShown: false,
-}; 
+/* export const screenOptions = {
+  title: 'Chat Accounts',
+}; */
 
-export default function OrbitsScreen() {
+export default function ChatAccountsScreen() {
   const router = useRouter();
 
   return (
     <ThemedView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* <ThemedText type="title">Orbits</ThemedText> */}
+        <ThemedText type="title">Chat Accounts</ThemedText>
         <View style={styles.menu}>
           {menuItems.map((item) => (
             <Pressable
@@ -35,7 +34,6 @@ export default function OrbitsScreen() {
               onPress={() => router.push(item.href)}>
               <View style={styles.menuText}>
                 <ThemedText type="subtitle">{item.title}</ThemedText>
-                <ThemedText>{item.description}</ThemedText>
               </View>
               <ThemedText type="link">›</ThemedText>
             </Pressable>
@@ -56,20 +54,20 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   menu: {
-    marginTop: 6,
+    marginTop: 10,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 6,
+    paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 12,
     backgroundColor: 'rgba(0,0,0,0.04)',
     marginBottom: 12,
   },
   menuItemPressed: {
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    backgroundColor: 'rgba(0,0,0,0.08)',
   },
   menuText: {
     flex: 1,
