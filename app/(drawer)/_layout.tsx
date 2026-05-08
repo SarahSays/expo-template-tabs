@@ -57,6 +57,7 @@ export default function DrawerLayout() {
 
 import { Fonts } from '@/constants/theme';
 import { Drawer } from 'expo-router/drawer';
+import { Platform } from 'react-native';
 
 /**
  * Initializes drawer-based navigation with right-side menu
@@ -84,6 +85,12 @@ const DrawerLayout = () => {
                 headerTitleStyle: {
                     fontFamily: Fonts.sans,
                 },
+                // Web-specific: Improve accessibility on web to prevent aria-hidden warnings
+                ...(Platform.OS === 'web' && {
+                    sceneContainerStyle: {
+                        overflow: 'visible',
+                    },
+                }),
             }}>
             {/* Main tabs navigation - home, orbits, feed, starchart, recs */}
             <Drawer.Screen

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, {
   interpolate,
   runOnJS,
@@ -292,10 +292,14 @@ const styles = StyleSheet.create({
   sun: {
     position: 'absolute',
     backgroundColor: '#f9ba2f',
-    shadowColor: '#f9ba2f',
-    shadowOpacity: 0.45,
-    shadowRadius: 22,
-    shadowOffset: { width: 0, height: 0 },
+    ...(Platform.OS === 'web' ? {
+      boxShadow: '0px 0px 22px rgba(249, 186, 47, 0.45)',
+    } : {
+      shadowColor: '#f9ba2f',
+      shadowOpacity: 0.45,
+      shadowRadius: 22,
+      shadowOffset: { width: 0, height: 0 },
+    }),
   },
   earthOrbitRing: {
     position: 'absolute',
@@ -310,10 +314,14 @@ const styles = StyleSheet.create({
   earth: {
     position: 'absolute',
     backgroundColor: '#3b85ff',
-    shadowColor: '#3b85ff',
-    shadowOpacity: 0.45,
-    shadowRadius: 18,
-    shadowOffset: { width: 0, height: 0 },
+    ...(Platform.OS === 'web' ? {
+      boxShadow: '0px 0px 18px rgba(59, 133, 255, 0.45)',
+    } : {
+      shadowColor: '#3b85ff',
+      shadowOpacity: 0.45,
+      shadowRadius: 18,
+      shadowOffset: { width: 0, height: 0 },
+    }),
   },
   moon: {
     position: 'absolute',
@@ -347,10 +355,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#d7e8ff',
     borderWidth: 1,
     borderColor: '#7fb0ff',
-    shadowColor: '#7fb0ff',
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 2 },
+    ...(Platform.OS === 'web' ? {
+      boxShadow: '0px 2px 10px rgba(127, 176, 255, 0.35)',
+    } : {
+      shadowColor: '#7fb0ff',
+      shadowOpacity: 0.35,
+      shadowRadius: 10,
+      shadowOffset: { width: 0, height: 2 },
+    }),
   },
   sliderTickRow: {
     marginTop: 12,

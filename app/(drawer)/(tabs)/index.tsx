@@ -57,7 +57,7 @@ export default function HomeScreen() {
           style={styles.reactLogo}
         />
       }>
-      <ThemedText type="title">"Orbits!"</ThemedText>
+      <ThemedText type="title">Orbits!</ThemedText>
       <HelloWave />
       <ThemedView style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContent}>

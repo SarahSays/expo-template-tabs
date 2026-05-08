@@ -8,7 +8,7 @@ export default function AddaRecScreen() {
       <ThemedText type="title">Add a Recommendation</ThemedText>
       <ThemedView style={styles.section}>
         <ThemedText type="subtitle">Name?</ThemedText>
-        <ThemedText>"The Good Place"</ThemedText>
+        <ThemedText>The Good Place</ThemedText>
         <ThemedText type="subtitle">What media?</ThemedText>
         <ThemedText>TV / Movie / Book / Game</ThemedText>
         <ThemedText type="subtitle">Where?</ThemedText>

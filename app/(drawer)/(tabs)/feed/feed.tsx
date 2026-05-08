@@ -7,7 +7,7 @@ export default function FeedScreen() {
     <ThemedView style={styles.container}>
       <ThemedText type="title">Inbox</ThemedText>
       <ThemedView style={styles.section}>
-        <ThemedText type="subtitle">"Thermometer"</ThemedText>
+        <ThemedText type="subtitle">Thermometer</ThemedText>
         <ThemedText>Keep track of when was the last time you reached out to a friend, and on what platform.</ThemedText>
       </ThemedView>
     </ThemedView>

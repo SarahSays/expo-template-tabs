@@ -1,4 +1,4 @@
-# Orbits - Expo Multi-Navigator Template
+# "Orbits"
 
 A comprehensive Expo Router template demonstrating best practices for complex navigation hierarchies with multiple navigator types. This app showcases proper header scoping and control in a 4-level deep navigation structure using Drawer, Tabs, and Stack navigators.
 
