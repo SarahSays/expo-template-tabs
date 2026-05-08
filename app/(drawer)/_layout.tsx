@@ -37,13 +37,44 @@ export default function DrawerLayout() {
 }
  */
 
+/**
+ * Drawer Navigator Layout - Controls hamburger menu navigation
+ * 
+ * Navigation Hierarchy:
+ * Drawer Navigator (this file)
+ *  └── Tabs Navigator (app/(drawer)/(tabs)/_layout.tsx)
+ *       └── Tab Stacks (app/(drawer)/(tabs)/<tab>/_layout.tsx)
+ * 
+ * Header Control:
+ * - Drawer: headerShown=false (CRITICAL: Child navigators handle headers)
+ * - Prevents header duplication; Tabs Navigator manages tab bar
+ * - Individual tab stacks manage screen headers and back buttons
+ * 
+ * Scope: Expo Router scopes this layout to all routes within (drawer) group
+ * - Right-aligned drawer for navigation between major app sections
+ * - Manages navigation between tabs, settings, and authentication screens
+ */
+
 import { Fonts } from '@/constants/theme';
 import { Drawer } from 'expo-router/drawer';
 
+/**
+ * Initializes drawer-based navigation with right-side menu
+ * 
+ * @returns {React.ReactNode} Drawer navigator with configured screen options
+ * 
+ * Scope: Scopes to all routes under (drawer) folder via Expo Router file conventions
+ * - Provides right-sliding drawer menu
+ * - Manages navigation to Chat Accounts, Settings, and Logout screens
+ * - Does NOT display headers (delegated to child Tabs Navigator)
+ */
 const DrawerLayout = () => {
     return (
         <Drawer
             screenOptions={{
+                // CRITICAL: Hide drawer-level headers
+                // Child Tabs Navigator and Stack layouts handle all header display
+                // This prevents header conflicts between navigation levels
                 headerShown: false,
                 drawerType: 'front',
                 drawerPosition: 'right',
@@ -54,12 +85,14 @@ const DrawerLayout = () => {
                     fontFamily: Fonts.sans,
                 },
             }}>
+            {/* Main tabs navigation - home, orbits, feed, starchart, recs */}
             <Drawer.Screen
                 name="(tabs)"
                 options={{
                     drawerLabel: 'Home',
                 }}
             />
+            {/* Chat account management screen */}
             <Drawer.Screen
                 name="chat-accounts"
                 options={{
@@ -67,12 +100,14 @@ const DrawerLayout = () => {
                     title: 'Chat Accounts',
                 }}
             />
+            {/* App settings and user preferences */}
             <Drawer.Screen
                 name="settings"
                 options={{
                     drawerLabel: 'Settings',
                 }}
             />
+            {/* User logout confirmation screen */}
             <Drawer.Screen
                 name="logout"
                 options={{

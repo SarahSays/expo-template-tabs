@@ -1,3 +1,10 @@
+/**
+ * IconSymbol Component - Cross-platform icon wrapper (Android/Web fallback)
+ * 
+ * Uses SF Symbols on iOS and Material Icons on Android/Web for consistent icons.
+ * Provides a unified icon API across all platforms with manual symbol mapping.
+ */
+
 // Fallback for using MaterialIcons on Android and web.
 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -9,9 +16,12 @@ type IconMapping = Record<SymbolViewProps['name'], ComponentProps<typeof Materia
 type IconSymbolName = keyof typeof MAPPING;
 
 /**
- * Add your SF Symbols to Material Icons mappings here.
- * - see Material Icons in the [Icons Directory](https://icons.expo.fyi).
- * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
+ * Mapping from SF Symbols (iOS) to Material Icons (Android/Web)
+ * 
+ * SF Symbols Reference: https://developer.apple.com/sf-symbols/
+ * Material Icons Reference: https://icons.expo.fyi
+ * 
+ * Add new mappings here when using additional icons in the app.
  */
 const MAPPING = {
   'house.fill': 'home',
@@ -28,9 +38,25 @@ const MAPPING = {
 } as IconMapping;
 
 /**
- * An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.
- * This ensures a consistent look across platforms, and optimal resource usage.
- * Icon `name`s are based on SF Symbols and require manual mapping to Material Icons.
+ * Renders a cross-platform icon symbol
+ * 
+ * @param {Object} props - Component props
+ * @param {IconSymbolName} props.name - SF Symbol name (mapped to Material Icon)
+ * @param {number} [props.size] - Icon size in points (default: 24)
+ * @param {string | OpaqueColorValue} props.color - Icon color
+ * @param {StyleProp<TextStyle>} [props.style] - Additional styles
+ * @param {SymbolWeight} [props.weight] - Font weight (iOS only)
+ * @returns {React.ReactNode} Platform-specific icon component
+ * 
+ * Platform Behavior:
+ * - iOS: Uses native SF Symbols with native rendering
+ * - Android/Web: Uses Material Icons with CSS/React Native rendering
+ * 
+ * Usage:
+ * ```tsx
+ * <IconSymbol name="sparkle" size={28} color="blue" />
+ * <IconSymbol name="menu" size={24} color={Colors.text} />
+ * ```
  */
 export function IconSymbol({
   name,

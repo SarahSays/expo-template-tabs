@@ -1,19 +1,31 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * Theme Configuration - Color schemes and typography settings
+ * 
+ * Defines the color palette and font families for both light and dark modes.
+ * Supports dyslexia-friendly typography using OpenDyslexic fonts.
+ * Platform-specific font stacks for optimal rendering across web and native.
  */
 
 import { Platform } from 'react-native';
 
-// const tintColorLight = '#0a7ea4';
-// const tintColorDark = '#fff';
+// Primary theme colors
 const tintColorLight = 'indigo';
 const tintColorDark = '#f9d84a';
 
+/**
+ * Color definitions for light and dark modes
+ * 
+ * Defines all theme colors used throughout the application:
+ * - text: Primary text color
+ * - background: Screen background color
+ * - tint: Primary accent color
+ * - icon: Icon color
+ * - tabIconDefault: Inactive tab icon color
+ * - tabIconSelected: Active tab icon color
+ */
 export const Colors = {
   light: {
     text: '#11181C',
-    // background: '#fff',
     background: 'azure',
     tint: tintColorLight,
     icon: '#687076',
@@ -22,17 +34,27 @@ export const Colors = {
   },
   dark: {
     text: '#ECEDEE',
-    // background: '#151718',
     background: 'midnightblue',
     tint: tintColorDark,
-    // icon: '#687076',
-    // tabIconDefault: '#687076',
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
   },
 };
 
+/**
+ * Font family definitions for native and web platforms
+ * 
+ * Uses dyslexia-friendly OpenDyslexic fonts on all platforms.
+ * Provides fallback font stacks for web to ensure readability.
+ * 
+ * Includes:
+ * - sans: Standard sans-serif font
+ * - serif: Serif font variant
+ * - rounded: Rounded font variant
+ * - mono: Monospace font for code
+ * - sansBold: Bold sans-serif font
+ */
 export const Fonts = Platform.select({
   default: {
     sans: 'OpenDyslexic3Regular',

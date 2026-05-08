@@ -1,3 +1,10 @@
+/**
+ * ScreenContent Component - Standard screen layout with title and separator
+ * 
+ * Provides consistent screen header with title and visual separator.
+ * Centers content and applies theme-aware styling.
+ */
+
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
@@ -11,7 +18,27 @@ type ScreenContentProps = {
   children?: React.ReactNode;
 };
 
+/**
+ * Renders a screen layout with title, separator line, and content
+ * 
+ * @param {ScreenContentProps} props - Component props
+ * @param {string} props.title - Screen heading text
+ * @param {string} props.path - Path identifier (for reference/debugging)
+ * @param {React.ReactNode} [props.children] - Screen content
+ * @returns {React.ReactNode} Centered screen container with title and content
+ * 
+ * Layout:
+ * - Centered container
+ * - Large title text at top
+ * - Horizontal separator line
+ * - Content area below
+ * 
+ * Usage:
+ * ```tsx
+ * <ScreenContent title="My Screen" path="/my-screen">\n *   <ThemedText>Screen content here</ThemedText>\n * </ScreenContent>\n * ```
+ */
 export const ScreenContent = ({ title, path, children }: ScreenContentProps) => {
+  // Get separator color based on theme
   const separatorColor = useThemeColor({ light: '#d1d5db', dark: '#424245' }, 'icon');
 
   return (

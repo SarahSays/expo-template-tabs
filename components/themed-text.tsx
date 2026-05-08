@@ -1,3 +1,10 @@
+/**
+ * ThemedText Component - Text element with theme-aware styling
+ * 
+ * Renders text with typography variants (title, subtitle, link, etc.)
+ * and automatic light/dark mode color support using dyslexia-friendly fonts.
+ */
+
 import { StyleSheet, Text, type TextProps } from 'react-native';
 
 import { Fonts } from '@/constants/theme';
@@ -9,6 +16,24 @@ export type ThemedTextProps = TextProps & {
   type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
 };
 
+/**
+ * Renders themed text with automatic color and typography styling
+ * 
+ * @param {ThemedTextProps} props - Text component props
+ * @param {string} [props.lightColor] - Custom color for light mode
+ * @param {string} [props.darkColor] - Custom color for dark mode
+ * @param {string} [props.type] - Typography variant (default, title, subtitle, link, defaultSemiBold)
+ * @param {...TextProps} rest - Standard React Native Text props
+ * @returns {React.ReactNode} Themed text element
+ * 
+ * Usage:
+ * ```tsx
+ * <ThemedText type="title">Main Heading</ThemedText>
+ * <ThemedText type="subtitle">Subheading</ThemedText>
+ * <ThemedText lightColor="#fff" darkColor="#000">Custom colors</ThemedText>
+ * <ThemedText type="link">Clickable link</ThemedText>
+ * ```
+ */
 export function ThemedText({
   style,
   lightColor,
@@ -16,6 +41,7 @@ export function ThemedText({
   type = 'default',
   ...rest
 }: ThemedTextProps) {
+  // Get text color based on theme and custom overrides
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
 
   return (
