@@ -379,11 +379,11 @@ const styles = StyleSheet.create({
     width: 2,
     height: 10,
     borderRadius: 1,
-    backgroundColor: '#c7dcff',
+    backgroundColor: '#686868',
     marginBottom: 4,
   },
   tickLabel: {
-    fontSize: 12,
-    color: '#dce7ff',
+    fontSize: 11,
+    color: '#686868',
   },
 });

@@ -45,6 +45,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
         // CRITICAL: Hide tabs-level headers
         // Each tab's stack (home, orbits, feed, etc.) manages its own headers
         // This prevents header duplication while maintaining back button functionality
@@ -56,14 +57,16 @@ export default function TabLayout() {
         tabBarStyle: {
           paddingBottom: 0,
           height: 60,
+          position: 'absolute',
+          backgroundColor: Colors[colorScheme ?? 'light'].tabBarBackground,
         },
       }}>
       {/* Home tab - entry point with sign-in/skip options */}
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="atom" color={color} />,
+          title: 'Index',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
       {/* Orbits tab - social connections and friend groups */}

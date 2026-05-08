@@ -55,7 +55,8 @@ export default function DrawerLayout() {
  * - Manages navigation between tabs, settings, and authentication screens
  */
 
-import { Fonts } from '@/constants/theme';
+import { Colors, Fonts } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Drawer } from 'expo-router/drawer';
 import { Platform } from 'react-native';
 
@@ -70,6 +71,9 @@ import { Platform } from 'react-native';
  * - Does NOT display headers (delegated to child Tabs Navigator)
  */
 const DrawerLayout = () => {
+    const colorScheme = useColorScheme();
+    const themeMode = colorScheme === 'dark' ? 'dark' : 'light';
+
     return (
         <Drawer
             screenOptions={{
@@ -77,13 +81,25 @@ const DrawerLayout = () => {
                 // Child Tabs Navigator and Stack layouts handle all header display
                 // This prevents header conflicts between navigation levels
                 headerShown: false,
+                swipeEnabled: false,
+                swipeEdgeWidth: 0,
+                swipeMinDistance: 0,
                 drawerType: 'front',
                 drawerPosition: 'right',
-                drawerLabelStyle: {
+                        drawerLabelStyle: {
                     fontFamily: Fonts.sans,
                 },
+                drawerStyle: {
+                    backgroundColor: Colors[themeMode].drawerBackground,
+                },
+                drawerContentStyle: {
+                    backgroundColor: Colors[themeMode].drawerBackground,
+                },
+                drawerActiveTintColor: Colors[themeMode].tint,
+                drawerInactiveTintColor: Colors[themeMode].drawerInactiveText,
                 headerTitleStyle: {
                     fontFamily: Fonts.sans,
+                    color: Colors[colorScheme ?? 'light'].tint,
                 },
                 // Web-specific: Improve accessibility on web to prevent aria-hidden warnings
                 ...(Platform.OS === 'web' && {
@@ -96,6 +112,7 @@ const DrawerLayout = () => {
             <Drawer.Screen
                 name="(tabs)"
                 options={{
+                    swipeEnabled: false,
                     drawerLabel: 'Home',
                 }}
             />

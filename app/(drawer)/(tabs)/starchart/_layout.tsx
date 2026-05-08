@@ -45,6 +45,7 @@ export default function StarChartLayout() {
   return (
     <Stack
       screenOptions={{
+        // gestureEnabled: false, <-- not working
         // CRITICAL: Show headers for back navigation within star chart tab stack
         // Star chart has interactive screens (zoom, share) requiring back button access
         // Hiding headers here would prevent proper navigation flow
@@ -53,6 +54,10 @@ export default function StarChartLayout() {
         headerTitleStyle: {
           fontFamily: Fonts.sans,
         },
+        headerStyle: {
+          backgroundColor: Colors[colorScheme ?? 'light'].headerBackground,
+        },
+        headerTintColor: Colors[colorScheme ?? 'light'].headerText,
         // Drawer toggle button in header right position
         headerRight: () => (
           <Pressable
@@ -61,10 +66,11 @@ export default function StarChartLayout() {
             <IconSymbol
               name="line.3.horizontal"
               size={24}
-              color={Colors[colorScheme ?? 'light'].text}
+              color={Colors[colorScheme ?? 'light'].headerText}
             />
           </Pressable>
         ),
+        // gestureEnabled: false, <-- not working
       }}
     />
   );

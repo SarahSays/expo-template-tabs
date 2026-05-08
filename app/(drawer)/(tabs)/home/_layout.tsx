@@ -53,6 +53,10 @@ export default function HomeLayout() {
         headerTitleStyle: {
           fontFamily: Fonts.sans,
         },
+        headerStyle: {
+          backgroundColor: Colors[colorScheme ?? 'light'].headerBackground,
+        },
+        headerTintColor: Colors[colorScheme ?? 'light'].headerText,
         // Drawer toggle button in header right position
         headerRight: () => (
           <Pressable
@@ -61,7 +65,7 @@ export default function HomeLayout() {
             <IconSymbol
               name="line.3.horizontal"
               size={24}
-              color={Colors[colorScheme ?? 'light'].text}
+              color={Colors[colorScheme ?? 'light'].headerText}
             />
           </Pressable>
         ),

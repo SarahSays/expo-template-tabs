@@ -20,24 +20,39 @@ const tintColorDark = '#f9d84a';
  * - background: Screen background color
  * - tint: Primary accent color
  * - icon: Icon color
+ * - tabBarBackground: Background for bottom tabs
+ * - headerBackground: Header bar background
+ * - headerText: Text/icon color used in headers
  * - tabIconDefault: Inactive tab icon color
  * - tabIconSelected: Active tab icon color
  */
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: 'azure',
+    text: '#2B0F55',
+    background: '#E8F4FF',
     tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
+    icon: '#84C7FF',
+    tabBarBackground: '#D8EEFF',
+    headerBackground: '#D2E8FF',
+    headerText: '#2B0F55',
+    drawerBackground: '#E7F3FF',
+    drawerActiveText: '#2B0F55',
+    drawerInactiveText: '#6A5FA8',
+    tabIconDefault: 'midnightblue',
     tabIconSelected: tintColorLight,
   },
   dark: {
-    text: '#ECEDEE',
-    background: 'midnightblue',
+    text: '#F0E6FF',
+    background: '#0F0A1A',
     tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
+    icon: '#B19CD9',
+    tabBarBackground: '#090512',
+    headerBackground: '#07030D',
+    headerText: '#F7F4FF',
+    drawerBackground: '#07030D',
+    drawerActiveText: '#F7F4FF',
+    drawerInactiveText: '#C7B7FF',
+    tabIconDefault: '#C7B7FF',
     tabIconSelected: tintColorDark,
   },
 };
