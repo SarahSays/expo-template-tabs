@@ -5,12 +5,12 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
 const menuItems = [
-  { title: 'Fake Home', description: 'Fake Home placeholder text', href: '/home/explore' },
+  { title: 'Enter your Email', description: 'Learn more about security and privacy', href: '/home/verification-code' },
 
 ] as const;
 
  export const screenOptions = {
-  title: 'Fake Home',
+  title: '',
   headerShown: false,
 }; 
 
@@ -20,7 +20,7 @@ export default function FeedScreen() {
   return (
     <ThemedView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ThemedText type="title">Fake Home</ThemedText>
+        <ThemedText type="title">Enter Your Email</ThemedText>
         <View style={styles.menu}>
           {menuItems.map((item) => (
             <Pressable

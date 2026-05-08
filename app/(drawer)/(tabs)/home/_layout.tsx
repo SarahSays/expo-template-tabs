@@ -16,7 +16,6 @@ export default function HomeLayout() {
     <Stack
       screenOptions={{
         headerShown: true,
-        headerBackTitle: '',
         headerTitleStyle: {
           fontFamily: Fonts.sans,
         },

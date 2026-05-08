@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
 
 import { ExternalLink } from '@/components/external-link';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -9,14 +9,19 @@ import { Collapsible } from '@/components/ui/collapsible';
 import { Fonts } from '@/constants/theme';
 import { useRouter } from 'expo-router';
 
-/* const menuItems = [
-  { title: 'Bodies', description: 'Celestial bodies', href: '/orbits/' },
-] as const; */
+const menuItems = [
+  {
+    title: 'Skip sign-in',
+    description: 'Skip straight to Feed tab.',
+    href: '/feed'
+  },
+] as const;
 
 export default function HomeScreen() {
   const router = useRouter();
 
   return (
+
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={
@@ -31,8 +36,25 @@ export default function HomeScreen() {
           style={{
             fontFamily: Fonts.rounded,
           }}>
-          Explore
+          Connect Chat Accounts
         </ThemedText>
+        <View style={styles.menu}>
+          {menuItems.map((item) => (
+            <Pressable
+              key={item.title}
+              style={({ pressed }) => [
+                styles.menuItem,
+                pressed ? styles.menuItemPressed : null,
+              ]}
+              onPress={() => router.push(item.href)}>
+              <View style={styles.menuText}>
+                <ThemedText type="subtitle">{item.title}</ThemedText>
+                <ThemedText>{item.description}</ThemedText>
+              </View>
+              <ThemedText type="link">›</ThemedText>
+            </Pressable>
+          ))}
+        </View>
       </ThemedView>
       <ThemedText>This app includes example code to help you get started.</ThemedText>
       <Collapsible title="File-based routing">

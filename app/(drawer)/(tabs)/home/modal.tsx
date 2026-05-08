@@ -7,11 +7,10 @@ import { ThemedView } from '@/components/themed-view';
 export default function ModalScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">This is a modal</ThemedText>
-      <Link href="/" dismissTo style={styles.link}>
-        <ThemedText type="link">Go to home screen</ThemedText>
+      <ThemedText type="subtitle">Allow app to send you notifications?</ThemedText>
+      <Link href="/home/username" dismissTo style={styles.link}>
+        <ThemedText type="link">Allow</ThemedText>
       </Link>
-      {/*TODO: Why isn't this link working?*/}
     </ThemedView>
   );
 }

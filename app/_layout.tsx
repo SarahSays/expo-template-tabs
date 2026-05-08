@@ -1,4 +1,18 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+// app/_layout.tsx
+import { Stack } from "expo-router";
+
+export default function RootLayout() {
+  return (
+    <Stack
+      screenOptions={{
+      headerShown: false,   // IMPORTANT
+      }}
+    />
+  );
+}
+
+
+/* import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { usePathname, useRouter } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
@@ -79,7 +93,8 @@ export default function RootLayout() {
             />
           </Drawer>
 
-          {/* Persistent Tab Bar */}
+          // Persistent Tab Bar
+          
           <View style={[styles.tabBar, { backgroundColor: Colors[colorScheme ?? 'light'].background, borderTopColor: 'rgba(0,0,0,0.1)' }]}>
             <Pressable
               onPress={() => router.replace('/home')}
@@ -172,3 +187,4 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.sans,
   },
 });
+ */
