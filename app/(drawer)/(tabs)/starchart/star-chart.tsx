@@ -13,21 +13,29 @@ import { ThemedView } from '@/components/themed-view';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { ScrollView } from 'react-native-gesture-handler';
 
-const THUMB_SIZE = 24;
-const TRACK_HEIGHT = 8;
+const THUMB_SIZE = 34;
+const TRACK_HEIGHT = 18;
 const SCENE_SIZE = 320;
 
 export default function StarchartScreen() {
   const colorScheme = useColorScheme() ?? 'light';
+  const isDark = colorScheme === 'dark';
   const { width } = useWindowDimensions();
   const trackWidth = Math.min(540, Math.max(280, width - 40));
   const sceneSize = Math.min(SCENE_SIZE, width - 40);
   const [timeLabel, setTimeLabel] = useState('1 Day');
+  const [trackLeft, setTrackLeft] = useState(0);
   const progress = useSharedValue(0);
 
   const updateProgress = (x: number) => {
     const next = Math.min(trackWidth - THUMB_SIZE, Math.max(0, x));
     progress.value = next / (trackWidth - THUMB_SIZE);
+  };
+
+  const handleSliderGesture = (event: any) => {
+    const pageX = event.nativeEvent.pageX ?? event.nativeEvent.locationX;
+    const x = pageX - trackLeft;
+    updateProgress(x);
   };
 
   useAnimatedReaction(
@@ -153,6 +161,13 @@ export default function StarchartScreen() {
     };
   });
 
+  const tickColor = isDark ? '#D8E8FF' : '#2B0F55';
+  const tickMarkColor = isDark ? 'rgba(255, 255, 255, 0.7)' : '#4C4C7E';
+  const sliderTrackColor = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(45, 118, 191, 0.18)';
+  const sliderFillColor = isDark ? '#4AA1FF' : '#4AA1FF';
+  const sliderThumbColor = isDark ? '#DFE9FF' : '#FFFFFF';
+  const sliderThumbBorder = isDark ? '#7FB0FF' : '#4EA7FF';
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <ThemedView style={styles.container}>
@@ -201,12 +216,15 @@ export default function StarchartScreen() {
         </View>
 
         <Animated.View
-          style={[styles.sliderTrack, { width: trackWidth }]}
-          onStartShouldSetResponder={() => true}
-          onResponderGrant={(event) => updateProgress(event.nativeEvent.locationX)}
-          onResponderMove={(event) => updateProgress(event.nativeEvent.locationX)}>
-          <Animated.View style={[styles.sliderFill, fillStyle]} />
-          <Animated.View style={[styles.sliderThumb, thumbStyle]} />
+          style={[styles.sliderTrack, { width: trackWidth, backgroundColor: sliderTrackColor }]}
+          onLayout={(event) => setTrackLeft(event.nativeEvent.layout.x)}
+          onStartShouldSetResponderCapture={() => true}
+          onMoveShouldSetResponderCapture={() => true}
+          onResponderTerminationRequest={() => false}
+          onResponderGrant={handleSliderGesture}
+          onResponderMove={handleSliderGesture}>
+          <Animated.View style={[styles.sliderFill, fillStyle, { backgroundColor: sliderFillColor }]} />
+          <Animated.View style={[styles.sliderThumb, thumbStyle, { backgroundColor: sliderThumbColor, borderColor: sliderThumbBorder }]} />
         </Animated.View>
 
         <View style={[styles.sliderTickRow, { width: trackWidth }]}> 
@@ -227,8 +245,8 @@ export default function StarchartScreen() {
                   transform: tick.position === 0 || tick.position === 1 ? [] : [{ translateX: -32 }],
                 },
               ]}>
-              <View style={styles.tickMark} />
-              <ThemedText style={styles.tickLabel}>{tick.label}</ThemedText>
+              <View style={[styles.tickMark, { backgroundColor: tickMarkColor }]} />
+              <ThemedText style={[styles.tickLabel, { color: tickColor }]}>{tick.label}</ThemedText>
             </View>
           ))}
         </View>
@@ -339,12 +357,10 @@ const styles = StyleSheet.create({
     marginTop: 18,
     height: TRACK_HEIGHT,
     borderRadius: TRACK_HEIGHT / 2,
-    backgroundColor: 'rgba(255,255,255,0.12)',
     overflow: 'hidden',
   },
   sliderFill: {
     height: TRACK_HEIGHT,
-    backgroundColor: '#4aa1ff',
   },
   sliderThumb: {
     position: 'absolute',
@@ -352,9 +368,7 @@ const styles = StyleSheet.create({
     width: THUMB_SIZE,
     height: THUMB_SIZE,
     borderRadius: THUMB_SIZE / 2,
-    backgroundColor: '#d7e8ff',
     borderWidth: 1,
-    borderColor: '#7fb0ff',
     ...(Platform.OS === 'web' ? {
       boxShadow: '0px 2px 10px rgba(127, 176, 255, 0.35)',
     } : {
