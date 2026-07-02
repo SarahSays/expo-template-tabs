@@ -30,7 +30,7 @@ const menuItems = [
   },
   {
     title: 'Skip sign-in', 
-    description: 'Skip straight to Orbits tab.', 
+    description: 'Jump directly to an Orbits demo.', 
     href: '/orbits'
   },
 ] as const;
