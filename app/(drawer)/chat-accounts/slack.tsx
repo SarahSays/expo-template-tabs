@@ -2,7 +2,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
-export default function InstagramScreen() {
+export default function SlackScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title">Slack</ThemedText>

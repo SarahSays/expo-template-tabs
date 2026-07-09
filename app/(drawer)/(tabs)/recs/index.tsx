@@ -1,13 +1,19 @@
 import { useRouter } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import { Pressable, RefreshControl, ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Colors, Fonts } from '@/constants/theme';
+
+const recommendations = [
+  { title: 'The Good Place', type: 'TV', platform: 'Netflix', from: 'Alice' },
+  { title: 'Superman', type: 'Movie', platform: 'Amazon', from: 'Bob' },
+];
 
 const menuItems = [
   { title: 'Awards', description: 'Check your streaks', href: '/recs/awards' },
-  { title: '+ Add a Rec', description: 'Who recommended it?', href: '/recs/addarec' },
-
+  { title: '+ Add a Recommendation', description: 'Who recommended it?', href: '/recs/addarec' },
 ] as const;
 
  export const screenOptions = {
@@ -17,10 +23,30 @@ const menuItems = [
 
 export default function RecsScreen() {
   const router = useRouter();
+  const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
+  const theme = Colors[colorScheme];
+  const fonts = Fonts ?? { sans: undefined, sansBold: undefined };
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    // Demo refresh - no remote data yet. Keep spinner briefly.
+    setTimeout(() => setRefreshing(false), 800);
+  }, []);
 
   return (
     <ThemedView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colorScheme === 'dark' ? '#fff' : '#000'}
+            colors={[theme.tint]}
+          />
+        }
+      >
         {/* <ThemedText type="title">Recs</ThemedText> */}
         <View style={styles.menu}>
           {menuItems.map((item) => (
@@ -37,6 +63,16 @@ export default function RecsScreen() {
               </View>
               <ThemedText type="link">›</ThemedText>
             </Pressable>
+          ))}
+        </View>
+        <View style={{ marginTop: 6 }}>
+          <ThemedText type="subtitle">Sample Recommendations:</ThemedText>
+          {recommendations.map((rec) => (
+            <View key={rec.title} style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#151213' : '#f2f2f7' }]}>
+              <ThemedText style={[styles.cardTitle, { color: theme.text, fontFamily: fonts.sansBold }]}>{rec.title}</ThemedText>
+              <ThemedText style={[styles.cardDetail, { color: theme.icon, fontFamily: fonts.sans }]}>{rec.type} · {rec.platform}</ThemedText>
+              <ThemedText style={[styles.cardFrom, { color: theme.drawerInactiveText, fontFamily: fonts.sans }]}>Recommended by {rec.from}</ThemedText>
+            </View>
           ))}
         </View>
       </ScrollView>
@@ -72,5 +108,23 @@ const styles = StyleSheet.create({
   menuText: {
     flex: 1,
     marginRight: 12,
+  },
+  card: {
+    marginLeft: 32,
+    marginRight: 16,
+    padding: 12,
+    borderRadius: 10,
+    marginBottom: 12,
+  },
+  cardTitle: {
+    fontSize: 16,
+    marginBottom: 4,
+  },
+  cardDetail: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  cardFrom: {
+    fontSize: 13,
   },
 });

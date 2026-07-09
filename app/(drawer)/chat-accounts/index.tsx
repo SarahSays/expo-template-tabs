@@ -5,10 +5,16 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
 const menuItems = [
+  { title: 'Discord', href: '/chat-accounts/discord' },
+  { title: 'Google Messages', href: '/chat-accounts/google-messages' },
   { title: 'Instagram', href: '/chat-accounts/instagram' },
+  { title: 'LinkedIn', href: '/chat-accounts/linkedin' },
   { title: 'Messenger', href: '/chat-accounts/messenger' },
+  { title: 'RCS', href: '/chat-accounts/rcs' },
   { title: 'Signal', href: '/chat-accounts/signal' },
+  { title: 'Slack', href: '/chat-accounts/slack' },
   { title: 'SMS', href: '/chat-accounts/sms' },
+  { title: 'Telegram', href: '/chat-accounts/telegram' },
   { title: 'WhatsApp', href: '/chat-accounts/whatsapp' },
 ] as const;
 
