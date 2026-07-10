@@ -1,15 +1,32 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { StyleSheet } from 'react-native';
+import { Colors, Fonts } from '@/constants/theme';
+import { useRouter } from 'expo-router';
+import { Pressable, StyleSheet, useColorScheme, View } from 'react-native';
+import { getFriends } from './friendsStore';
 
-export default function FeedScreen() {
+export default function ListOfContacts() {
+  const router = useRouter();
+  const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
+  const theme = Colors[colorScheme];
+  const fonts = Fonts ?? { sans: undefined, sansBold: undefined };
+
+  const friends = getFriends();
+
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title">Placeholder</ThemedText>
-      <ThemedView style={styles.section}>
-        <ThemedText type="subtitle">General</ThemedText>
-        <ThemedText>List of contacts goes here.</ThemedText>
-      </ThemedView>
+    <ThemedView style={[styles.container, { backgroundColor: theme.background }]}>
+      <ThemedText type="title" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>Contacts</ThemedText>
+      <View style={styles.section}>
+        {friends.map((f) => (
+          <Pressable key={f.id} onPress={() => router.push(`/orbits/contacts/${f.id}`)} style={styles.contactRow}>
+            <View>
+              <ThemedText type="subtitle" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>{f.name}</ThemedText>
+              <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{f.platform} · {f.cadence}</ThemedText>
+            </View>
+            <ThemedText type="link">›</ThemedText>
+          </Pressable>
+        ))}
+      </View>
     </ThemedView>
   );
 }
@@ -21,9 +38,17 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   section: {
-    marginTop: 24,
+    marginTop: 12,
     paddingVertical: 12,
     paddingHorizontal: 12,
     borderRadius: 8,
   },
+  contactRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0,0,0,0.06)'
+  }
 });

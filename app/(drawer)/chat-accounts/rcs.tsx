@@ -2,6 +2,11 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * RcsScreen
+ * @description Placeholder screen prompting the user to connect RCS.
+ * @returns {JSX.Element} A themed screen with explanatory text.
+ */
 export default function RcsScreen() {
   return (
     <ThemedView style={styles.container}>

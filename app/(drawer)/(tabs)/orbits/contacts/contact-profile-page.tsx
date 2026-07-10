@@ -1,29 +1,62 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { StyleSheet } from 'react-native';
+import { Colors, Fonts } from '@/constants/theme';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, useColorScheme, View } from 'react-native';
+import { getFriend } from './friendsStore';
 
-export default function FeedScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title">Contact Profile</ThemedText>
-      <ThemedView style={styles.section}>
-        <ThemedText type="subtitle">General</ThemedText>
-        <ThemedText>Contact information goes here.</ThemedText>
+export default function ContactProfilePage() {
+  const params = useLocalSearchParams();
+  const id = String(params.id || '1');
+  const friend = getFriend(id);
+  const router = useRouter();
+  const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
+  const theme = Colors[colorScheme];
+  const fonts = Fonts ?? { sans: undefined, sansBold: undefined };
+
+  if (!friend) {
+    return (
+      <ThemedView style={styles.container}>
+        <ThemedText type="title">Not Found</ThemedText>
       </ThemedView>
+    );
+  }
+
+
+  return (
+    <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
+      <ThemedText type="title" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>{friend.name}</ThemedText>
+
+      <View style={styles.section}>
+        <ThemedText type="subtitle" lightColor="#2B0F55">Connected via</ThemedText>
+        <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{friend.platform}</ThemedText>
+
+        <ThemedText type="subtitle" lightColor="#2B0F55" style={{ marginTop: 12 }}>Cadence</ThemedText>
+        <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{friend.cadence || 'Not set'}</ThemedText>
+
+        <TouchableOpacity
+          onPress={() => router.push(`/starchart/star-chart?friendId=${friend.id}`)}
+          style={[styles.doneButton, { marginTop: 16 }]}
+        >
+          <ThemedText style={styles.doneButtonText}>How often do you want to talk?</ThemedText>
+        </TouchableOpacity>
+
+        {/* Removed the extra Done button which linked to a non-existing route.
+            Navigation now returns to Friends after saving from the Star Chart. */}
+      </View>
+
+      {/* Cadence selection now uses the Star Chart slider page */}
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    justifyContent: 'flex-start',
-  },
-  section: {
-    marginTop: 24,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-  },
+  container: { flex: 1, padding: 16 },
+  section: { marginTop: 16, paddingVertical: 12, paddingHorizontal: 12, borderRadius: 8 },
+  doneButton: { paddingVertical: 10, alignItems: 'center', backgroundColor: '#0A84FF', borderRadius: 6 },
+  doneButtonText: { color: '#fff', fontWeight: '600', fontSize: 14 },
+  modalOverlay: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' },
+  modalContent: { width: '90%', padding: 16, borderRadius: 8 },
+  cadenceRow: { paddingVertical: 12, borderBottomWidth: 1, borderColor: 'rgba(0,0,0,0.06)' },
 });

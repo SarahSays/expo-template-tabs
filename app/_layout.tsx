@@ -45,7 +45,12 @@ export default function RootLayout() {
     OpenDyslexicMonoRegular: require('../assets/fonts/OpenDyslexicMono-Regular.ttf'),
   });
 
+  // Keep `colorScheme`, `router`, and `isTabActive` available for
+  // future custom tab-bar or navigation logic. They are unused now
+  // but intentionally retained as placeholders.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const colorScheme = useColorScheme();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const router = useRouter();
   const pathname = usePathname();
 
@@ -54,6 +59,7 @@ export default function RootLayout() {
    * @param {string} tabName - Name of tab to check
    * @returns {boolean} True if tab is currently active
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isTabActive = (tabName: string) => {
     if (tabName === 'home') {
       return pathname === '/home' || pathname.startsWith('/(tabs)');
@@ -78,6 +84,9 @@ export default function RootLayout() {
   );
 }
 
+// Keep `styles` for future custom tab-bar rendering. Suppress unused
+// variable warning until the custom UI is implemented.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const styles = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',

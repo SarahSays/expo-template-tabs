@@ -2,6 +2,11 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * DiscordScreen
+ * @description Placeholder screen prompting the user to connect Discord.
+ * @returns {JSX.Element} A themed screen with explanatory text.
+ */
 export default function DiscordScreen() {
   return (
     <ThemedView style={styles.container}>

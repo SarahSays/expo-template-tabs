@@ -10,6 +10,10 @@ This is an [Expo](https://expo.dev) project using [Expo Router](https://docs.exp
 
 - **Dyslexia-Friendly Typography**: Uses OpenDyslexic fonts across all platforms
 - **Theme Support**: Light and dark mode with automatic detection
+- **Demo-friendly Storage**: The Add-a-Rec demo uses transient in-memory
+   storage by default so it runs in Expo Go without a custom dev client.
+   Persistent storage using `@react-native-async-storage/async-storage` is
+   available but requires a dev client or native build to use in production.
 - **Multi-Navigator Architecture**: Demonstrates proper scoping of Drawer, Tabs, and Stack navigators
 - **Header Management**: Critical annotations showing where headers must/must not be hidden
 - **Cross-Platform**: Works on iOS, Android, and Web

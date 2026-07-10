@@ -9,7 +9,7 @@
 import { Platform } from 'react-native';
 
 // Primary theme colors
-const tintColorLight = 'indigo';
+const tintColorLight = '#0A84FF';
 const tintColorDark = '#f9d84a';
 
 /**

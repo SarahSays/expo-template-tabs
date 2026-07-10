@@ -22,6 +22,13 @@ const menuItems = [
   title: 'Chat Accounts',
 }; */
 
+/**
+ * ChatAccountsScreen
+ * @description Lists available chat account integrations and navigates
+ * to the respective account connection screens. Entries are alphabetized
+ * for discoverability.
+ * @returns {JSX.Element} The Chat Accounts menu screen.
+ */
 export default function ChatAccountsScreen() {
   const router = useRouter();
 

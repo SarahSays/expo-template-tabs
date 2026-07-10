@@ -2,6 +2,11 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * SlackScreen
+ * @description Placeholder screen prompting the user to connect Slack.
+ * @returns {JSX.Element} A themed screen with explanatory text.
+ */
 export default function SlackScreen() {
   return (
     <ThemedView style={styles.container}>

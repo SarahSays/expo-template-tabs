@@ -10,6 +10,8 @@ import {
   useColorScheme,
 } from 'react-native';
 
+// Keep RecItem for future typed data models (used in planned persistence)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type RecItem = {
   id: string;
   title: string;
@@ -19,6 +21,18 @@ type RecItem = {
   createdAt: number;
 };
 
+/**
+ * RecItem
+ * @description Shape of a recommendation item used in the demo form.
+ */
+
+/**
+ * AddaRecScreen
+ * @description Demo screen that allows entering a recommendation.
+ * This screen intentionally uses transient in-memory saves for the demo
+ * to avoid requiring native AsyncStorage at runtime (works in Expo Go).
+ * @returns {JSX.Element} The Add Recommendation screen.
+ */
 export default function AddaRecScreen() {
   const [title, setTitle] = useState('');
   const [media, setMedia] = useState('');
@@ -35,16 +49,29 @@ export default function AddaRecScreen() {
   }
 
   async function saveEntry() {
-    const item: RecItem = {
-      id: String(Date.now()),
-      title: title || 'Untitled',
-      media: media || 'Unknown',
-      platform: platform || 'Unknown',
-      friend: friend || 'Unknown',
-      createdAt: Date.now(),
-    };
-
-    // Demo: no persistent storage. show confirmation and clear form.
+    // Demo: build the new RecItem object. In a real app this would be
+    // persisted or pushed into shared state. Example future hooks:
+    //
+    // const item: RecItem = {
+    //   id: String(Date.now()),
+    //   title: title || 'Untitled',
+    //   media: media || 'Unknown',
+    //   platform: platform || 'Unknown',
+    //   friend: friend || 'Unknown',
+    //   createdAt: Date.now(),
+    // };
+    //
+    // // Option A: in-memory singleton (quick demo)
+    // RecsStore.add(item);
+    //
+    // // Option B: React Context provider (recommend for app-wide state)
+    // recsContext.addRec(item);
+    //
+    // // Option C: persistent storage
+    // await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify([...existing, item]));
+    //
+    // The demo currently shows a confirmation and clears the form.
+    
     clearForm();
     setSavedMessage('Saved');
     setTimeout(() => setSavedMessage(''), 1500);
@@ -114,7 +141,7 @@ export default function AddaRecScreen() {
         ) : null}
       </ThemedView>
 
-      {/* persistent saved list removed for demo */}
+      {/* Persistent saved list currently removed for demo */}
 
       <Modal visible={modalVisible} animationType="slide" transparent>
         <View style={[styles.modalContainer, { backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.6)' }] }>

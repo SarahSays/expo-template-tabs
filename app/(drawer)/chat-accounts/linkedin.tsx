@@ -2,6 +2,11 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * LinkedInScreen
+ * @description Placeholder screen prompting the user to connect LinkedIn.
+ * @returns {JSX.Element} A themed screen with explanatory text.
+ */
 export default function LinkedInScreen() {
   return (
     <ThemedView style={styles.container}>

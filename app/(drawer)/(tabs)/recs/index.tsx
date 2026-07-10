@@ -21,6 +21,17 @@ const menuItems = [
   headerShown: false,
 }; 
 
+/**
+ * screenOptions
+ * @description Navigation options for the Recs screen group.
+ */
+
+/**
+ * RecsScreen
+ * @description Shows the recommendations menu and an embedded demo list.
+ * Includes a pull-to-refresh demo handler; data is currently demo-only and transient.
+ * @returns {JSX.Element} The Recs index screen.
+ */
 export default function RecsScreen() {
   const router = useRouter();
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';

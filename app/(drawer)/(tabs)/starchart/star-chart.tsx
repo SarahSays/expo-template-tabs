@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Platform, StyleSheet, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import Animated, {
   interpolate,
   runOnJS,
@@ -8,9 +8,11 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 
+import { getFriend, setCadence } from '@/app/(drawer)/(tabs)/orbits/contacts/friendsStore';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const THUMB_SIZE = 34;
@@ -24,6 +26,10 @@ export default function StarchartScreen() {
   const trackWidth = Math.min(540, Math.max(280, width - 40));
   const sceneSize = Math.min(SCENE_SIZE, width - 40);
   const [timeLabel, setTimeLabel] = useState('1 Day');
+  const params = useLocalSearchParams();
+  const router = useRouter();
+  const friendId = String(params.friendId || '');
+  const friend = friendId ? getFriend(friendId) : undefined;
   const [trackLeft, setTrackLeft] = useState(0);
   const progress = useSharedValue(0);
 
@@ -214,6 +220,23 @@ export default function StarchartScreen() {
           <ThemedText type="subtitle">Time slider</ThemedText>
           <ThemedText>{timeLabel}</ThemedText>
         </View>
+
+        {/* Save cadence for a specific friend when `friendId` param is provided */}
+        {friendId ? (
+          <View style={{ marginTop: 16 }}>
+            <ThemedText>Save cadence for {friend ? friend.name : 'contact'}</ThemedText>
+            <TouchableOpacity
+              onPress={() => {
+                setCadence(friendId, timeLabel);
+                // After saving cadence, go to the Friends homepage
+                router.push('/orbits/friends');
+              }}
+              style={{ marginTop: 8, paddingVertical: 10, backgroundColor: '#0A84FF', borderRadius: 6, alignItems: 'center' }}
+            >
+              <ThemedText style={{ color: '#fff' }}>Save</ThemedText>
+            </TouchableOpacity>
+          </View>
+        ) : null}
 
         <Animated.View
           style={[styles.sliderTrack, { width: trackWidth, backgroundColor: sliderTrackColor }]}

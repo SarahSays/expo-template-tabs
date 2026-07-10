@@ -2,6 +2,12 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * GoogleMessagesScreen
+ * @description Placeholder screen prompting the user to connect Google
+ * Messages. Used for demo navigation and UI consistency.
+ * @returns {JSX.Element} A themed screen with explanatory text.
+ */
 export default function GoogleMessagesScreen() {
   return (
     <ThemedView style={styles.container}>
