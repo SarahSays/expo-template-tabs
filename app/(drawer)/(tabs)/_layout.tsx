@@ -61,7 +61,7 @@ export default function TabLayout() {
           backgroundColor: Colors[colorScheme ?? 'light'].tabBarBackground,
         },
       }}>
-      {/* Home tab - entry point with sign-in/skip options */}
+      {/* Index tab - entry point with sign-in/skip options */}
       <Tabs.Screen
         name="index"
         options={{
@@ -99,6 +99,14 @@ export default function TabLayout() {
         options={{
           title: 'Recs',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="bookmark.fill" color={color} />,
+        }}
+      />
+      {/* Home tab */}
+      <Tabs.Screen
+        name="home"
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="chevron.down" color={color} />,
         }}
       />
     </Tabs>

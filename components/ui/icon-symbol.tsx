@@ -24,16 +24,17 @@ type IconSymbolName = keyof typeof MAPPING;
  * Add new mappings here when using additional icons in the app.
  */
 const MAPPING = {
-  'house.fill': 'home',
+  'house.fill': 'home', // Index
   'sun.max.fill': 'brightness-high',
+  'chevron.down': 'arrow-drop-down', // Home
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.left': 'chevron-left',
   'chevron.right': 'chevron-right',
-  'thermometer.variable': 'thermostat',
-  'sparkle': 'auto-awesome',
-  'bookmark.fill': 'bookmark',
+  'thermometer.variable': 'thermostat', // Feed
+  'sparkle': 'auto-awesome', // Star Chart
+  'bookmark.fill': 'bookmark', // Recs
   'line.3.horizontal': 'menu',
-  'rotate.3d': '360',
+  'rotate.3d': '360', // Orbits
   'atom': 'sunny',
 } as IconMapping;
 
