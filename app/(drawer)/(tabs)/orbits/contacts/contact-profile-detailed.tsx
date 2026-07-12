@@ -1,3 +1,8 @@
+/**
+ * contact-profile-detailed.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Fonts } from '@/constants/theme';
@@ -5,6 +10,11 @@ import { useLocalSearchParams } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { getFriend } from './friendsStore';
 
+/**
+ * ContactProfileDetailed component.
+ *
+ * Renders the UI for the Contactprofile detailed view.
+ */
 export default function ContactProfileDetailed() {
   const params = useLocalSearchParams();
   const id = String(params.id || '1');

@@ -1,3 +1,8 @@
+/**
+ * index.tsx
+ *
+ * File-level documentation comment.
+ */
 import { useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
@@ -5,18 +10,28 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
 const menuItems = [
-  { title: 'Self ☀️', description: 'My Sunny Profile', href: '/orbits/self' },
-  { title: 'Friends 🪐🛰️', description: 'My Planetary Connections', href: '/orbits/friends' },
+  { title: 'Self ☀️', description: 'My Profile', href: '/orbits/self' },
+  { title: 'Friends 🪐🛰️', description: 'My Connections', href: '/orbits/friends' },
   { title: 'Groups 🌕', description: 'My Clusters & Moons', href: '/orbits/groups' },
   { title: 'Cadences 💫', description: 'My Orbital Patterns', href: '/orbits/cadences' },
 
 ] as const;
 
+/**
+ * screenOptions options object.
+ *
+ * Configuration object for screen options.
+ */
  export const screenOptions = {
   title: 'Orbits',
   headerShown: false,
 }; 
 
+/**
+ * OrbitsScreen component.
+ *
+ * Renders the UI for the Orbits screen.
+ */
 export default function OrbitsScreen() {
   const router = useRouter();
 

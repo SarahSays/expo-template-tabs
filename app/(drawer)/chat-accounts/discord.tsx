@@ -1,3 +1,8 @@
+/**
+ * discord.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
@@ -6,6 +11,11 @@ import { StyleSheet } from 'react-native';
  * DiscordScreen
  * @description Placeholder screen prompting the user to connect Discord.
  * @returns {JSX.Element} A themed screen with explanatory text.
+ */
+/**
+ * DiscordScreen component.
+ *
+ * Renders the UI for the Discord screen.
  */
 export default function DiscordScreen() {
   return (

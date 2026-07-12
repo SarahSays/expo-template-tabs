@@ -28,6 +28,11 @@ import { Pressable, StyleSheet } from 'react-native';
  * <HeaderButton onPress={() => showInfo()} />
  * ```
  */
+/**
+ * HeaderButton constant.
+ *
+ * Exported constant for HeaderButton.
+ */
 export const HeaderButton = forwardRef<typeof Pressable, { onPress?: () => void }>(
   ({ onPress }, ref) => {
     return (
@@ -52,6 +57,11 @@ export const HeaderButton = forwardRef<typeof Pressable, { onPress?: () => void 
 
 HeaderButton.displayName = 'HeaderButton';
 
+/**
+ * styles constant.
+ *
+ * Exported constant for styles.
+ */
 export const styles = StyleSheet.create({
   headerRight: {
     marginRight: 15,

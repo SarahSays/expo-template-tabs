@@ -1,7 +1,17 @@
+/**
+ * preferences.tsx
+ *
+ * File-level documentation comment.
+ */
 import { StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
+/**
+ * PreferencesScreen component.
+ *
+ * Renders the UI for the Preferences screen.
+ */
 export default function PreferencesScreen() {
   return (
     <ThemedView style={styles.container}>

@@ -1,7 +1,17 @@
+/**
+ * signal.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * SignalScreen component.
+ *
+ * Renders the UI for the Signal screen.
+ */
 export default function SignalScreen() {
   return (
     <ThemedView style={styles.container}>

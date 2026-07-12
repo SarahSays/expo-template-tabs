@@ -1,7 +1,17 @@
+/**
+ * sms.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * SMSScreen component.
+ *
+ * Renders the UI for the SMS screen.
+ */
 export default function SMSScreen() {
   return (
     <ThemedView style={styles.container}>

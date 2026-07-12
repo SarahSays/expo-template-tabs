@@ -40,6 +40,11 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
  * - Provides drawer access to navigate away from chat accounts
  * - Manages header display for each account setup screen
  */
+/**
+ * ChatAccountsLayout component.
+ *
+ * Renders the UI for the ChatAccounts layout.
+ */
 export default function ChatAccountsLayout() {
   const colorScheme = useColorScheme();
   const navigation = useNavigation<DrawerNavigationProp<any>>();

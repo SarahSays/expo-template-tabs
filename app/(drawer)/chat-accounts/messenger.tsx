@@ -1,7 +1,17 @@
+/**
+ * messenger.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * MessengerScreen component.
+ *
+ * Renders the UI for the Messenger screen.
+ */
 export default function MessengerScreen() {
   return (
     <ThemedView style={styles.container}>

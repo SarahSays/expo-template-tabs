@@ -1,3 +1,8 @@
+/**
+ * contact-profile-page.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors, Fonts } from '@/constants/theme';
@@ -6,6 +11,11 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, useColorScheme, View } from 'react-native';
 import { getFriend } from './friendsStore';
 
+/**
+ * ContactProfilePage component.
+ *
+ * Renders the UI for the Contactprofile page.
+ */
 export default function ContactProfilePage() {
   const params = useLocalSearchParams();
   const id = String(params.id || '1');

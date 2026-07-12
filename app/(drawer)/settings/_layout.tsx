@@ -40,6 +40,11 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
  * - Provides drawer access to navigate away from settings
  * - Manages header display for each settings child screen
  */
+/**
+ * SettingsLayout component.
+ *
+ * Renders the UI for the Settings layout.
+ */
 export default function SettingsLayout() {
   const colorScheme = useColorScheme();
   const navigation = useNavigation<DrawerNavigationProp<any>>();

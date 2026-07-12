@@ -24,6 +24,11 @@ import { useColorScheme as useRNColorScheme } from 'react-native';
  * const bgColor = colorScheme === 'dark' ? '#000' : '#fff';
  * ```
  */
+/**
+ * useColorScheme hook.
+ *
+ * Custom React hook that provides colorscheme support.
+ */
 export function useColorScheme() {
   // Track whether component has hydrated on client
   const [hasHydrated, setHasHydrated] = useState(false);

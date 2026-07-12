@@ -13,27 +13,48 @@ export type Friend = {
   name: string;
   platform: 'Instagram' | 'SMS' | 'Signal' | 'Discord' | string;
   cadence?: string; // e.g. '1 day', '1 week'
+  status?: 'online' | 'offline';
 };
 
 let friends: Friend[] = [
-  { id: '1', name: 'Alice', platform: 'Instagram', cadence: '1 week' },
-  { id: '2', name: 'Bob', platform: 'SMS', cadence: '1 month' },
-  { id: '3', name: 'Charlie', platform: 'Signal', cadence: '1 week' },
-  { id: '4', name: 'Dana', platform: 'Discord', cadence: '1 day' },
+  { id: '1', name: 'Alice', platform: 'Instagram', cadence: '1 week', status: 'online' },
+  { id: '2', name: 'Bob', platform: 'SMS', cadence: '1 month', status: 'offline' },
+  { id: '3', name: 'Charlie', platform: 'Signal', cadence: '1 week', status: 'online' },
+  { id: '4', name: 'Dana', platform: 'Discord', cadence: '1 day', status: 'offline' },
 ];
 
+/**
+ * getFriends function.
+ *
+ * Executes the getFriends behavior.
+ */
 export function getFriends(): Friend[] {
   return friends.slice();
 }
 
+/**
+ * getFriend function.
+ *
+ * Executes the getFriend behavior.
+ */
 export function getFriend(id: string): Friend | undefined {
   return friends.find((f) => f.id === id);
 }
 
+/**
+ * setCadence function.
+ *
+ * Executes the setCadence behavior.
+ */
 export function setCadence(id: string, cadence: string) {
   friends = friends.map((f) => (f.id === id ? { ...f, cadence } : f));
 }
 
+/**
+ * addFriend function.
+ *
+ * Executes the addFriend behavior.
+ */
 export function addFriend(friend: Friend) {
   friends = [...friends, friend];
 }

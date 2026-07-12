@@ -1,7 +1,17 @@
+/**
+ * privacy-security.tsx
+ *
+ * File-level documentation comment.
+ */
 import { StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
+/**
+ * PrivacySecurityScreen component.
+ *
+ * Renders the UI for the PrivacySecurity screen.
+ */
 export default function PrivacySecurityScreen() {
   return (
     <ThemedView style={styles.container}>

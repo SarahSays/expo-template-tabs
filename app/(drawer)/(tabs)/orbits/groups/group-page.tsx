@@ -1,7 +1,17 @@
+/**
+ * group-page.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * FeedScreen component.
+ *
+ * Renders the UI for the Feed screen.
+ */
 export default function FeedScreen() {
   return (
     <ThemedView style={styles.container}>

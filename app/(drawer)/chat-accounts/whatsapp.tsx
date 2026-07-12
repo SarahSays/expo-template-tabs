@@ -1,7 +1,17 @@
+/**
+ * whatsapp.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * WhatsAppScreen component.
+ *
+ * Renders the UI for the WhatsApp screen.
+ */
 export default function WhatsAppScreen() {
   return (
     <ThemedView style={styles.container}>

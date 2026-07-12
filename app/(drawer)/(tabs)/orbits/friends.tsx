@@ -1,3 +1,8 @@
+/**
+ * friends.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors, Fonts } from '@/constants/theme';
@@ -5,6 +10,11 @@ import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, useColorScheme, View } from 'react-native';
 import { getFriends } from './contacts/friendsStore';
 
+/**
+ * screenOptions options object.
+ *
+ * Configuration object for screen options.
+ */
 export const screenOptions = {
   title: 'Friends',
   headerBackTitle: '',
@@ -14,6 +24,11 @@ export const screenOptions = {
 /**
  * FriendsScreen
  * @description Shows the user's friends and their connected platform.
+ */
+/**
+ * FriendsScreen component.
+ *
+ * Renders the UI for the Friends screen.
  */
 export default function FriendsScreen() {
   const router = useRouter();
@@ -34,7 +49,15 @@ export default function FriendsScreen() {
             onPress={() => router.push(`/orbits/contacts/${f.id}`)}
           >
             <View style={styles.rowText}>
-              <ThemedText type="subtitle" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>{f.name}</ThemedText>
+              <View style={styles.statusRow}>
+                <View
+                  style={[
+                    styles.statusDot,
+                    f.status === 'online' ? styles.onlineDot : styles.offlineDot,
+                  ]}
+                />
+                <ThemedText type="subtitle" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>{f.name}</ThemedText>
+              </View>
               <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{f.platform} · {f.cadence}</ThemedText>
             </View>
             <ThemedText type="link">›</ThemedText>
@@ -66,4 +89,8 @@ const styles = StyleSheet.create({
   },
   rowPressed: { backgroundColor: 'rgba(0,0,0,0.08)' },
   rowText: { flex: 1, marginRight: 12 },
+  statusRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 4 },
+  statusDot: { width: 10, height: 10, borderRadius: 5, marginRight: 8 },
+  onlineDot: { backgroundColor: '#34D399' },
+  offlineDot: { backgroundColor: '#9CA3AF' },
 });

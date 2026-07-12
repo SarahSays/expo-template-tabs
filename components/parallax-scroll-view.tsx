@@ -46,6 +46,11 @@ type Props = PropsWithChildren<{
  *   headerImage={<Image source={require('./hero.png')} />}
  *   headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}\n *>\n *   <ThemedText>Screen content</ThemedText>\n * </ParallaxScrollView>\n * ```
  */
+/**
+ * ParallaxScrollView component.
+ *
+ * Renders the UI for the ParallaxScrollView.
+ */
 export default function ParallaxScrollView({
   children,
   headerImage,

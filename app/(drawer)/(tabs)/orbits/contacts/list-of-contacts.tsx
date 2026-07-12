@@ -1,3 +1,8 @@
+/**
+ * list-of-contacts.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors, Fonts } from '@/constants/theme';
@@ -5,6 +10,11 @@ import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, useColorScheme, View } from 'react-native';
 import { getFriends } from './friendsStore';
 
+/**
+ * ListOfContacts component.
+ *
+ * Renders the UI for the ListOfContacts.
+ */
 export default function ListOfContacts() {
   const router = useRouter();
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';

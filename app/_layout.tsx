@@ -23,6 +23,11 @@ import { Fonts } from '@/constants/theme';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
+/**
+ * unstable_settings constant.
+ *
+ * Exported constant for unstable_settings.
+ */
 export const unstable_settings = {
   anchor: '(tabs)',
 };
@@ -36,6 +41,11 @@ export const unstable_settings = {
  * - Manages font loading for entire application
  * - Provides global navigation context
  * - Hides headers at root to allow child navigators full control
+ */
+/**
+ * RootLayout component.
+ *
+ * Renders the UI for the Root layout.
  */
 export default function RootLayout() {
   // Load custom dyslexia-friendly fonts from assets

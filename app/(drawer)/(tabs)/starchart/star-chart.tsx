@@ -1,3 +1,8 @@
+/**
+ * star-chart.tsx
+ *
+ * File-level documentation comment.
+ */
 import { useState } from 'react';
 import { Platform, StyleSheet, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import Animated, {
@@ -19,6 +24,11 @@ const THUMB_SIZE = 34;
 const TRACK_HEIGHT = 18;
 const SCENE_SIZE = 320;
 
+/**
+ * StarchartScreen component.
+ *
+ * Renders the UI for the Starchart screen.
+ */
 export default function StarchartScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const isDark = colorScheme === 'dark';

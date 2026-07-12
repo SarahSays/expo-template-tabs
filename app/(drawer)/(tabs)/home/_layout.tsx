@@ -39,6 +39,11 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
  * - Provides drawer access (hamburger menu) from home screens
  * - Each child screen can display in the top header
  */
+/**
+ * HomeLayout component.
+ *
+ * Renders the UI for the Home layout.
+ */
 export default function HomeLayout() {
   const colorScheme = useColorScheme();
   const navigation = useNavigation<DrawerNavigationProp<any>>();

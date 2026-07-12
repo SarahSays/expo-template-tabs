@@ -23,6 +23,11 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
  * const customColor = useThemeColor({ light: '#fff', dark: '#000' }, 'text');
  * ```
  */
+/**
+ * useThemeColor hook.
+ *
+ * Custom React hook that provides themecolor support.
+ */
 export function useThemeColor(
   props: { light?: string; dark?: string },
   colorName: keyof typeof Colors.light & keyof typeof Colors.dark

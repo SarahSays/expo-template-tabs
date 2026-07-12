@@ -1,3 +1,8 @@
+/**
+ * connect-chats.tsx
+ *
+ * File-level documentation comment.
+ */
 import { Image } from 'expo-image';
 import { Platform, Pressable, StyleSheet, View } from 'react-native';
 
@@ -17,6 +22,11 @@ const menuItems = [
   },
 ] as const;
 
+/**
+ * HomeScreen component.
+ *
+ * Renders the UI for the Home screen.
+ */
 export default function HomeScreen() {
   const router = useRouter();
 

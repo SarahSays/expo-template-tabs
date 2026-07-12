@@ -38,6 +38,11 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
  * - Each tab is independent with its own navigation stack
  * - Individual tab stacks handle screen headers and back navigation
  */
+/**
+ * TabLayout component.
+ *
+ * Renders the UI for the Tab layout.
+ */
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 

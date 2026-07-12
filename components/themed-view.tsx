@@ -33,6 +33,11 @@ export type ThemedViewProps = ViewProps & {
  * </ThemedView>
  * ```
  */
+/**
+ * ThemedView function.
+ *
+ * Executes the ThemedView behavior.
+ */
 export function ThemedView({ style, lightColor, darkColor, ...otherProps }: ThemedViewProps) {
   // Get background color based on theme and custom overrides
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');

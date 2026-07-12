@@ -1,7 +1,17 @@
+/**
+ * pinch-zoom.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * PinchZoomScreen component.
+ *
+ * Renders the UI for the PinchZoom screen.
+ */
 export default function PinchZoomScreen() {
   return (
     <ThemedView style={styles.container}>

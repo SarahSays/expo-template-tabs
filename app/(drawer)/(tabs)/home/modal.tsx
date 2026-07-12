@@ -1,9 +1,19 @@
+/**
+ * modal.tsx
+ *
+ * File-level documentation comment.
+ */
 import { Link } from 'expo-router';
 import { StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
+/**
+ * ModalScreen component.
+ *
+ * Renders the UI for the modal screen.
+ */
 export default function ModalScreen() {
   return (
     <ThemedView style={styles.container}>

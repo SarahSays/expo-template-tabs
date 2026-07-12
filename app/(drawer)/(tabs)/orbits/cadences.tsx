@@ -1,3 +1,8 @@
+/**
+ * cadences.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
@@ -8,6 +13,11 @@ import { StyleSheet } from 'react-native';
   headerRight: undefined,
 }; */
 
+/**
+ * CadencesScreen component.
+ *
+ * Renders the UI for the Cadences screen.
+ */
 export default function CadencesScreen() {
   return (
     <ThemedView style={styles.container}>

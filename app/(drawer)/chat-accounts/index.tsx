@@ -1,3 +1,8 @@
+/**
+ * index.tsx
+ *
+ * File-level documentation comment.
+ */
 import { useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
@@ -28,6 +33,11 @@ const menuItems = [
  * to the respective account connection screens. Entries are alphabetized
  * for discoverability.
  * @returns {JSX.Element} The Chat Accounts menu screen.
+ */
+/**
+ * ChatAccountsScreen component.
+ *
+ * Renders the UI for the ChatAccounts screen.
  */
 export default function ChatAccountsScreen() {
   const router = useRouter();

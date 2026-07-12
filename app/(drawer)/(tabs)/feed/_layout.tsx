@@ -38,6 +38,11 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
  * - Provides drawer access from feed screens
  * - Manages header display for each feed child screen
  */
+/**
+ * FeedLayout component.
+ *
+ * Renders the UI for the Feed layout.
+ */
 export default function FeedLayout() {
   const colorScheme = useColorScheme();
   const navigation = useNavigation<DrawerNavigationProp<any>>();

@@ -1,3 +1,8 @@
+/**
+ * addarec.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import React, { useState } from 'react';
@@ -32,6 +37,11 @@ type RecItem = {
  * This screen intentionally uses transient in-memory saves for the demo
  * to avoid requiring native AsyncStorage at runtime (works in Expo Go).
  * @returns {JSX.Element} The Add Recommendation screen.
+ */
+/**
+ * AddaRecScreen component.
+ *
+ * Renders the UI for the AddaRec screen.
  */
 export default function AddaRecScreen() {
   const [title, setTitle] = useState('');

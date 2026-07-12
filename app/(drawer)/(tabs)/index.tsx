@@ -46,6 +46,11 @@ const menuItems = [
  * - Menu items for authentication or app exploration
  * - Press feedback with visual state changes
  */
+/**
+ * HomeScreen component.
+ *
+ * Renders the UI for the Home screen.
+ */
 export default function HomeScreen() {
   const router = useRouter();
 

@@ -1,3 +1,8 @@
+/**
+ * slack.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
@@ -6,6 +11,11 @@ import { StyleSheet } from 'react-native';
  * SlackScreen
  * @description Placeholder screen prompting the user to connect Slack.
  * @returns {JSX.Element} A themed screen with explanatory text.
+ */
+/**
+ * SlackScreen component.
+ *
+ * Renders the UI for the Slack screen.
  */
 export default function SlackScreen() {
   return (

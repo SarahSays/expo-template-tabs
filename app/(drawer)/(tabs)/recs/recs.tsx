@@ -1,7 +1,17 @@
+/**
+ * recs.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * RecsScreen component.
+ *
+ * Renders the UI for the Recs screen.
+ */
 export default function RecsScreen() {
   return (
     <ThemedView style={styles.container}>

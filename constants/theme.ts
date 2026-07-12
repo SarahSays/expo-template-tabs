@@ -26,6 +26,11 @@ const tintColorDark = '#f9d84a';
  * - tabIconDefault: Inactive tab icon color
  * - tabIconSelected: Active tab icon color
  */
+/**
+ * Colors constant.
+ *
+ * Exported constant for Colors.
+ */
 export const Colors = {
   light: {
     text: '#2B0F55',
@@ -69,6 +74,11 @@ export const Colors = {
  * - rounded: Rounded font variant
  * - mono: Monospace font for code
  * - sansBold: Bold sans-serif font
+ */
+/**
+ * Fonts constant.
+ *
+ * Exported constant for Fonts.
  */
 export const Fonts = Platform.select({
   default: {

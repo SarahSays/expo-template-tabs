@@ -1,7 +1,17 @@
+/**
+ * appearance.tsx
+ *
+ * File-level documentation comment.
+ */
 import { StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
+/**
+ * AppearanceScreen component.
+ *
+ * Renders the UI for the Appearance screen.
+ */
 export default function AppearanceScreen() {
   return (
     <ThemedView style={styles.container}>

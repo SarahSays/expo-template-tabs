@@ -8,6 +8,11 @@
 
 import ContactProfilePage from './contact-profile-page';
 
+/**
+ * ContactProfileRoute component.
+ *
+ * Renders the UI for the ContactprofileRoute.
+ */
 export default function ContactProfileRoute() {
   return <ContactProfilePage />;
 }

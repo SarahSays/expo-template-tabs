@@ -22,6 +22,11 @@ import { SafeAreaView, StyleSheet } from 'react-native';
  * </Container>
  * ```
  */
+/**
+ * Container constant.
+ *
+ * Exported constant for Container.
+ */
 export const Container = ({ children }: { children: React.ReactNode }) => {
   // Get background color based on current theme
   const backgroundColor = useThemeColor({}, 'background');

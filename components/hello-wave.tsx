@@ -22,6 +22,11 @@ import Animated from 'react-native-reanimated';
  * <HelloWave />
  * ```
  */
+/**
+ * HelloWave function.
+ *
+ * Executes the HelloWave behavior.
+ */
 export function HelloWave() {
   return (
     <Animated.Text

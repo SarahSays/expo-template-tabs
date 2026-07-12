@@ -1,3 +1,8 @@
+/**
+ * telegram.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
@@ -6,6 +11,11 @@ import { StyleSheet } from 'react-native';
  * TelegramScreen
  * @description Placeholder screen prompting the user to connect Telegram.
  * @returns {JSX.Element} A themed screen with explanatory text.
+ */
+/**
+ * TelegramScreen component.
+ *
+ * Renders the UI for the Telegram screen.
  */
 export default function TelegramScreen() {
   return (

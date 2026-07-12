@@ -37,6 +37,11 @@ type ScreenContentProps = {
  * ```tsx
  * <ScreenContent title="My Screen" path="/my-screen">\n *   <ThemedText>Screen content here</ThemedText>\n * </ScreenContent>\n * ```
  */
+/**
+ * ScreenContent constant.
+ *
+ * Exported constant for ScreenContent.
+ */
 export const ScreenContent = ({ title, path, children }: ScreenContentProps) => {
   // Get separator color based on theme
   const separatorColor = useThemeColor({ light: '#d1d5db', dark: '#424245' }, 'icon');

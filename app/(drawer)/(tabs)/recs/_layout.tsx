@@ -38,6 +38,11 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
  * - Provides drawer access from all recs screens
  * - Manages header display for each recs child screen
  */
+/**
+ * RecsLayout component.
+ *
+ * Renders the UI for the Recs layout.
+ */
 export default function RecsLayout() {
   const colorScheme = useColorScheme();
   const navigation = useNavigation<DrawerNavigationProp<any>>();

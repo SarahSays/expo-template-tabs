@@ -1,7 +1,17 @@
+/**
+ * help.tsx
+ *
+ * File-level documentation comment.
+ */
 import { StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
+/**
+ * HelpScreen component.
+ *
+ * Renders the UI for the Help screen.
+ */
 export default function HelpScreen() {
   return (
     <ThemedView style={styles.container}>

@@ -59,6 +59,11 @@ const MAPPING = {
  * <IconSymbol name="menu" size={24} color={Colors.text} />
  * ```
  */
+/**
+ * IconSymbol function.
+ *
+ * Executes the IconSymbol behavior.
+ */
 export function IconSymbol({
   name,
   size = 24,

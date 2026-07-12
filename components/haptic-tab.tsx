@@ -27,6 +27,11 @@ import * as Haptics from 'expo-haptics';
  * ```tsx
  * <Tabs screenOptions={{ tabBarButton: HapticTab }} />\n * ```
  */
+/**
+ * HapticTab function.
+ *
+ * Executes the HapticTab behavior.
+ */
 export function HapticTab(props: BottomTabBarButtonProps) {
   return (
     <PlatformPressable

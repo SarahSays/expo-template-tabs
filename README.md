@@ -1,23 +1,41 @@
-# "Orbits"
+# Orbits
 
-A comprehensive Expo Router template demonstrating best practices for complex navigation hierarchies with multiple navigator types. This app showcases proper header scoping and control in a 4-level deep navigation structure using Drawer, Tabs, and Stack navigators.
+A sample Expo Router app demonstrating nested Drawer, Tabs, and Stack navigation with theme-aware UI and reusable TypeScript components.
 
 ## Project Overview
 
-This is an [Expo](https://expo.dev) project using [Expo Router](https://docs.expo.dev/router/introduction/) with React Navigation for managing complex multi-level navigation patterns.
+This repository is an [Expo](https://expo.dev) project built with [Expo Router](https://docs.expo.dev/router/introduction/) and React Native.
 
-### Key Features
+The app uses a file-based navigation structure to illustrate a multi-level layout:
+- Root stack
+- Drawer navigator
+- Bottom tabs
+- Individual tab stacks
 
-- **Dyslexia-Friendly Typography**: Uses OpenDyslexic fonts across all platforms
-- **Theme Support**: Light and dark mode with automatic detection
-- **Demo-friendly Storage**: The Add-a-Rec demo uses transient in-memory
-   storage by default so it runs in Expo Go without a custom dev client.
-   Persistent storage using `@react-native-async-storage/async-storage` is
-   available but requires a dev client or native build to use in production.
-- **Multi-Navigator Architecture**: Demonstrates proper scoping of Drawer, Tabs, and Stack navigators
-- **Header Management**: Critical annotations showing where headers must/must not be hidden
-- **Cross-Platform**: Works on iOS, Android, and Web
-- **Type-Safe**: Full TypeScript support
+The current project includes:
+- A themed `Orbits` section with user status, profile editing, and sample in-memory state
+- A modern `Home` flow with modal and verification screens
+- Demo chat account pages under `Chat Accounts`
+- Settings screens for appearance, privacy/security, and preferences
+- A `Star Chart` stack with pinch-to-zoom and sharing screens
+- A `Recs` stack for recommendations and awards
+- A `Feed` stack with placeholder feed screens
+
+## What Changed
+
+This version of the project includes:
+- Method-level JSDoc comments for exported components, hooks, and constants across the codebase
+- Updated content for the `Orbits` self profile flow and sample friend list
+
+## Key Features
+
+- **Expo Router navigation**: Drawer + Tabs + nested Stack layouts
+- **Theme support**: Light and dark mode using app-wide theme values
+- **Custom typography**: OpenDyslexic fonts are loaded at the app root
+- **Cross-platform UI**: Works on iOS, Android, and Web
+- **In-memory demo data**: Sample screens use transient storage to stay Expo Go compatible
+- **Reusable components**: Theme-aware wrappers, icon helpers, and layout utilities
+- **TypeScript**: Full TS support across the project
 
 ## Navigation Architecture
 
@@ -35,202 +53,164 @@ Root Stack (app/_layout.tsx)
        └── Logout Screen (app/(drawer)/logout.tsx)
 ```
 
-### Navigation Level Responsibilities
+### Navigation Responsibilities
 
 1. **Root Stack** (`app/_layout.tsx`)
-   - Loads application fonts
-   - Entry point for entire app
-   - **CRITICAL**: `headerShown: false` - prevents header duplication
+   - Loads custom fonts and global app context
+   - Hides the root header so child navigators manage screen headers
 
 2. **Drawer Navigator** (`app/(drawer)/_layout.tsx`)
-   - Right-side hamburger menu
-   - Controls navigation between major app sections
-   - **CRITICAL**: `headerShown: false` - child navigators control headers
-   - Sections: Tabs (main), Settings, Chat Accounts, Logout
+   - Contains the main app sections and the right-side drawer menu
+   - Hides its own header so content navigators display their own headers
 
 3. **Tabs Navigator** (`app/(drawer)/(tabs)/_layout.tsx`)
-   - Bottom tab bar with 5 main sections
-   - **CRITICAL**: `headerShown: false` - each tab stack manages its own headers
-   - Tabs: Home, Orbits, Feed, Star Chart, Recs
+   - Hosts the bottom tab bar for the main app sections
+   - Hides the tab navigator header to avoid duplicate headers
 
 4. **Tab Stacks** (`app/(drawer)/(tabs)/<tab>/_layout.tsx`)
-   - Individual stack navigators for each tab
-   - **CRITICAL**: `headerShown: true` - REQUIRED for back button functionality
-   - Each stack can have its own sub-screens
-
-### Header Control Strategy
-
-**Key Principle**: No navigator fights another for header control
-
-- **Root → Drawer → Tabs**: Hide headers at each level
-- **Tab Stacks**: Show headers for back navigation within tab sections
-- **Drawer-Level Stacks** (Settings, Chat Accounts): Show headers with drawer toggle
-- **Header Button**: Right-side hamburger icon to toggle drawer from any screen
-
-See comments marked with `// CRITICAL:` in layout files for implementation details.
-
-## Expo Router Scoping
-
-Expo Router uses file-based routing with folder conventions:
-
-- `(drawer)` - Group folder: Routes inside managed by DrawerNavigator
-- `(tabs)` - Group folder: Routes inside managed by TabsNavigator
-- `<tab>` - Name folders: Create separate stacks within tabs
-
-Each `_layout.tsx` file scopes its navigator to its folder and all sub-routes.
+   - Each tab has its own stack layout
+   - Stack layouts show headers for internal navigation and back buttons
 
 ## Directory Structure
 
 ```
-app/                          # Main app folder (Expo Router entry)
-├── _layout.tsx               # Root Stack - loads fonts, hides header
+app/
+├── _layout.tsx
 ├── (drawer)/
-│   ├── _layout.tsx           # Drawer Navigator - right side menu
-│   ├── logout.tsx            # Logout screen
+│   ├── _layout.tsx
+│   ├── logout.tsx
 │   ├── (tabs)/
-│   │   ├── _layout.tsx       # Tabs Navigator - bottom bar
-│   │   ├── index.tsx         # Home tab initial screen
+│   │   ├── _layout.tsx
+│   │   ├── index.tsx
 │   │   ├── home/
-│   │   │   ├── _layout.tsx   # Home Stack - shows header with back button
+│   │   │   ├── _layout.tsx
 │   │   │   ├── index.tsx
 │   │   │   ├── modal.tsx
-│   │   │   └── ...
+│   │   │   ├── verification-code.tsx
+│   │   │   ├── username.tsx
+│   │   │   ├── notifications.tsx
+│   │   │   └── connect-chats.tsx
 │   │   ├── orbits/
-│   │   │   ├── _layout.tsx   # Orbits Stack
-│   │   │   └── ...
-│   │   ├── feed/             # Feed Stack
-│   │   ├── starchart/        # Star Chart Stack
-│   │   └── recs/             # Recs Stack
+│   │   │   ├── _layout.tsx
+│   │   │   ├── index.tsx
+│   │   │   ├── friends.tsx
+│   │   │   ├── self.tsx
+│   │   │   ├── self/self-profile-detailed.tsx
+│   │   │   ├── cadences.tsx
+│   │   │   ├── groups.tsx
+│   │   │   └── orbits.tsx
+│   │   ├── feed/
+│   │   │   ├── _layout.tsx
+│   │   │   ├── index.tsx
+│   │   │   ├── feed.tsx
+│   │   │   └── placeholder.tsx
+│   │   ├── starchart/
+│   │   │   ├── _layout.tsx
+│   │   │   ├── index.tsx
+│   │   │   ├── star-chart.tsx
+│   │   │   ├── pinch-zoom.tsx
+│   │   │   └── share.tsx
+│   │   └── recs/
+│   │       ├── _layout.tsx
+│   │       ├── index.tsx
+│   │       ├── recs.tsx
+│   │       ├── awards.tsx
+│   │       └── addarec.tsx
 │   ├── settings/
-│   │   ├── _layout.tsx       # Settings Stack
-│   │   └── ...
+│   │   ├── _layout.tsx
+│   │   ├── index.tsx
+│   │   ├── appearance.tsx
+│   │   ├── privacy-security.tsx
+│   │   ├── preferences.tsx
+│   │   └── help.tsx
 │   └── chat-accounts/
-│       ├── _layout.tsx       # Chat Accounts Stack
-│       └── ...
-components/                   # Reusable React components
-├── ui/                        # Platform-specific UI components
-│   ├── icon-symbol.tsx        # Cross-platform icons (Material/SF Symbols)
-│   ├── icon-symbol.ios.tsx    # iOS-specific SF Symbols
-│   └── collapsible.tsx        # Expandable sections
-├── Container.tsx              # Safe area wrapper with theme background
-├── ThemedText.tsx             # Text with theme colors and typography
-├── ThemedView.tsx             # View with theme background color
-├── ParallaxScrollView.tsx      # Scroll view with parallax header animation
-├── HapticTab.tsx              # Tab button with haptic feedback (iOS)
-├── HeaderButton.tsx           # Info icon for headers
-├── HelloWave.tsx              # Animated waving hand emoji
-├── ExternalLink.tsx           # External link handler
-└── ScreenContent.tsx          # Standard screen layout component
+│       ├── _layout.tsx
+│       ├── discord.tsx
+│       ├── google-messages.tsx
+│       ├── instagram.tsx
+│       ├── linkedin.tsx
+│       ├── messenger.tsx
+│       ├── rcs.tsx
+│       ├── signal.tsx
+│       ├── slack.tsx
+│       ├── sms.tsx
+│       ├── telegram.tsx
+│       └── whatsapp.tsx
+components/
+├── Container.tsx
+├── ExternalLink.tsx
+├── HeaderButton.tsx
+├── HelloWave.tsx
+├── HapticTab.tsx
+├── ParallaxScrollView.tsx
+├── ScreenContent.tsx
+├── themed-text.tsx
+├── themed-view.tsx
+└── ui/
+    ├── collapsible.tsx
+    ├── icon-symbol.ios.tsx
+    └── icon-symbol.tsx
 constants/
-├── theme.ts                   # Color definitions and font families
+└── theme.ts
 hooks/
-├── use-color-scheme.ts        # Color scheme detection
-├── use-color-scheme.web.ts    # Web-specific color scheme (with hydration)
-└── use-theme-color.ts         # Theme-aware color hook
+├── use-color-scheme.ts
+├── use-color-scheme.web.ts
+└── use-theme-color.ts
 assets/
-├── fonts/                     # OpenDyslexic fonts for accessibility
-└── images/                    # App images
+├── fonts/
+└── images/
 ```
 
-## Component Comments
+## Storage and Demo Data
 
-All components include JSDoc-style method-level comments explaining:
-- Purpose and usage
-- Parameters with types
-- Return values
-- Code examples
-- Platform-specific behavior
+- Most screens use transient in-memory demo data for Expo Go compatibility
+- `@react-native-async-storage/async-storage` is installed, but production persistence is not required by default
+- Example screens such as `addarec.tsx` and `friendsStore.ts` contain commented guidance for upgrading to persistent storage
+
+## Documentation Comments
+
+The codebase now includes method-level JSDoc-style comments for exported items:
+- Exported React components
+- Custom hooks
+- Shared constants
+
+These comments are intended to make the app easier to understand and extend.
 
 ## Getting Started
-
-### Install Dependencies
 
 ```bash
 npm install
 ```
 
-### Start the App
-
 ```bash
 npx expo start
 ```
 
-In the output, you'll find options to open the app in:
+Then choose one of the available runtimes:
+- Android device/emulator
+- iOS simulator
+- Web browser
+- Expo Go
 
-- [Development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go)
-
-### Run on Specific Platform
+## Useful Scripts
 
 ```bash
-# Android
 npm run android
-
-# iOS
 npm run ios
-
-# Web
 npm run web
-```
-
-## Linting
-
-```bash
 npm run lint
-```
-
-## Reset to Clean Project
-
-To start with a blank app structure:
-
-```bash
 npm run reset-project
 ```
 
-This moves starter code to `app-example/` and creates a blank `app/` directory.
+## Notes
 
-## Key Implementation Notes
+- Root-level headers are hidden so child navigators can control header presentation
+- Custom fonts are loaded at the root layout (`app/_layout.tsx`)
+- Platform-specific icons are handled with `icon-symbol.tsx` and `icon-symbol.ios.tsx`
 
-### Header Visibility (CRITICAL)
+## References
 
-- **Root Layout**: Header MUST be hidden to prevent duplication
-- **Drawer Layout**: Header MUST be hidden (tabs/stacks control headers)
-- **Tabs Layout**: Header MUST be hidden (each stack controls its header)
-- **Tab Stacks**: Header MUST be shown for back button functionality
-- **Drawer Stacks** (Settings, Chat): Header should be shown with drawer toggle
-
-### Font Loading
-
-Custom dyslexia-friendly fonts are loaded at the root level in `app/_layout.tsx`. The component returns `null` while fonts load to prevent rendering issues.
-
-### Color Scheme
-
-- **Light Mode**: Azure background, Indigo accent
-- **Dark Mode**: Midnight blue background, Gold accent
-- Automatic detection with manual override capability
-- Web hydration handled in `use-color-scheme.web.ts`
-
-### Icon Handling
-
-- **iOS**: Native SF Symbols via `icon-symbol.ios.tsx`
-- **Android/Web**: Material Icons via `icon-symbol.tsx`
-- Manual symbol-to-icon mapping prevents mismatches
-
-## Resources
-
-- [Expo Documentation](https://docs.expo.dev/)
-- [Expo Router Documentation](https://docs.expo.dev/router/introduction/)
-- [React Navigation Documentation](https://reactnavigation.org/)
-- [React Navigation Drawer](https://reactnavigation.org/docs/drawer-navigator/)
-- [React Navigation Bottom Tabs](https://reactnavigation.org/docs/bottom-tab-navigator/)
-- [OpenDyslexic Font Project](https://opendyslexic.org/)
-- [SF Symbols](https://developer.apple.com/sf-symbols/)
-- [Material Icons](https://icons.expo.fyi)
-
-## Community
-
-- [Expo Discord](https://chat.expo.dev)
-- [Expo GitHub](https://github.com/expo/expo)
-- [React Native Community](https://reactnative.dev/community/overview)
+- [Expo](https://expo.dev)
+- [Expo Router](https://docs.expo.dev/router/introduction/)
+- [React Navigation](https://reactnavigation.org/)
+- [OpenDyslexic](https://opendyslexic.org/)

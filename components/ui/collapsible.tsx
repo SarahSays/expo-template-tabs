@@ -34,6 +34,11 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
  * ```tsx
  * <Collapsible title="More Options">\n *   <ThemedText>Hidden content</ThemedText>\n * </Collapsible>\n * ```
  */
+/**
+ * Collapsible function.
+ *
+ * Executes the Collapsible behavior.
+ */
 export function Collapsible({ children, title }: PropsWithChildren & { title: string }) {
   // Track open/closed state
   const [isOpen, setIsOpen] = useState(false);

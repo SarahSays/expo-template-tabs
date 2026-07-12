@@ -24,6 +24,11 @@ import { StyleSheet } from 'react-native';
  * - Accessed from drawer menu
  * - Theme-aware styling
  */
+/**
+ * LogOutScreen component.
+ *
+ * Renders the UI for the LogOut screen.
+ */
 export default function LogOutScreen() {
   return (
     <ThemedView style={styles.container}>

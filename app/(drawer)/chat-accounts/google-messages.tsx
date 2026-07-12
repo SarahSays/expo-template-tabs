@@ -1,3 +1,8 @@
+/**
+ * google-messages.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
@@ -7,6 +12,11 @@ import { StyleSheet } from 'react-native';
  * @description Placeholder screen prompting the user to connect Google
  * Messages. Used for demo navigation and UI consistency.
  * @returns {JSX.Element} A themed screen with explanatory text.
+ */
+/**
+ * GoogleMessagesScreen component.
+ *
+ * Renders the UI for the GoogleMessages screen.
  */
 export default function GoogleMessagesScreen() {
   return (

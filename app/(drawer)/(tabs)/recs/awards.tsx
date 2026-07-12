@@ -1,7 +1,17 @@
+/**
+ * awards.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * AwardsScreen component.
+ *
+ * Renders the UI for the Awards screen.
+ */
 export default function AwardsScreen() {
   return (
     <ThemedView style={styles.container}>

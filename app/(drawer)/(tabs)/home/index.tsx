@@ -30,6 +30,11 @@ const menuItems = [
  * Configures screen options (can override from stack layout)
  * @const {Object} screenOptions
  */
+/**
+ * screenOptions options object.
+ *
+ * Configuration object for screen options.
+ */
  export const screenOptions = {
   title: '',
   headerShown: false,
@@ -45,6 +50,11 @@ const menuItems = [
  * - Back navigation via header (managed by home/_layout.tsx)
  * - Pressable menu items with visual feedback
  * - Theme-aware styling
+ */
+/**
+ * FeedScreen component.
+ *
+ * Renders the UI for the Feed screen.
  */
 export default function FeedScreen() {
   const router = useRouter();

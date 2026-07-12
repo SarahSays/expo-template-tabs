@@ -1,3 +1,8 @@
+/**
+ * username.tsx
+ *
+ * File-level documentation comment.
+ */
 import { useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
@@ -9,11 +14,21 @@ const menuItems = [
 
 ] as const;
 
+/**
+ * screenOptions options object.
+ *
+ * Configuration object for screen options.
+ */
  export const screenOptions = {
   title: 'Pick a Username',
   headerShown: false,
 }; 
 
+/**
+ * FeedScreen component.
+ *
+ * Renders the UI for the Feed screen.
+ */
 export default function FeedScreen() {
   const router = useRouter();
 

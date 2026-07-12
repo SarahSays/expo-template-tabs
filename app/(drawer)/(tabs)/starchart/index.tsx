@@ -1,3 +1,8 @@
+/**
+ * index.tsx
+ *
+ * File-level documentation comment.
+ */
 import { useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
@@ -11,11 +16,21 @@ const menuItems = [
 
 ] as const;
 
+/**
+ * screenOptions options object.
+ *
+ * Configuration object for screen options.
+ */
  export const screenOptions = {
   title: 'Recs',
   headerShown: false,
 }; 
 
+/**
+ * StarChartScreen component.
+ *
+ * Renders the UI for the StarChart screen.
+ */
 export default function StarChartScreen() {
   const router = useRouter();
 

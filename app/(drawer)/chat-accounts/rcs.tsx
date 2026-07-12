@@ -1,3 +1,8 @@
+/**
+ * rcs.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
@@ -6,6 +11,11 @@ import { StyleSheet } from 'react-native';
  * RcsScreen
  * @description Placeholder screen prompting the user to connect RCS.
  * @returns {JSX.Element} A themed screen with explanatory text.
+ */
+/**
+ * RcsScreen component.
+ *
+ * Renders the UI for the Rcs screen.
  */
 export default function RcsScreen() {
   return (

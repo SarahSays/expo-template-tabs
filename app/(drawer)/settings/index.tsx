@@ -1,3 +1,8 @@
+/**
+ * index.tsx
+ *
+ * File-level documentation comment.
+ */
 import { useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
@@ -15,6 +20,11 @@ const menuItems = [
   title: 'Settings',
 }; */
 
+/**
+ * SettingsScreen component.
+ *
+ * Renders the UI for the Settings screen.
+ */
 export default function SettingsScreen() {
   const router = useRouter();
 

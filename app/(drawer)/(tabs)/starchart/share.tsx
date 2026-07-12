@@ -1,7 +1,17 @@
+/**
+ * share.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * ShareScreen component.
+ *
+ * Renders the UI for the Share screen.
+ */
 export default function ShareScreen() {
   return (
     <ThemedView style={styles.container}>

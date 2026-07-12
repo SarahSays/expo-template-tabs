@@ -38,6 +38,11 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
  * - Provides drawer access from all star chart views
  * - Manages header display for each star chart child screen
  */
+/**
+ * StarChartLayout component.
+ *
+ * Renders the UI for the StarChart layout.
+ */
 export default function StarChartLayout() {
   const colorScheme = useColorScheme();
   const navigation = useNavigation<DrawerNavigationProp<any>>();

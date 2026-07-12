@@ -34,6 +34,11 @@ export type ThemedTextProps = TextProps & {
  * <ThemedText type="link">Clickable link</ThemedText>
  * ```
  */
+/**
+ * ThemedText function.
+ *
+ * Executes the ThemedText behavior.
+ */
 export function ThemedText({
   style,
   lightColor,

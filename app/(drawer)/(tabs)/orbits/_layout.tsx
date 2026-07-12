@@ -38,6 +38,11 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
  * - Provides drawer access from orbits screens
  * - Manages header display for each orbits child screen
  */
+/**
+ * OrbitsLayout component.
+ *
+ * Renders the UI for the Orbits layout.
+ */
 export default function OrbitsLayout() {
   const colorScheme = useColorScheme();
   const navigation = useNavigation<DrawerNavigationProp<any>>();

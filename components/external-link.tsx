@@ -28,6 +28,11 @@ type Props = Omit<ComponentProps<typeof Link>, 'href'> & { href: Href & string }
  * <ExternalLink href="https://example.com">Visit Example</ExternalLink>
  * ```
  */
+/**
+ * ExternalLink function.
+ *
+ * Executes the ExternalLink behavior.
+ */
 export function ExternalLink({ href, ...rest }: Props) {
   return (
     <Link

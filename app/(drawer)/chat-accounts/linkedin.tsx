@@ -1,3 +1,8 @@
+/**
+ * linkedin.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
@@ -6,6 +11,11 @@ import { StyleSheet } from 'react-native';
  * LinkedInScreen
  * @description Placeholder screen prompting the user to connect LinkedIn.
  * @returns {JSX.Element} A themed screen with explanatory text.
+ */
+/**
+ * LinkedInScreen component.
+ *
+ * Renders the UI for the LinkedIn screen.
  */
 export default function LinkedInScreen() {
   return (

@@ -1,7 +1,17 @@
+/**
+ * orbits.tsx
+ *
+ * File-level documentation comment.
+ */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { StyleSheet } from 'react-native';
 
+/**
+ * OrbitsScreen component.
+ *
+ * Renders the UI for the Orbits screen.
+ */
 export default function OrbitsScreen() {
   return (
     <ThemedView style={styles.container}>

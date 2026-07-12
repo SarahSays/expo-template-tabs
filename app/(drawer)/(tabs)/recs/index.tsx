@@ -1,3 +1,8 @@
+/**
+ * index.tsx
+ *
+ * File-level documentation comment.
+ */
 import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Pressable, RefreshControl, ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
@@ -16,6 +21,11 @@ const menuItems = [
   { title: '+ Add a Recommendation', description: 'Who recommended it?', href: '/recs/addarec' },
 ] as const;
 
+/**
+ * screenOptions options object.
+ *
+ * Configuration object for screen options.
+ */
  export const screenOptions = {
   title: 'Recs',
   headerShown: false,
@@ -31,6 +41,11 @@ const menuItems = [
  * @description Shows the recommendations menu and an embedded demo list.
  * Includes a pull-to-refresh demo handler; data is currently demo-only and transient.
  * @returns {JSX.Element} The Recs index screen.
+ */
+/**
+ * RecsScreen component.
+ *
+ * Renders the UI for the Recs screen.
  */
 export default function RecsScreen() {
   const router = useRouter();

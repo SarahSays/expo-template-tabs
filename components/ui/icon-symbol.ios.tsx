@@ -27,6 +27,11 @@ import { StyleProp, ViewStyle } from 'react-native';
  * <IconSymbol name="heart" size={20} color="red" />
  * ```
  */
+/**
+ * IconSymbol function.
+ *
+ * Executes the IconSymbol behavior.
+ */
 export function IconSymbol({
   name,
   size = 24,
