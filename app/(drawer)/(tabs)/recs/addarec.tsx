@@ -87,7 +87,7 @@ export default function AddaRecScreen() {
     setTimeout(() => setSavedMessage(''), 1500);
   }
 
-  const sampleFriends = ['Alice', 'Bob', 'Charlie', 'Dana'];
+  const sampleFriends = ['Alex', 'Billie', 'Casey', 'Darcy'];
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
 

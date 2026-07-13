@@ -12,8 +12,8 @@ import { ThemedView } from '@/components/themed-view';
 import { Colors, Fonts } from '@/constants/theme';
 
 const recommendations = [
-  { title: 'The Good Place', type: 'TV', platform: 'Netflix', from: 'Alice' },
-  { title: 'Superman', type: 'Movie', platform: 'Amazon', from: 'Bob' },
+  { title: 'The Good Place', type: 'TV', platform: 'Netflix', from: 'Alex' },
+  { title: 'Superman', type: 'Movie', platform: 'Amazon', from: 'Billie' },
 ];
 
 const menuItems = [
