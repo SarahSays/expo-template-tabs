@@ -4,56 +4,87 @@
  * File-level documentation comment.
  */
 import { useRouter } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-
-const menuItems = [
-  { title: 'Enter code', description: 'Check your email for the sign in code.', href: '/home/notifications' },
-
-] as const;
+import { Colors } from '@/constants/theme';
 
 /**
  * screenOptions options object.
  *
  * Configuration object for screen options.
  */
- export const screenOptions = {
+export const screenOptions = {
   title: 'Enter code',
   headerShown: false,
-}; 
+};
 
 /**
- * FeedScreen component.
+ * VerificationCodeScreen component.
  *
- * Renders the UI for the Feed screen.
+ * Renders the UI for the verification code entry screen.
  */
-export default function FeedScreen() {
+export default function VerificationCodeScreen() {
   const router = useRouter();
+  const [code, setCode] = useState('');
+  const inputRef = useRef<TextInput>(null);
+  const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
+  const theme = Colors[colorScheme];
+
+  const digits = code.padEnd(6, ' ').split('');
 
   return (
-    <ThemedView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ThemedText type="title">Enter Code</ThemedText>
-        <View style={styles.menu}>
-          {menuItems.map((item) => (
-            <Pressable
-              key={item.title}
-              style={({ pressed }) => [
-                styles.menuItem,
-                pressed ? styles.menuItemPressed : null,
-              ]}
-              onPress={() => router.push(item.href)}>
-              <View style={styles.menuText}>
-                <ThemedText type="subtitle">{item.title}</ThemedText>
-                <ThemedText>{item.description}</ThemedText>
+    <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+          <View style={styles.headerSection}>
+            <ThemedText type="title" style={styles.titleText}>Enter code</ThemedText>
+            <ThemedText style={[styles.subtitleText, { color: theme.text }]}>Check your email for the sign in code.</ThemedText>
+          </View>
+
+          <Pressable style={styles.codeRow} onPress={() => inputRef.current?.focus()}>
+            {digits.map((digit, index) => (
+              <View key={index} style={[styles.codeCell, { borderColor: colorScheme === 'dark' ? '#333' : '#d1d5db' }]}>
+                <ThemedText style={styles.codeCellText}>{digit.trim() || '\u00a0'}</ThemedText>
               </View>
-              <ThemedText type="link">›</ThemedText>
+            ))}
+          </Pressable>
+
+          <TextInput
+            ref={inputRef}
+            value={code}
+            onChangeText={(value) => setCode(value.replace(/[^0-9]/g, '').slice(0, 6))}
+            keyboardType="number-pad"
+            textContentType="oneTimeCode"
+            maxLength={6}
+            style={styles.hiddenInput}
+            autoFocus
+          />
+
+          <View style={styles.actionSection}>
+            <Pressable
+              onPress={() => router.push('/home/notifications')}
+              style={({ pressed }) => [
+                styles.primaryButton,
+                { backgroundColor: theme.tint },
+                pressed && styles.primaryButtonPressed,
+              ]}>
+              <ThemedText style={styles.primaryButtonText}>Sign In</ThemedText>
             </Pressable>
-          ))}
-        </View>
-      </ScrollView>
+
+            <View style={styles.resendRow}>
+              <ThemedText style={styles.resendText}>Didn't get a code?</ThemedText>
+              <Pressable onPress={() => console.log('Resend code')}>
+                <ThemedText style={[styles.resendLink, { color: theme.tint }]}>Resend</ThemedText>
+              </Pressable>
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </ThemedView>
   );
 }
@@ -64,27 +95,83 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    padding: 16,
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
+    paddingTop: 64,
+    paddingHorizontal: 24,
+    paddingBottom: 32,
   },
-  menu: {
-    marginTop: 6,
+  headerSection: {
+    alignItems: 'center',
+    marginBottom: 40,
   },
-  menuItem: {
+  titleText: {
+    textAlign: 'center',
+    marginBottom: 14,
+  },
+  subtitleText: {
+    textAlign: 'center',
+    fontSize: 15,
+    lineHeight: 22,
+    maxWidth: 300,
+  },
+  codeRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    maxWidth: 360,
+    alignSelf: 'center',
+    marginBottom: 32,
+  },
+  codeCell: {
+    width: 52,
+    height: 64,
+    borderRadius: 18,
+    borderWidth: 1,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  codeCellText: {
+    fontSize: 24,
+  },
+  hiddenInput: {
+    position: 'absolute',
+    width: 1,
+    height: 1,
+    opacity: 0,
+  },
+  actionSection: {
+    alignItems: 'center',
+    width: '100%',
+  },
+  primaryButton: {
+    width: '100%',
+    maxWidth: 520,
+    paddingVertical: 16,
+    borderRadius: 999,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  primaryButtonPressed: {
+    opacity: 0.92,
+  },
+  primaryButtonText: {
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: '600',
+  },
+  resendRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    backgroundColor: 'rgba(0,0,0,0.04)',
-    marginBottom: 12,
+    marginTop: 22,
+    gap: 8,
   },
-  menuItemPressed: {
-    backgroundColor: 'rgba(0,0,0,0.1)',
+  resendText: {
+    color: '#9ca3af',
+    fontSize: 15,
   },
-  menuText: {
-    flex: 1,
-    marginRight: 12,
+  resendLink: {
+    fontSize: 15,
+    textDecorationLine: 'underline',
   },
 });

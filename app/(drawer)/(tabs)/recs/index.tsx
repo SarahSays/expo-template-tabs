@@ -12,7 +12,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Colors, Fonts } from '@/constants/theme';
 
 const recommendations = [
-  { title: 'The Good Place', type: 'TV', platform: 'Netflix', from: 'Alex' },
+  { title: 'The Good Place', type: 'TV', platform: 'Netflix', from: 'Avery' },
   { title: 'Superman', type: 'Movie', platform: 'Amazon', from: 'Billie' },
 ];
 

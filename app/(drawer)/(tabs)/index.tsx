@@ -11,6 +11,7 @@
 import { Image } from 'expo-image';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { ExternalLink } from '@/components/external-link';
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
@@ -71,21 +72,46 @@ export default function HomeScreen() {
       <ThemedView style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.menu}>
-            {menuItems.map((item) => (
-              <Pressable
-                key={item.title}
-                style={({ pressed }) => [
-                  styles.menuItem,
-                  pressed ? styles.menuItemPressed : null,
-                ]}
-                onPress={() => router.push(item.href)}>
-                <View style={styles.menuText}>
-                  <ThemedText type="subtitle">{item.title}</ThemedText>
-                  <ThemedText>{item.description}</ThemedText>
-                </View>
-                <ThemedText type="link">›</ThemedText>
-              </Pressable>
-            ))}
+            {menuItems
+              .filter((item) => item.title !== 'Continue with Email')
+              .map((item) => (
+                <Pressable
+                  key={item.title}
+                  style={({ pressed }) => [
+                    styles.menuItem,
+                    pressed ? styles.menuItemPressed : null,
+                  ]}
+                  onPress={() => router.push(item.href)}>
+                  <View style={styles.menuText}>
+                    <ThemedText type="subtitle">{item.title}</ThemedText>
+                    <ThemedText>{item.description}</ThemedText>
+                  </View>
+                  <ThemedText type="link">›</ThemedText>
+                </Pressable>
+              ))}
+          </View>
+
+          <View style={styles.footer}>
+            <ThemedText style={styles.legalText}>
+              By continuing, you agree to our{' '}
+              <ExternalLink href="https://expo.dev/terms">
+                <ThemedText style={styles.linkText}>Terms of Service</ThemedText>
+              </ExternalLink>{' '}
+              and{' '}
+              <ExternalLink href="https://expo.dev/privacy">
+                <ThemedText style={styles.linkText}>Privacy Policy</ThemedText>
+              </ExternalLink>
+              .
+            </ThemedText>
+
+            <Pressable
+              style={({ pressed }) => [
+                styles.primaryButton,
+                pressed ? styles.primaryButtonPressed : null,
+              ]}
+              onPress={() => router.push('/home')}>
+              <ThemedText style={styles.primaryButtonText}>Continue with Email</ThemedText>
+            </Pressable>
           </View>
         </ScrollView>
       </ThemedView>
@@ -137,5 +163,33 @@ const styles = StyleSheet.create({
   menuText: {
     flex: 1,
     marginRight: 6,
+  },
+  footer: {
+    marginTop: 24,
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+  },
+  legalText: {
+    marginBottom: 16,
+    lineHeight: 22,
+  },
+  linkText: {
+    color: '#007AFF',
+    textDecorationLine: 'underline',
+  },
+  primaryButton: {
+    backgroundColor: '#2563eb',
+    borderRadius: 999,
+    paddingVertical: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  primaryButtonPressed: {
+    backgroundColor: '#1d4ed8',
+  },
+  primaryButtonText: {
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: '600',
   },
 });

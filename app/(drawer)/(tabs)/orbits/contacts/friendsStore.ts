@@ -17,7 +17,7 @@ export type Friend = {
 };
 
 let friends: Friend[] = [
-  { id: '1', name: 'Alex', platform: 'Instagram', cadence: '1 week', status: 'online' },
+  { id: '1', name: 'Avery', platform: 'Instagram', cadence: '1 week', status: 'online' },
   { id: '2', name: 'Billie', platform: 'SMS', cadence: '1 month', status: 'offline' },
   { id: '3', name: 'Casey', platform: 'Signal', cadence: '1 week', status: 'online' },
   { id: '4', name: 'Darcy', platform: 'Discord', cadence: '1 day', status: 'offline' },
