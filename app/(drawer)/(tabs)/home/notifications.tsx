@@ -4,56 +4,54 @@
  * File-level documentation comment.
  */
 import { useRouter } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import React from 'react';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-
-const menuItems = [
-  { title: 'Turn on Notifications', description: 'Allow notifications', href: '/home/modal' },
-
-] as const;
+import { Colors } from '@/constants/theme';
 
 /**
  * screenOptions options object.
  *
  * Configuration object for screen options.
  */
- export const screenOptions = {
+export const screenOptions = {
   title: 'Turn on Notifications',
   headerShown: false,
-}; 
+};
 
 /**
- * FeedScreen component.
+ * NotificationsScreen component.
  *
- * Renders the UI for the Feed screen.
+ * Renders the UI for the notification permission prompt.
  */
-export default function FeedScreen() {
+export default function NotificationsScreen() {
   const router = useRouter();
+  const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
+  const theme = Colors[colorScheme];
 
   return (
-    <ThemedView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ThemedText type="title">Turn on Notifications</ThemedText>
-        <View style={styles.menu}>
-          {menuItems.map((item) => (
+    <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+          <View style={styles.heroSection}>
+            <ThemedText type="title" style={[styles.titleText, { color: theme.tint }]}>Turn on Notifications</ThemedText>
+            <View style={[styles.graphicPlaceholder, { backgroundColor: colorScheme === 'dark' ? '#14101F' : '#F3F4F6' }]} />
             <Pressable
-              key={item.title}
+              onPress={() => router.push('/home/modal')}
               style={({ pressed }) => [
-                styles.menuItem,
-                pressed ? styles.menuItemPressed : null,
-              ]}
-              onPress={() => router.push(item.href)}>
-              <View style={styles.menuText}>
-                <ThemedText type="subtitle">{item.title}</ThemedText>
-                <ThemedText>{item.description}</ThemedText>
-              </View>
-              <ThemedText type="link">›</ThemedText>
+                styles.ctaButton,
+                { backgroundColor: theme.tint },
+                pressed && styles.ctaButtonPressed,
+              ]}>
+              <ThemedText style={styles.ctaButtonText}>Allow notifications</ThemedText>
             </Pressable>
-          ))}
-        </View>
-      </ScrollView>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </ThemedView>
   );
 }
@@ -64,27 +62,52 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    padding: 16,
-    justifyContent: 'flex-start',
-  },
-  menu: {
-    marginTop: 6,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    backgroundColor: 'rgba(0,0,0,0.04)',
-    marginBottom: 12,
+    paddingTop: 64,
+    paddingHorizontal: 24,
+    paddingBottom: 32,
   },
-  menuItemPressed: {
-    backgroundColor: 'rgba(0,0,0,0.1)',
+  heroSection: {
+    alignItems: 'center',
+    gap: 28,
+    marginTop: 24,
   },
-  menuText: {
-    flex: 1,
-    marginRight: 12,
+  titleText: {
+    textAlign: 'center',
+    fontSize: 32,
+    lineHeight: 40,
+    fontWeight: '800',
+  },
+  graphicPlaceholder: {
+    width: 300,
+    height: 300,
+    borderRadius: 180,
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 24,
+    shadowOffset: { width: 0, height: 12 },
+    elevation: 4,
+  },
+  messageText: {
+    textAlign: 'center',
+    fontSize: 16,
+    lineHeight: 24,
+    maxWidth: 340,
+  },
+  ctaButton: {
+    width: '100%',
+    maxWidth: 560,
+    paddingVertical: 18,
+    borderRadius: 999,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ctaButtonPressed: {
+    opacity: 0.9,
+  },
+  ctaButtonText: {
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: '600',
   },
 });

@@ -4,56 +4,68 @@
  * File-level documentation comment.
  */
 import { useRouter } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-
-const menuItems = [
-  { title: 'Pick a Username', description: 'Username', href: '/home/connect-chats' },
-
-] as const;
+import { Colors } from '@/constants/theme';
 
 /**
  * screenOptions options object.
  *
  * Configuration object for screen options.
  */
- export const screenOptions = {
+export const screenOptions = {
   title: 'Pick a Username',
   headerShown: false,
-}; 
+};
 
 /**
- * FeedScreen component.
+ * UsernameScreen component.
  *
- * Renders the UI for the Feed screen.
+ * Renders the UI for choosing a username.
  */
-export default function FeedScreen() {
+export default function UsernameScreen() {
   const router = useRouter();
+  const [username, setUsername] = useState('');
+  const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
+  const theme = Colors[colorScheme];
+  const isValid = username.length >= 3;
 
   return (
-    <ThemedView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ThemedText type="title">Pick a Username</ThemedText>
-        <View style={styles.menu}>
-          {menuItems.map((item) => (
+    <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+          <View style={styles.heroSection}>
+            <ThemedText type="title" style={[styles.titleText, { color: theme.tint }]}>Pick a Username</ThemedText>
+            <View style={[styles.graphicPlaceholder, { backgroundColor: colorScheme === 'dark' ? '#14101F' : '#F3F4F6' }]} />
+          </View>
+
+          <View style={styles.inputSection}>
+            <TextInput
+              value={username}
+              onChangeText={setUsername}
+              placeholder="Username"
+              placeholderTextColor={colorScheme === 'dark' ? '#7F7F95' : '#9CA3AF'}
+              style={[styles.input, { backgroundColor: colorScheme === 'dark' ? '#14101F' : '#F3F4F6', color: theme.text, borderColor: colorScheme === 'dark' ? '#333' : '#E5E7EB' }]}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
             <Pressable
-              key={item.title}
+              onPress={() => router.push('/home/connect-chats')}
               style={({ pressed }) => [
-                styles.menuItem,
-                pressed ? styles.menuItemPressed : null,
-              ]}
-              onPress={() => router.push(item.href)}>
-              <View style={styles.menuText}>
-                <ThemedText type="subtitle">{item.title}</ThemedText>
-                <ThemedText>{item.description}</ThemedText>
-              </View>
-              <ThemedText type="link">›</ThemedText>
+                styles.ctaButton,
+                { backgroundColor: Colors.light.tint },
+                pressed && styles.ctaButtonPressed,
+              ]}>
+              <ThemedText style={[styles.ctaButtonText, { color: '#fff' }]}>Next</ThemedText>
             </Pressable>
-          ))}
-        </View>
-      </ScrollView>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </ThemedView>
   );
 }
@@ -64,27 +76,59 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    padding: 16,
     justifyContent: 'flex-start',
+    paddingTop: 64,
+    paddingHorizontal: 24,
+    paddingBottom: 32,
   },
-  menu: {
-    marginTop: 6,
-  },
-  menuItem: {
-    flexDirection: 'row',
+  heroSection: {
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    backgroundColor: 'rgba(0,0,0,0.04)',
-    marginBottom: 12,
+    gap: 18,
+    marginTop: 24,
+    marginBottom: 24,
   },
-  menuItemPressed: {
-    backgroundColor: 'rgba(0,0,0,0.1)',
+  titleText: {
+    textAlign: 'center',
+    fontSize: 32,
+    lineHeight: 40,
+    fontWeight: '800',
   },
-  menuText: {
-    flex: 1,
-    marginRight: 12,
+  graphicPlaceholder: {
+    width: 220,
+    height: 140,
+    borderRadius: 28,
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 24,
+    shadowOffset: { width: 0, height: 12 },
+    elevation: 4,
+  },
+  inputSection: {
+    width: '100%',
+    maxWidth: 520,
+    alignSelf: 'center',
+    gap: 16,
+    marginTop: 16,
+  },
+  input: {
+    width: '100%',
+    borderRadius: 999,
+    paddingVertical: 18,
+    paddingHorizontal: 20,
+    fontSize: 16,
+  },
+  ctaButton: {
+    width: '100%',
+    borderRadius: 999,
+    paddingVertical: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ctaButtonPressed: {
+    opacity: 0.9,
+  },
+  ctaButtonText: {
+    fontSize: 17,
+    fontWeight: '600',
   },
 });

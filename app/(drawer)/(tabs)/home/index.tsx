@@ -74,7 +74,7 @@ export default function EmailEntryScreen() {
               onPress={() => router.push('/home/verification-code')}
               style={({ pressed }) => [
                 styles.button,
-                { backgroundColor: theme.tint },
+                { backgroundColor: Colors.light.tint },
                 pressed && styles.buttonPressed,
               ]}>
               <ThemedText style={styles.buttonText}>Next</ThemedText>

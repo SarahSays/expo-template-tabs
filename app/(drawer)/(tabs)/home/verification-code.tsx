@@ -70,7 +70,7 @@ export default function VerificationCodeScreen() {
               onPress={() => router.push('/home/notifications')}
               style={({ pressed }) => [
                 styles.primaryButton,
-                { backgroundColor: theme.tint },
+                { backgroundColor: Colors.light.tint },
                 pressed && styles.primaryButtonPressed,
               ]}>
               <ThemedText style={styles.primaryButtonText}>Sign In</ThemedText>
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 42,
   },
   primaryButtonPressed: {
     opacity: 0.92,
