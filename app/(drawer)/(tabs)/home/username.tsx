@@ -10,6 +10,7 @@ import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
+import { Image } from 'expo-image';
 
 /**
  * screenOptions options object.
@@ -31,7 +32,6 @@ export default function UsernameScreen() {
   const [username, setUsername] = useState('');
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const theme = Colors[colorScheme];
-  const isValid = username.length >= 3;
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
@@ -40,8 +40,8 @@ export default function UsernameScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
           <View style={styles.heroSection}>
-            <ThemedText type="title" style={[styles.titleText, { color: theme.tint }]}>Pick a Username</ThemedText>
-            <View style={[styles.graphicPlaceholder, { backgroundColor: colorScheme === 'dark' ? '#14101F' : '#F3F4F6' }]} />
+            <ThemedText type="title" style={styles.titleText}>Pick a Username</ThemedText>
+            <Image source={require('@/assets/images/react-logo.png')} style={styles.heroImage} />
           </View>
 
           <View style={styles.inputSection}>
@@ -89,19 +89,12 @@ const styles = StyleSheet.create({
   },
   titleText: {
     textAlign: 'center',
-    fontSize: 32,
-    lineHeight: 40,
-    fontWeight: '800',
   },
-  graphicPlaceholder: {
+  heroImage: {
     width: 220,
-    height: 140,
-    borderRadius: 28,
-    shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 24,
-    shadowOffset: { width: 0, height: 12 },
-    elevation: 4,
+    height: 220,
+    resizeMode: 'contain',
+    marginBottom: 20,
   },
   inputSection: {
     width: '100%',

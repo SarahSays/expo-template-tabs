@@ -10,6 +10,7 @@ import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, useC
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
+import { Image } from 'expo-image';
 
 /**
  * screenOptions options object.
@@ -38,13 +39,13 @@ export default function NotificationsScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
           <View style={styles.heroSection}>
-            <ThemedText type="title" style={[styles.titleText, { color: theme.tint }]}>Turn on Notifications</ThemedText>
-            <View style={[styles.graphicPlaceholder, { backgroundColor: colorScheme === 'dark' ? '#14101F' : '#F3F4F6' }]} />
+            <ThemedText type="title" style={styles.titleText}>Turn on Notifications</ThemedText>
+            <Image source={require('@/assets/images/react-logo.png')} style={styles.heroImage} />
             <Pressable
               onPress={() => router.push('/home/modal')}
               style={({ pressed }) => [
                 styles.ctaButton,
-                { backgroundColor: theme.tint },
+                { backgroundColor: Colors.light.tint },
                 pressed && styles.ctaButtonPressed,
               ]}>
               <ThemedText style={styles.ctaButtonText}>Allow notifications</ThemedText>
@@ -74,19 +75,12 @@ const styles = StyleSheet.create({
   },
   titleText: {
     textAlign: 'center',
-    fontSize: 32,
-    lineHeight: 40,
-    fontWeight: '800',
   },
-  graphicPlaceholder: {
-    width: 300,
-    height: 300,
-    borderRadius: 180,
-    shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 24,
-    shadowOffset: { width: 0, height: 12 },
-    elevation: 4,
+  heroImage: {
+    width: 220,
+    height: 220,
+    resizeMode: 'contain',
+    marginBottom: 20,
   },
   messageText: {
     textAlign: 'center',

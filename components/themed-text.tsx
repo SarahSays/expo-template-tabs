@@ -75,18 +75,15 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 24,
     fontFamily: Fonts.sansBold,
-    fontWeight: 'normal',
   },
   title: {
     fontSize: 28,
     lineHeight: 52,
     fontFamily: Fonts.sansBold,
-    fontWeight: 'normal',
   },
   subtitle: {
     fontSize: 20,
     fontFamily: Fonts.sansBold,
-    fontWeight: 'normal',
     lineHeight: 36,
   },
   link: {

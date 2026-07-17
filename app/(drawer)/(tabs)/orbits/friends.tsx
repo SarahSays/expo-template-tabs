@@ -8,7 +8,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Colors, Fonts } from '@/constants/theme';
 import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, useColorScheme, View } from 'react-native';
-import { getFriends } from './contacts/friendsStore';
+import { getFriends } from './contacts/_friendsStore';
 
 /**
  * screenOptions options object.

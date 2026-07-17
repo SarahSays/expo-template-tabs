@@ -4,23 +4,15 @@
  * File-level documentation comment.
  */
 import { Image } from 'expo-image';
-import { Platform, Pressable, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 import { ExternalLink } from '@/components/external-link';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { Collapsible } from '@/components/ui/collapsible';
 import { Colors, Fonts } from '@/constants/theme';
-import { useRouter } from 'expo-router';
 
-const menuItems = [
-  {
-    title: 'Skip sign-in',
-    description: 'Skip straight to Feed tab.',
-    href: '/feed'
-  },
-] as const;
+
 
 /**
  * HomeScreen component.
@@ -28,8 +20,6 @@ const menuItems = [
  * Renders the UI for the Home screen.
  */
 export default function HomeScreen() {
-  const router = useRouter();
-
   return (
 
     <ParallaxScrollView
@@ -43,32 +33,6 @@ export default function HomeScreen() {
           style={styles.reactLogo}
         />
       }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
-          style={{
-            fontFamily: Fonts.rounded,
-          }}>
-          Connect Chat Accounts
-        </ThemedText>
-        <View style={styles.menu}>
-          {menuItems.map((item) => (
-            <Pressable
-              key={item.title}
-              style={({ pressed }) => [
-                styles.menuItem,
-                pressed ? styles.menuItemPressed : null,
-              ]}
-              onPress={() => router.push(item.href)}>
-              <View style={styles.menuText}>
-                <ThemedText type="subtitle">{item.title}</ThemedText>
-                <ThemedText>{item.description}</ThemedText>
-              </View>
-              <ThemedText type="link">›</ThemedText>
-            </Pressable>
-          ))}
-        </View>
-      </ThemedView>
       <ThemedText>This app includes example code to help you get started.</ThemedText>
       <Collapsible title="File-based routing">
         <ThemedText>

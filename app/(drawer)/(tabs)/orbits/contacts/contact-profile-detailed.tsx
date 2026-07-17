@@ -8,7 +8,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Fonts } from '@/constants/theme';
 import { useLocalSearchParams } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
-import { getFriend } from './friendsStore';
+import { getFriend } from './_friendsStore';
 
 /**
  * ContactProfileDetailed component.

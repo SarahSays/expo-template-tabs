@@ -9,7 +9,7 @@ import { Colors, Fonts } from '@/constants/theme';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, useColorScheme, View } from 'react-native';
-import { getFriend } from './friendsStore';
+import { getFriend } from './_friendsStore';
 
 /**
  * ContactProfilePage component.

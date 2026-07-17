@@ -13,7 +13,7 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 
-import { getFriend, setCadence } from '@/app/(drawer)/(tabs)/orbits/contacts/friendsStore';
+import { getFriend, setCadence } from '@/app/(drawer)/(tabs)/orbits/contacts/_friendsStore';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useColorScheme } from '@/hooks/use-color-scheme';

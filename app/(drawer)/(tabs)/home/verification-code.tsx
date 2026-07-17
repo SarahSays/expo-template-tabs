@@ -77,7 +77,7 @@ export default function VerificationCodeScreen() {
             </Pressable>
 
             <View style={styles.resendRow}>
-              <ThemedText style={styles.resendText}>Didn't get a code?</ThemedText>
+              <ThemedText style={styles.resendText}>Didn&apos;t get a code?</ThemedText>
               <Pressable onPress={() => console.log('Resend code')}>
                 <ThemedText style={[styles.resendLink, { color: theme.tint }]}>Resend</ThemedText>
               </Pressable>

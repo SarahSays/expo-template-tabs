@@ -81,7 +81,14 @@ export const Colors = {
  * Exported constant for Fonts.
  */
 export const Fonts = Platform.select({
-  default: {
+  ios: {
+    sans: 'OpenDyslexic3Regular',
+    serif: 'OpenDyslexic3Regular',
+    rounded: 'OpenDyslexic3Regular',
+    mono: 'OpenDyslexicMonoRegular',
+    sansBold: 'OpenDyslexic3Bold',
+  },
+  android: {
     sans: 'OpenDyslexic3Regular',
     serif: 'OpenDyslexic3Regular',
     rounded: 'OpenDyslexic3Regular',
@@ -94,5 +101,12 @@ export const Fonts = Platform.select({
     rounded: 'OpenDyslexic3Regular, "SF Pro Rounded", "Hiragino Maru Gothic ProN", Meiryo, "MS PGothic", sans-serif',
     mono: 'OpenDyslexicMonoRegular, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
     sansBold: 'OpenDyslexic3Bold, system-ui, sans-serif',
+  },
+  default: {
+    sans: 'OpenDyslexic3Regular',
+    serif: 'OpenDyslexic3Regular',
+    rounded: 'OpenDyslexic3Regular',
+    mono: 'OpenDyslexicMonoRegular',
+    sansBold: 'OpenDyslexic3Bold',
   },
 });

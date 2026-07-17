@@ -31,7 +31,7 @@ const menuItems = [
   },
   {
     title: 'Skip sign-in', 
-    description: 'Jump directly to an Orbits demo.', 
+    description: 'Jump to demo mode', 
     href: '/orbits'
   },
 ] as const;
@@ -172,10 +172,12 @@ const styles = StyleSheet.create({
   legalText: {
     marginBottom: 16,
     lineHeight: 22,
+    fontSize: 15,
   },
   linkText: {
     color: '#007AFF',
     textDecorationLine: 'underline',
+    fontSize: 15,
   },
   primaryButton: {
     backgroundColor: '#2563eb',

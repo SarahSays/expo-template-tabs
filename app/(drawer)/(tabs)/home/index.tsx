@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingTop: 64,
     paddingHorizontal: 24,
-    paddingBottom: 32,
+    paddingBottom: 96,
     justifyContent: 'space-between',
   },
   heroSection: {
