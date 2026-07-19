@@ -6,8 +6,9 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors, Fonts } from '@/constants/theme';
+import { useIsFocused } from '@react-navigation/native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, useColorScheme, View } from 'react-native';
 import { getFriend } from './_friendsStore';
 
@@ -19,13 +20,18 @@ import { getFriend } from './_friendsStore';
 export default function ContactProfilePage() {
   const params = useLocalSearchParams();
   const id = String(params.id || '1');
-  const friend = getFriend(id);
+  const [friendState, setFriendState] = useState(() => getFriend(id));
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) setFriendState(getFriend(id));
+  }, [isFocused, id]);
   const router = useRouter();
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const theme = Colors[colorScheme];
   const fonts = Fonts ?? { sans: undefined, sansBold: undefined };
 
-  if (!friend) {
+  if (!friendState) {
     return (
       <ThemedView style={styles.container}>
         <ThemedText type="title">Not Found</ThemedText>
@@ -36,17 +42,17 @@ export default function ContactProfilePage() {
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
-      <ThemedText type="title" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>{friend.name}</ThemedText>
+      <ThemedText type="title" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>{friendState?.name}</ThemedText>
 
       <View style={styles.section}>
         <ThemedText type="subtitle" lightColor="#2B0F55">Connected via</ThemedText>
-        <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{friend.platform}</ThemedText>
+        <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{friendState?.platform}</ThemedText>
 
         <ThemedText type="subtitle" lightColor="#2B0F55" style={{ marginTop: 12 }}>Cadence</ThemedText>
-        <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{friend.cadence || 'Not set'}</ThemedText>
+        <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{friendState?.cadence || 'Not set'}</ThemedText>
 
         <TouchableOpacity
-          onPress={() => router.push(`/starchart/star-chart?friendId=${friend.id}`)}
+          onPress={() => router.push(`/orbits/cadences?friendId=${id}`)}
           style={[styles.doneButton, { marginTop: 16 }]}
         >
           <ThemedText style={styles.doneButtonText}>How often do you want to talk?</ThemedText>

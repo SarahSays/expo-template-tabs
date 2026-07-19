@@ -11,11 +11,8 @@
  *   a parallax starfield behind the cards.
  * - `getPlanetStyle(label)`: maps an ITEM `label` to a compact visual style
  *   (size + color) used for the planet circle shown on each card.
- * - `EarthOrbit()`: a self-contained animated mini-visual showing:
- *     - a rotating Earth (1 spin = 1 day),
- *     - a moon orbit loop (fast loop scaled for demo to suggest one month),
- *     - seven tick markers around the orbit to represent a weekly progression.
- *   This component is responsive and sized from the viewport width.
+ * - `SunHeader()`: renders a static sun header visual at the top of the
+ *   screen while the user scrolls through the cadence cards.
  * - The animated ScrollView drives per-card opacity/translation so each
  *   card fades/slides into view as it becomes centered.
  * - Selecting a card calls `setCadence(contactId, label)` (demo uses id `'1'`)
@@ -25,7 +22,6 @@
  * Maintenance notes:
  * - To change cadence entries, update the `ITEMS` array. `label` is used as a
  *   key; avoid re-using identical labels unless you update `getPlanetStyle`.
- * - Tweak animation timing in `EarthOrbit` by editing `duration` values.
  * - Star density and behavior are controlled by the `STARS` array length and
  *   per-star `factor` values; reducing the length reduces draw calls.
  * - All measurements are responsive; the orbit graphic clamps to a maximum
@@ -33,8 +29,9 @@
  */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import React, { useEffect, useRef } from 'react';
-import { Alert, Animated, Easing, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useRef } from 'react';
+import { Alert, Animated, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { setCadence } from './contacts/_friendsStore';
 
 /* export const screenOptions = {
@@ -58,20 +55,24 @@ export default function CadencesScreen() {
    * avoid remapping bugs when persisting cadence selections.
    */
   const ITEMS = [
-    { label: '1 day', caption: 'Moon' },
-    { label: '1 week', caption: 'Weekly' },
-    { label: '1 month', caption: '1 month (Moon)' },
-    { label: '3 months', caption: '3 months (Mercury)' },
-    { label: '6 months', caption: '6 months (Venus)' },
-    { label: '1 year', caption: '1 year (Earth)' },
-    { label: '2 years', caption: '2 years (Mars)' },
-    { label: '5 years', caption: '5 years (Asteroid Belt)' },
-    { label: '10 years', caption: '10 years (Jupiter)' },
+    { label: 'Daily', caption: '1 day' },
+    { label: 'Weekly', caption: '1 week' },
+    { label: 'Monthly', caption: '1 month' },
+    { label: '3 months', caption: 'Mercury' },
+    { label: '6 months', caption: 'Venus' },
+    { label: '1 year', caption: 'Earth' },
+    { label: '2 years', caption: 'Mars' },
+    { label: '5 years', caption: '5 years' },
+    { label: '10 years', caption: 'Jupiter' },
   ];
 
   const { height, width } = useWindowDimensions();
-  const itemHeight = Math.round(height * 0.62);
+  // Shorter cards: reduce vertical footprint so more cards fit on screen
+  const itemHeight = Math.round(height * 0.3);
   const scrollY = useRef(new Animated.Value(0)).current;
+  const params = useLocalSearchParams();
+  const router = useRouter();
+  const friendId = String(params.friendId || '');
 
   /**
    * STARS: precomputed star positions used for a subtle parallax background.
@@ -80,7 +81,7 @@ export default function CadencesScreen() {
    * rendering cost on low-end devices.
    */
   const STARS = useRef(
-    Array.from({ length: 28 }).map(() => ({
+    Array.from({ length: 29 }).map(() => ({
       x: Math.random() * width,
       y: Math.random() * (height * 1.6),
       size: Math.random() * 2.5 + 0.8,
@@ -89,92 +90,58 @@ export default function CadencesScreen() {
   ).current;
 
   function getPlanetStyle(label: string) {
-    // Map a cadence `label` to a compact visual "planet" style.
-    // Update these mappings to change planet sizes/colors used on the cards.
     switch (label) {
-      case '1 day':
-        return { width: 14, height: 14, borderRadius: 7, backgroundColor: '#E5E7EB' };
-      case '1 week':
-        return { width: 16, height: 16, borderRadius: 8, backgroundColor: '#E5E7EB' };
-      case '1 month':
-        return { width: 18, height: 18, borderRadius: 9, backgroundColor: '#CBD5E1' };
+      case 'Daily':
+        return { width: 48, height: 48, borderRadius: 24, backgroundColor: '#3B82F6' };
+      case 'Weekly':
+        return { width: 44, height: 44, borderRadius: 22, backgroundColor: '#A78BFA' };
+      case 'Monthly':
+        return { width: 42, height: 42, borderRadius: 21, backgroundColor: '#F3F4F6' };
       case '3 months':
-        return { width: 18, height: 18, borderRadius: 9, backgroundColor: '#D1D5DB' };
+        return { width: 26, height: 26, borderRadius: 13, backgroundColor: '#D1D5DB' };
       case '6 months':
-        return { width: 20, height: 20, borderRadius: 10, backgroundColor: '#D9FF5C' };
+        return { width: 28, height: 28, borderRadius: 14, backgroundColor: '#D9FF5C' };
       case '1 year':
-        return { width: 22, height: 22, borderRadius: 11, backgroundColor: '#3B82F6' };
+        return { width: 32, height: 32, borderRadius: 16, backgroundColor: '#3B82F6' };
       case '2 years':
         return { width: 16, height: 16, borderRadius: 8, backgroundColor: '#D97706' };
       case '5 years':
-        return { width: 26, height: 26, borderRadius: 13, backgroundColor: '#B0AFA6' };
+        return { width: 56, height: 56, borderRadius: 28, backgroundColor: '#B0AFA6' };
       case '10 years':
-        return { width: 46, height: 46, borderRadius: 23, backgroundColor: '#F97316' };
+        // Make 'Jupiter' as large as the sun
+        return { width: 110, height: 110, borderRadius: 55, backgroundColor: '#F59E0B' };
       default:
         return { width: 20, height: 20, borderRadius: 10, backgroundColor: '#F3C94D' };
     }
   }
 
+  function getPlanetEmoji(label: string) {
+    switch (label) {
+      case 'Daily':
+        return '🌎';
+      case 'Weekly':
+        return '🚀';
+      case 'Monthly':
+        return '🌕';
+      case '5 years':
+        return '🌌';
+      default:
+        return undefined;
+    }
+  }
+
   /**
-   * EarthOrbit — small helper component that renders a responsive orbit
-   * visualization demonstrating a day/week/month metaphor:
-   * - Earth rotates continuously (representing daily spin).
-   * - Moon orbits around Earth (scaled faster for demo purposes).
-   * - Seven ticks around the orbit represent the 7 days of a week.
+   * SunHeader — simple top header visual for the cadence screen.
    *
-   * Tuning:
-   * - Adjust `duration` in the `Animated.timing` calls to scale speed.
-   * - Change `orbitSize` computation to alter the max display width.
+   * This static component keeps the sun visible at the top while the user
+   * scrolls through the cadence cards below.
    */
 
-  function EarthOrbit() {
-    const spin = useRef(new Animated.Value(0)).current;
-    const moon = useRef(new Animated.Value(0)).current;
-
-    useEffect(() => {
-      Animated.loop(
-        Animated.timing(spin, { toValue: 1, duration: 1200, easing: Easing.linear, useNativeDriver: true })
-      ).start();
-      Animated.loop(
-        Animated.timing(moon, { toValue: 1, duration: 8000, easing: Easing.linear, useNativeDriver: true })
-      ).start();
-    }, [spin, moon]);
-
-    const earthRotate = spin.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] });
-    const moonRotate = moon.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] });
-
-    const orbitSize = Math.min(220, width - 64);
-    const orbitRadius = orbitSize / 2 - 16;
-
-    const ticks = Array.from({ length: 7 }).map((_, i) => {
-      const angle = (i / 7) * Math.PI * 2 - Math.PI / 2;
-      return {
-        left: orbitSize / 2 + Math.cos(angle) * orbitRadius - 4,
-        top: orbitSize / 2 + Math.sin(angle) * orbitRadius - 4,
-      };
-    });
-
+  function SunHeader() {
     return (
-      <View style={styles.orbitContainer}>
-        <View style={[styles.orbitPath, { width: orbitSize, height: orbitSize, borderRadius: orbitSize / 2 }]}>
-          {ticks.map((t, idx) => (
-            // week tick markers: visually show a seven-day progression
-            <View key={idx} style={[styles.weekTick, { left: t.left, top: t.top }]} />
-          ))}
-
-          <Animated.View style={[styles.earthWrapper, { transform: [{ rotate: earthRotate }] }]}>
-            {/* earth + day-overlay: the overlay is a semi-transparent half that
-                demonstrates night passing as the earth spins. Tweak the
-                overlay transform to change the shadow offset. */}
-            <View style={styles.earth} />
-            <View style={styles.dayOverlay} />
-          </Animated.View>
-
-          {/* moonOrbit rotates the container; the moon is positioned on the
-              right edge of the orbit and rotates around Earth. */}
-          <Animated.View style={[styles.moonOrbit, { width: orbitSize, height: orbitSize, transform: [{ rotate: moonRotate }] }]} pointerEvents="none">
-            <View style={[styles.moon, { left: orbitSize / 2 + orbitRadius - 8 }]} />
-          </Animated.View>
+      <View style={styles.sunOrbitWrapper}>
+        <View style={styles.sunContainer}>
+          <View style={styles.sun} />
         </View>
       </View>
     );
@@ -182,20 +149,24 @@ export default function CadencesScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">Cadences</ThemedText>
+      <ThemedText type="title" style={styles.title}>Cadences</ThemedText>
 
-      <Animated.ScrollView
-        contentContainerStyle={{ paddingBottom: 80 }}
-        showsVerticalScrollIndicator={false}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: true }
-        )}
-        scrollEventThrottle={16}
-      >
-        <EarthOrbit />
-        {/* parallax stars layer */}
-        <View pointerEvents="none" style={StyleSheet.absoluteFill}>
+      <View style={styles.pageBackground}>
+        <Animated.ScrollView
+          contentContainerStyle={{ paddingBottom: 100 }}
+          showsVerticalScrollIndicator={false}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: true }
+          )}
+          scrollEventThrottle={16}
+        >
+          <View style={styles.visualBackground}>
+            <SunHeader />
+          </View>
+
+          {/* parallax stars layer */}
+          <View pointerEvents="none" style={StyleSheet.absoluteFill}>
           {STARS.map((s, idx) => {
             const translateY = Animated.multiply(scrollY, s.factor);
             return (
@@ -217,9 +188,6 @@ export default function CadencesScreen() {
         </View>
 
         {ITEMS.map((it, i) => {
-          const inputRange = [ (i - 1) * itemHeight, i * itemHeight, (i + 1) * itemHeight ];
-          const opacity = scrollY.interpolate({ inputRange, outputRange: [0, 1, 0], extrapolate: 'clamp' });
-          const translateY = scrollY.interpolate({ inputRange, outputRange: [20, 0, -20], extrapolate: 'clamp' });
           const planetStyle = getPlanetStyle(it.label);
 
           // Each card is pressable — in the demo we call `setCadence(contactId, label)`
@@ -229,20 +197,35 @@ export default function CadencesScreen() {
             <Pressable
               key={it.label}
               onPress={() => {
-                // TODO: replace '1' with real contact id from params/context
+                if (friendId) {
+                  // Save the caption (e.g. '1 day') as the cadence value for the friend
+                  setCadence(friendId, it.caption);
+                  // Return to the previous screen (contact profile)
+                  router.back();
+                  return;
+                }
+
+                // Fallback behavior for demo/testing
                 setCadence('1', it.label);
                 Alert.alert('Cadence set', `${it.label} selected`);
               }}
             >
-              <Animated.View style={[styles.card, { height: itemHeight, opacity, transform: [{ translateY }] }]}>
-                <View style={[styles.planetCircle, planetStyle]} />
-                <ThemedText type="subtitle" style={styles.cardLabel}>{it.label}</ThemedText>
+              <View style={[styles.card, { height: itemHeight }]}>
+                {getPlanetEmoji(it.label) ? (
+                  <ThemedText style={styles.planetEmoji}>{getPlanetEmoji(it.label)}</ThemedText>
+                ) : (
+                  <View style={[styles.planetCircle, planetStyle]} />
+                )}
+                {!getPlanetEmoji(it.label) && (
+                  <ThemedText type="subtitle" style={styles.cardLabel}>{it.label}</ThemedText>
+                )}
                 <ThemedText style={styles.cardCaption}>{it.caption}</ThemedText>
-              </Animated.View>
+              </View>
             </Pressable>
           );
         })}
       </Animated.ScrollView>
+    </View>
     </ThemedView>
   );
 }
@@ -260,75 +243,67 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   planetCircle: {
-    width: 76,
-    height: 76,
-    borderRadius: 38,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     backgroundColor: '#F3C94D',
-    marginBottom: 18,
+    marginBottom: 12,
   },
   cardLabel: {
     fontSize: 20,
+    color: '#F8FAFC',
     marginBottom: 8,
     textAlign: 'center',
   },
   cardCaption: {
     fontSize: 16,
+    color: '#E2E8F0',
     lineHeight: 22,
     textAlign: 'center',
     marginTop: 4,
   },
-  orbitContainer: {
+  title: {
+    marginBottom: 12,
+  },
+  planetEmoji: {
+    fontSize: 32,
+    lineHeight: 38,
+    textAlign: 'center',
+  },
+  sunOrbitWrapper: {
     alignItems: 'center',
-    marginVertical: 12,
+    marginBottom: 18,
   },
-  orbitPath: {
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderColor: 'rgba(255,255,255,0.08)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  weekTick: {
-    position: 'absolute',
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: 'rgba(255,255,255,0.6)'
-  },
-  earthWrapper: {
-    position: 'absolute',
+  sunContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 12,
   },
-  earth: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: '#3B82F6',
-    shadowColor: '#000',
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
+  sun: {
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    backgroundColor: '#F59E0B',
+    shadowColor: '#FBBF24',
+    shadowOpacity: 0.9,
+    shadowRadius: 24,
+    shadowOffset: { width: 0, height: 0 },
   },
-  dayOverlay: {
-    position: 'absolute',
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: 'rgba(0,0,0,0.25)',
-    transform: [{ translateX: 14 }],
+  visualBackground: {
+    backgroundColor: '#081528',
+    borderRadius: 24,
+    marginBottom: 24,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
   },
-  moonOrbit: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  moon: {
-    position: 'absolute',
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: '#F3F4F6',
+  pageBackground: {
+    flex: 1,
+    backgroundColor: '#081528',
+    borderRadius: 32,
+    marginTop: 18,
+    paddingTop: 18,
+    paddingBottom: 10,
+    paddingHorizontal: 12,
+    overflow: 'hidden',
   },
 });
