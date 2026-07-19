@@ -13,6 +13,7 @@ const menuItems = [
   { title: 'Share', description: 'Share to social media', href: '/starchart/share' },
   { title: 'Pinch & Zoom', description: 'Zoom in on celestial objects', href: '/starchart/pinch-zoom' },
   { title: 'Time slider', description: 'Adjust the time to see celestial changes', href: '/starchart/star-chart' },
+  { title: 'History', description: 'View reach-out events', href: '/starchart/history' },
 
 ] as const;
 

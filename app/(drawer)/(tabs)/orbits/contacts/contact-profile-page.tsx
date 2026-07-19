@@ -39,6 +39,19 @@ export default function ContactProfilePage() {
     );
   }
 
+  // Map legacy planet-style captions to human-readable labels
+  const CAPTION_TO_LABEL: Record<string, string> = {
+    Mercury: '3 months',
+    Venus: '6 months',
+    Earth: '1 year',
+    Mars: '2 years',
+    Jupiter: '10 years',
+  };
+
+  const displayCadence = friendState?.cadence
+    ? CAPTION_TO_LABEL[friendState.cadence] || friendState.cadence
+    : 'Not set';
+
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
@@ -49,7 +62,7 @@ export default function ContactProfilePage() {
         <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{friendState?.platform}</ThemedText>
 
         <ThemedText type="subtitle" lightColor="#2B0F55" style={{ marginTop: 12 }}>Cadence</ThemedText>
-        <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{friendState?.cadence || 'Not set'}</ThemedText>
+        <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{displayCadence}</ThemedText>
 
         <TouchableOpacity
           onPress={() => router.push(`/orbits/cadences?friendId=${id}`)}

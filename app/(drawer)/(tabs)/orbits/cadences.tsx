@@ -198,8 +198,8 @@ export default function CadencesScreen() {
               key={it.label}
               onPress={() => {
                 if (friendId) {
-                  // Save the caption (e.g. '1 day') as the cadence value for the friend
-                  setCadence(friendId, it.caption);
+                  // Save the human-readable label (e.g. '2 years') as the cadence value for the friend
+                  setCadence(friendId, it.label);
                   // Return to the previous screen (contact profile)
                   router.back();
                   return;
