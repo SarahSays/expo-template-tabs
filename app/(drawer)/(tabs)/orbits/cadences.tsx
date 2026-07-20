@@ -91,12 +91,6 @@ export default function CadencesScreen() {
 
   function getPlanetStyle(label: string) {
     switch (label) {
-      case 'Daily':
-        return { width: 48, height: 48, borderRadius: 24, backgroundColor: '#3B82F6' };
-      case 'Weekly':
-        return { width: 44, height: 44, borderRadius: 22, backgroundColor: '#A78BFA' };
-      case 'Monthly':
-        return { width: 42, height: 42, borderRadius: 21, backgroundColor: '#F3F4F6' };
       case '3 months':
         return { width: 26, height: 26, borderRadius: 13, backgroundColor: '#D1D5DB' };
       case '6 months':
@@ -108,7 +102,7 @@ export default function CadencesScreen() {
       case '5 years':
         return { width: 56, height: 56, borderRadius: 28, backgroundColor: '#B0AFA6' };
       case '10 years':
-        // Make 'Jupiter' as large as the sun
+        // Jupiter
         return { width: 110, height: 110, borderRadius: 55, backgroundColor: '#F59E0B' };
       default:
         return { width: 20, height: 20, borderRadius: 10, backgroundColor: '#F3C94D' };
@@ -241,6 +235,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
+    paddingVertical: 12,
   },
   planetCircle: {
     width: 56,
@@ -266,9 +261,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   planetEmoji: {
-    fontSize: 32,
-    lineHeight: 38,
+    fontSize: 40,
+    lineHeight: 50,
     textAlign: 'center',
+    marginBottom: 4,
   },
   sunOrbitWrapper: {
     alignItems: 'center',
