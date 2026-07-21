@@ -13,7 +13,7 @@ import { useThemeColor } from '@/hooks/use-theme-color';
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: 'default' | 'body' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
 };
 
 /**
@@ -51,9 +51,11 @@ export function ThemedText({
 
   return (
     <Text
+      includeFontPadding={false}
       style={[
         { color },
         type === 'default' ? styles.default : undefined,
+        type === 'body' ? styles.body : undefined,
         type === 'title' ? styles.title : undefined,
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
         type === 'subtitle' ? styles.subtitle : undefined,
@@ -68,28 +70,39 @@ export function ThemedText({
 const styles = StyleSheet.create({
   default: {
     fontSize: 16,
-    lineHeight: 31,
+    lineHeight: 33,
     fontFamily: Fonts.sans,
+    paddingBottom: 2,
+  },
+  body: {
+    fontSize: 16,
+    lineHeight: 27,
+    fontFamily: Fonts.sans,
+    paddingBottom: 2,
   },
   defaultSemiBold: {
     fontSize: 15,
-    lineHeight: 24,
+    lineHeight: 26,
     fontFamily: Fonts.sansBold,
+    paddingBottom: 2,
   },
   title: {
     fontSize: 28,
-    lineHeight: 52,
+    lineHeight: 54,
     fontFamily: Fonts.sansBold,
+    paddingBottom: 2,
   },
   subtitle: {
     fontSize: 20,
     fontFamily: Fonts.sansBold,
-    lineHeight: 36,
+    lineHeight: 38,
+    paddingBottom: 2,
   },
   link: {
-    lineHeight: 30,
+    lineHeight: 32,
     fontSize: 16,
     color: '#0a7ea4',
     fontFamily: Fonts.sans,
+    paddingBottom: 2,
   },
 });

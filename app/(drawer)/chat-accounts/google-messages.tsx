@@ -22,7 +22,7 @@ export default function GoogleMessagesScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title">Google Messages</ThemedText>
-      <ThemedText style={styles.body}>
+      <ThemedText type="body" style={styles.body}>
         Orbits would like to access your Google Messages account.
       </ThemedText>
     </ThemedView>
@@ -37,7 +37,5 @@ const styles = StyleSheet.create({
   },
   body: {
     marginTop: 16,
-    fontSize: 16,
-    lineHeight: 24,
   },
 });

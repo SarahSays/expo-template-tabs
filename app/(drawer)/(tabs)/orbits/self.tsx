@@ -143,7 +143,8 @@ const styles = StyleSheet.create({
   detailText: {
     fontFamily: Fonts.sans,
     fontSize: 15,
-    lineHeight: 22,
+    lineHeight: 26,
+    paddingBottom: 2,
   },
   actionRow: {
     flexDirection: 'row',

@@ -29,6 +29,7 @@
  */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useRef } from 'react';
 import { Alert, Animated, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
@@ -57,12 +58,12 @@ export default function CadencesScreen() {
   const ITEMS = [
     { label: 'Daily', caption: '1 day' },
     { label: 'Weekly', caption: '1 week' },
-    { label: 'Monthly', caption: '1 month' },
+    { label: 'Monthly', caption: 'Moon' },
     { label: '3 months', caption: 'Mercury' },
     { label: '6 months', caption: 'Venus' },
     { label: '1 year', caption: 'Earth' },
     { label: '2 years', caption: 'Mars' },
-    { label: '5 years', caption: '5 years' },
+    { label: '5 years', caption: 'Asteroid Belt' },
     { label: '10 years', caption: 'Jupiter' },
   ];
 
@@ -81,12 +82,15 @@ export default function CadencesScreen() {
    * rendering cost on low-end devices.
    */
   const STARS = useRef(
-    Array.from({ length: 29 }).map(() => ({
-      x: Math.random() * width,
-      y: Math.random() * (height * 1.6),
-      size: Math.random() * 2.5 + 0.8,
-      factor: Math.random() * 0.6 + 0.1,
-    }))
+    Array.from({ length: 29 }).map(() => {
+      const y = 180 + Math.random() * (height * 1.6 - 180);
+      return {
+        x: Math.random() * width,
+        y,
+        size: Math.random() * 2.5 + 0.8,
+        factor: Math.random() * 0.6 + 0.1,
+      };
+    })
   ).current;
 
   function getPlanetStyle(label: string) {
@@ -99,11 +103,6 @@ export default function CadencesScreen() {
         return { width: 32, height: 32, borderRadius: 16, backgroundColor: '#3B82F6' };
       case '2 years':
         return { width: 16, height: 16, borderRadius: 8, backgroundColor: '#D97706' };
-      case '5 years':
-        return { width: 56, height: 56, borderRadius: 28, backgroundColor: '#B0AFA6' };
-      case '10 years':
-        // Jupiter
-        return { width: 110, height: 110, borderRadius: 55, backgroundColor: '#F59E0B' };
       default:
         return { width: 20, height: 20, borderRadius: 10, backgroundColor: '#F3C94D' };
     }
@@ -205,14 +204,18 @@ export default function CadencesScreen() {
               }}
             >
               <View style={[styles.card, { height: itemHeight }]}>
-                {getPlanetEmoji(it.label) ? (
+                {it.label === '10 years' ? (
+                  <Image
+                    source={require('@/assets/images/jupiter-9.svg')}
+                    style={styles.planetAsset}
+                    contentFit="contain"
+                  />
+                ) : getPlanetEmoji(it.label) ? (
                   <ThemedText style={styles.planetEmoji}>{getPlanetEmoji(it.label)}</ThemedText>
                 ) : (
                   <View style={[styles.planetCircle, planetStyle]} />
                 )}
-                {!getPlanetEmoji(it.label) && (
-                  <ThemedText type="subtitle" style={styles.cardLabel}>{it.label}</ThemedText>
-                )}
+                <ThemedText type="subtitle" style={styles.cardLabel}>{it.label}</ThemedText>
                 <ThemedText style={styles.cardCaption}>{it.caption}</ThemedText>
               </View>
             </Pressable>
@@ -244,6 +247,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3C94D',
     marginBottom: 12,
   },
+  planetAsset: {
+    width: 126,
+    height: 126,
+    marginBottom: 8,
+  },
   cardLabel: {
     fontSize: 20,
     color: '#F8FAFC',
@@ -253,18 +261,21 @@ const styles = StyleSheet.create({
   cardCaption: {
     fontSize: 16,
     color: '#E2E8F0',
-    lineHeight: 22,
+    lineHeight: 24,
     textAlign: 'center',
-    marginTop: 4,
+    marginTop: 6,
+    paddingBottom: 2,
   },
   title: {
     marginBottom: 12,
   },
   planetEmoji: {
     fontSize: 40,
-    lineHeight: 50,
+    lineHeight: 52,
     textAlign: 'center',
-    marginBottom: 4,
+    marginBottom: 2,
+    paddingBottom: 8,
+    includeFontPadding: false,
   },
   sunOrbitWrapper: {
     alignItems: 'center',

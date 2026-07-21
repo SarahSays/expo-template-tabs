@@ -3,9 +3,9 @@
  *
  * File-level documentation comment.
  */
-import { StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { StyleSheet } from 'react-native';
 
 /**
  * HelpScreen component.
@@ -16,7 +16,7 @@ export default function HelpScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title">Help</ThemedText>
-      <ThemedText style={styles.body}>
+      <ThemedText type="body" style={styles.body}>
         Find answers, tips, and support resources for using the app.
       </ThemedText>
     </ThemedView>
@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
   },
   body: {
     marginTop: 16,
-    fontSize: 16,
-    lineHeight: 24,
+
   },
 });

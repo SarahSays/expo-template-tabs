@@ -1,7 +1,13 @@
 /**
- * pinch-zoom.tsx
+ * HistoryScreen
  *
- * File-level documentation comment.
+ * This screen renders a GitHub-style contribution grid for the last 365 days.
+ *
+ * The current implementation is intentionally demo-oriented: it uses generated
+ * placeholder data instead of a live API so the layout can be styled and
+ * validated without backend dependencies. If you later swap in real activity
+ * data, keep the shape of `DayCell` (`date` + `count`) and preserve the
+ * weekly/monthly layout contract below.
  */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -20,6 +26,15 @@ type DayCell = {
   count: number;
 };
 
+/**
+ * Demo data generator for the activity grid.
+ *
+ * Keep this deterministic in spirit but randomized enough to resemble a real
+ * person's sparse usage pattern: quiet stretches, occasional bursts, and a
+ * few scattered high-activity days. If future changes need this to be driven
+ * by real data, replace the body of this function with a fetch/transform step
+ * that still returns the same `DayCell[]` shape.
+ */
 function generatePlaceholderDays(days = 365): DayCell[] {
   const today = new Date();
   const start = new Date(today);
@@ -60,6 +75,14 @@ function generatePlaceholderDays(days = 365): DayCell[] {
   return out;
 }
 
+/**
+ * Groups a flat list of days into weekly columns.
+ *
+ * The layout expects one `week` array to correspond to one vertical column in
+ * the grid. Each week is later rendered as seven cells (Sunday through
+ * Saturday), but the day order is intentionally normalized by the weekday map
+ * used in the JSX below.
+ */
 function chunkIntoWeeks(days: DayCell[]) {
   const weeks: DayCell[][] = [];
   let currentWeek: DayCell[] = [];
@@ -76,8 +99,17 @@ function chunkIntoWeeks(days: DayCell[]) {
   return weeks;
 }
 
+// Visual scale used by the contribution cells.
+// Keep the order stable: empty -> low -> medium -> high -> peak.
 const COLOR_SCALE = ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127'];
 
+/**
+ * Converts an activity count into the grid color.
+ *
+ * `count` is a placeholder proxy for reach-outs or interactions. If the real
+ * data source changes semantics, update this mapping rather than rewriting the
+ * rendering logic.
+ */
 function colorForCount(count: number) {
   if (count <= 0) return COLOR_SCALE[0];
   if (count === 1) return COLOR_SCALE[1];
@@ -88,15 +120,23 @@ function colorForCount(count: number) {
 
 export default function HistoryScreen() {
   const { width } = useWindowDimensions();
+
+  // The grid is currently driven by demo placeholder data for one year.
+  // When real data is introduced, keep this `useMemo` shape so the screen
+  // stays responsive and the chunks don't recompute on every render.
   const days = React.useMemo(() => generatePlaceholderDays(365), []);
   const weeks = React.useMemo(() => chunkIntoWeeks(days), [days]);
 
+  // Responsive sizing rules:
+  // - cap the number of visible columns to a single year of weekly buckets
+  // - keep the cell size between a minimum and maximum range
+  // - leave room for weekday labels and horizontal scrolling
   const maxColumns = Math.min(weeks.length, 52);
   const boxSize = Math.max(12, Math.min(18, Math.floor((width - 72) / maxColumns)));
   const boxMargin = 4;
   const labelWidth = 36;
   const dayRowHeight = boxSize + boxMargin;
-  const monthHeaderHeight = 24;
+  const monthHeaderHeight = 28;
 
   const weekdays = ['Mon', 'Wed', 'Fri'];
 
@@ -109,7 +149,14 @@ export default function HistoryScreen() {
       </ThemedText>
 
       <ThemedView style={styles.gridCard}>
-        {/* <ThemedText type="subtitle">Contributions in the last year</ThemedText> */}
+        {/*
+          The calendar grid is composed of two stacked layers:
+          1) a month header row across the top
+          2) a horizontally scrollable body with weekday labels on the left
+
+          If you make layout changes here, keep the weekday labels and month
+          headers aligned with the same `boxSize`/`boxMargin` math below.
+        */}
 
         {/* Months header + grid */}
         <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
@@ -229,11 +276,13 @@ const styles = StyleSheet.create({
   monthLabel: {
     fontSize: 12,
     fontWeight: '600',
+    paddingBottom: 2,
   },
   description: {
     marginTop: 8,
     fontSize: 14,
-    lineHeight: 20,
+    lineHeight: 24,
     opacity: 0.85,
+    paddingBottom: 2,
   },
 });

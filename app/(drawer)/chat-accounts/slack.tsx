@@ -21,7 +21,7 @@ export default function SlackScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title">Slack</ThemedText>
-      <ThemedText style={styles.body}>
+      <ThemedText type="body" style={styles.body}>
         Orbits would like to access your Slack account.
       </ThemedText>
     </ThemedView>
@@ -36,7 +36,5 @@ const styles = StyleSheet.create({
   },
   body: {
     marginTop: 16,
-    fontSize: 16,
-    lineHeight: 24,
   },
 });

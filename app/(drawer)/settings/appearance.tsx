@@ -3,9 +3,9 @@
  *
  * File-level documentation comment.
  */
-import { StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { StyleSheet } from 'react-native';
 
 /**
  * AppearanceScreen component.
@@ -16,7 +16,7 @@ export default function AppearanceScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title">Appearance</ThemedText>
-      <ThemedText style={styles.body}>
+      <ThemedText type="body" style={styles.body}>
         Change theme, colors, and visual preferences to make the app feel like yours.
       </ThemedText>
     </ThemedView>
@@ -31,7 +31,5 @@ const styles = StyleSheet.create({
   },
   body: {
     marginTop: 16,
-    fontSize: 16,
-    lineHeight: 24,
   },
 });

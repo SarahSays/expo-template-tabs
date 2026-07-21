@@ -16,7 +16,7 @@ export default function MessengerScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title">Messenger</ThemedText>
-      <ThemedText style={styles.body}>
+      <ThemedText type="body" style={styles.body}>
         Orbits would like to access your Messenger account.
       </ThemedText>
     </ThemedView>
@@ -31,7 +31,5 @@ const styles = StyleSheet.create({
   },
   body: {
     marginTop: 16,
-    fontSize: 16,
-    lineHeight: 24,
   },
 });
