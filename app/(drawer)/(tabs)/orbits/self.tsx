@@ -129,8 +129,6 @@ const styles = StyleSheet.create({
   },
   body: {
     marginTop: 16,
-    fontSize: 16,
-    lineHeight: 24,
   },
   card: {
     marginTop: 24,

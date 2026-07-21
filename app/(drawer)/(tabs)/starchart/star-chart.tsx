@@ -1,7 +1,19 @@
 /**
- * star-chart.tsx
+ * StarChartScreen
  *
- * File-level documentation comment.
+ * This screen renders the animated “time slider” experience that maps a
+ * cadence selection into a simple solar-system-style visualization.
+ *
+ * The layout is intentionally compact and demo-friendly:
+ * - `progress` is the single source of truth for the current time bucket
+ * - the animated orbit styles derive their geometry from that progress value
+ * - `timeLabel` is updated in reaction to progress changes so the visible
+ *   UI label stays in sync with the underlying animation state
+ * - when a `friendId` route param is present, the slider can save the chosen
+ *   cadence back to the in-memory friends store
+ *
+ * If you need to change the visual timing or labels, start with the slider
+ * thresholds in `useAnimatedReaction` and the animation interpolations below.
  */
 import { useState } from 'react';
 import { Platform, StyleSheet, TouchableOpacity, useWindowDimensions, View } from 'react-native';
@@ -20,6 +32,8 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ScrollView } from 'react-native-gesture-handler';
 
+// Shared geometry constants used by the slider track and the animated scene.
+// Keep these together so visual tuning stays easy to reason about.
 const THUMB_SIZE = 34;
 const TRACK_HEIGHT = 18;
 const SCENE_SIZE = 320;
@@ -33,8 +47,14 @@ export default function StarchartScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const isDark = colorScheme === 'dark';
   const { width } = useWindowDimensions();
+
+  // The slider track stays responsive to screen width, while the scene remains
+  // clipped to a sensible maximum size for both phones and larger displays.
   const trackWidth = Math.min(540, Math.max(280, width - 40));
   const sceneSize = Math.min(SCENE_SIZE, width - 40);
+
+  // `timeLabel` is the visible copy shown to the user.
+  // Keep it synchronized with `progress` via the animated reaction below.
   const [timeLabel, setTimeLabel] = useState('1 Day');
   const params = useLocalSearchParams();
   const router = useRouter();
@@ -43,17 +63,37 @@ export default function StarchartScreen() {
   const [trackLeft, setTrackLeft] = useState(0);
   const progress = useSharedValue(0);
 
+  /**
+   * Normalizes a raw touch position into the shared animation progress value.
+   *
+   * All other parts of the screen read from `progress`, so changing this mapper
+   * is the easiest way to tune the slider behavior globally.
+   */
   const updateProgress = (x: number) => {
     const next = Math.min(trackWidth - THUMB_SIZE, Math.max(0, x));
     progress.value = next / (trackWidth - THUMB_SIZE);
   };
 
+  /**
+   * Converts gesture events into a slider position.
+   *
+   * The `trackLeft` measurement comes from the `onLayout` callback on the
+   * slider container. Use that value for all future drag logic changes.
+   */
   const handleSliderGesture = (event: any) => {
     const pageX = event.nativeEvent.pageX ?? event.nativeEvent.locationX;
     const x = pageX - trackLeft;
     updateProgress(x);
   };
 
+  /**
+   * Drives the visible label text from the shared progress state.
+   *
+   * The thresholds below correspond to the slider's human-readable cadence
+   * buckets. If you want to add a new bucket or rename one, update this
+   * mapping and keep the visual interpolation ranges in the animation styles
+   * aligned with the same order.
+   */
   useAnimatedReaction(
     () => progress.value,
     (value, previousValue) => {
@@ -85,6 +125,8 @@ export default function StarchartScreen() {
     }
   );
 
+  // Scene-level animation: makes the whole solar system shrink as the slider
+  // moves to the far-right end of the timeline.
   const sceneStyle = useAnimatedStyle(() => {
     const scale = interpolate(progress.value, [0, 1], [1, 0.55]);
     return {
@@ -92,6 +134,7 @@ export default function StarchartScreen() {
     };
   });
 
+  // Sun animation: grows and drifts as the chosen cadence increases.
   const sunStyle = useAnimatedStyle(() => {
     const size = interpolate(progress.value, [0, 0.4, 1], [42, 62, 90]);
     const x = interpolate(progress.value, [0, 1], [24, 110]);
@@ -105,6 +148,8 @@ export default function StarchartScreen() {
     };
   });
 
+  // Earth orbit ring grows with the slider and fades in as the scene becomes
+  // more “long-range” in duration.
   const earthOrbitStyle = useAnimatedStyle(() => {
     const orbit = interpolate(progress.value, [0.2, 1], [0, 132]);
     const opacity = interpolate(progress.value, [0.15, 0.3], [0, 1]);
@@ -117,6 +162,7 @@ export default function StarchartScreen() {
     };
   });
 
+  // Earth body: shrinks while also orbiting around the sun.
   const earthStyle = useAnimatedStyle(() => {
     const size = interpolate(progress.value, [0, 1], [52, 14]);
     const orbit = interpolate(progress.value, [0, 1], [0, 132]);
@@ -131,6 +177,8 @@ export default function StarchartScreen() {
     };
   });
 
+  // Moon animation: orbits around the moving earth position to simulate the
+  // “satellite” motion in the visual metaphor.
   const moonStyle = useAnimatedStyle(() => {
     const earthOrbit = interpolate(progress.value, [0, 1], [0, 132]);
     const baseOrbit = interpolate(progress.value, [0, 1], [18, 40]);
@@ -149,6 +197,8 @@ export default function StarchartScreen() {
     };
   });
 
+  // Moon orbit ring mirrors the earth orbit so the moon appears to move in a
+  // stable, scaled orbit throughout the journey.
   const moonOrbitStyle = useAnimatedStyle(() => {
     const orbit = interpolate(progress.value, [0, 1], [18, 40]);
     const earthOrbit = interpolate(progress.value, [0, 1], [0, 132]);
@@ -231,7 +281,12 @@ export default function StarchartScreen() {
           <ThemedText>{timeLabel}</ThemedText>
         </View>
 
-        {/* Save cadence for a specific friend when `friendId` param is provided */}
+        {/*
+         * Save cadence for a specific friend when a `friendId` route param is
+         * present. This screen is used from the contact flow, so keep the save
+         * action aligned with the friend store contract in
+         * `contacts/_friendsStore.ts`.
+         */}
         {friendId ? (
           <View style={{ marginTop: 16 }}>
             <ThemedText>Save cadence for {friend ? friend.name : 'contact'}</ThemedText>

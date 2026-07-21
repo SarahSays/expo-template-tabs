@@ -33,7 +33,7 @@ export default function LogOutScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title">Log Out</ThemedText>
-      <ThemedText style={styles.body}>
+      <ThemedText type="body" style={styles.body}>
         Are you sure you want to log out?
       </ThemedText>
     </ThemedView>
@@ -48,7 +48,5 @@ const styles = StyleSheet.create({
   },
   body: {
     marginTop: 16,
-    fontSize: 16,
-    lineHeight: 24,
   },
 });

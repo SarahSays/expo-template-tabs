@@ -27,7 +27,7 @@ export default function GroupsScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title">Groups</ThemedText>
-      <ThemedText style={styles.body}>
+      <ThemedText type="body" style={styles.body}>
         See list view of groups here. Groups can help you 
         organize your connections into different categories, 
         such as family, close friends, work colleagues, or hobby groups.
@@ -44,8 +44,5 @@ const styles = StyleSheet.create({
   },
   body: {
     marginTop: 16,
-    fontSize: 16,
-    lineHeight: 28,
-    paddingBottom: 4,
   },
 });
