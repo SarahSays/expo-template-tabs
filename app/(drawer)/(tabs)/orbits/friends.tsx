@@ -48,17 +48,34 @@ export default function FriendsScreen() {
             style={({ pressed }) => [styles.row, pressed ? styles.rowPressed : null]}
             onPress={() => router.push(`/orbits/contacts/${f.id}`)}
           >
-            <View style={styles.rowText}>
-              <View style={styles.statusRow}>
-                <View
-                  style={[
-                    styles.statusDot,
-                    f.status === 'online' ? styles.onlineDot : styles.offlineDot,
-                  ]}
-                />
-                <ThemedText type="subtitle" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>{f.name}</ThemedText>
+            <View style={styles.rowContent}>
+              <View
+                style={[
+                  styles.statusDot,
+                  f.status === 'online' ? styles.onlineDot : styles.offlineDot,
+                ]}
+              />
+              <View style={styles.rowMeta}>
+                <ThemedText
+                  type="defaultSemiBold"
+                  lightColor="#2B0F55"
+                  style={{ fontFamily: fonts.sansBold, lineHeight: 20 }}
+                >
+                  {f.name}
+                </ThemedText>
+                <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 20 }}>
+                  •
+                </ThemedText>
+                <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 20 }}>
+                  {f.platform}
+                </ThemedText>
+                <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 20 }}>
+                  •
+                </ThemedText>
+                <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 20 }}>
+                  {f.cadence}
+                </ThemedText>
               </View>
-              <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{f.platform} · {f.cadence}</ThemedText>
             </View>
             <ThemedText type="link">›</ThemedText>
           </Pressable>
@@ -86,10 +103,22 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'rgba(0,0,0,0.04)',
     marginBottom: 10,
+    minHeight: 52,
   },
   rowPressed: { backgroundColor: 'rgba(0,0,0,0.08)' },
-  rowText: { flex: 1, marginRight: 12 },
-  statusRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 4 },
+  rowContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    marginRight: 12,
+  },
+  rowMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'nowrap',
+    gap: 6,
+    flex: 1,
+  },
   statusDot: { width: 10, height: 10, borderRadius: 5, marginRight: 8 },
   onlineDot: { backgroundColor: '#34D399' },
   offlineDot: { backgroundColor: '#9CA3AF' },

@@ -45,6 +45,9 @@ export const Colors = {
     drawerInactiveText: '#6A5FA8',
     tabIconDefault: 'midnightblue',
     tabIconSelected: tintColorLight,
+    bubbleBackground: '#D6E4FF',
+    bubbleBackgroundPressed: '#C9DAF7',
+    bubbleText: '#1F2937',
   },
   dark: {
     text: '#F0E6FF',
@@ -59,6 +62,9 @@ export const Colors = {
     drawerInactiveText: '#C7B7FF',
     tabIconDefault: '#C7B7FF',
     tabIconSelected: tintColorDark,
+    bubbleBackground: '#24304A',
+    bubbleBackgroundPressed: '#334053',
+    bubbleText: '#F6F8FF',
   },
 };
 

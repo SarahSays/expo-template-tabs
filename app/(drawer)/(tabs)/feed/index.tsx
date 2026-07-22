@@ -10,7 +10,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
 const menuItems = [
-  { title: 'Thermometer', description: 'Keep track of contact temperature', href: '/feed/feed' },
+  { title: 'Note to self', description: 'Keep track of notes', href: '/feed/notes' },
 
 ] as const;
 
@@ -20,17 +20,17 @@ const menuItems = [
  * Configuration object for screen options.
  */
  export const screenOptions = {
-  title: 'Feed',
+  title: 'Notes',
   headerBackTitle: '',
   headerShown: true,
 }; 
 
 /**
- * FeedScreen component.
+ * NotesScreen component.
  *
- * Renders the UI for the Feed screen.
+ * Renders the UI for the Notes screen.
  */
-export default function FeedScreen() {
+export default function NotesScreen() {
   const router = useRouter();
 
   return (

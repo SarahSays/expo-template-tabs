@@ -51,7 +51,6 @@ export function ThemedText({
 
   return (
     <Text
-      includeFontPadding={false}
       style={[
         { color },
         type === 'default' ? styles.default : undefined,
