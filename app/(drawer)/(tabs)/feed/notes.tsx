@@ -16,11 +16,10 @@
  * store with a real API or a repository layer and keep the UI contract (the
  * same note shape and timestamped bubbles) intact.
  */
+import { KeyboardAvoidingContainer } from '@/components/keyboard-avoiding-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  KeyboardAvoidingView,
-  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -202,11 +201,7 @@ export default function NotesScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={[styles.keyboardContainer, { backgroundColor: theme.background }]}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Math.max(insets.bottom + 88, 110)}
-    >
+    <KeyboardAvoidingContainer style={[styles.keyboardContainer, { backgroundColor: theme.background }]}> 
       <ThemedView style={[styles.container, { backgroundColor: theme.background }]}>
         <ThemedText type="title">Note to self</ThemedText>
 
@@ -277,7 +272,7 @@ export default function NotesScreen() {
           </View>
         </View>
       </ThemedView>
-    </KeyboardAvoidingView>
+    </KeyboardAvoidingContainer>
   );
 }
 

@@ -13,12 +13,12 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import React from 'react';
 import {
-    Alert,
-    ScrollView,
-    StyleSheet,
-    TouchableOpacity,
-    useWindowDimensions,
-    View
+  Alert,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+  View
 } from 'react-native';
 
 type DayCell = {
@@ -134,6 +134,7 @@ export default function HistoryScreen() {
   const maxColumns = Math.min(weeks.length, 52);
   const boxSize = Math.max(12, Math.min(18, Math.floor((width - 72) / maxColumns)));
   const boxMargin = 4;
+  const monthLabelWidth = Math.max(boxSize + boxMargin + 10, 32);
   const labelWidth = 36;
   const dayRowHeight = boxSize + boxMargin;
   const monthHeaderHeight = 28;
@@ -182,7 +183,7 @@ export default function HistoryScreen() {
                   const prevMonth = prevFirst ? prevFirst.getMonth() : -1;
                   const show = firstDay && firstDay.getMonth() !== prevMonth;
                   return (
-                    <View key={colIdx} style={{ width: boxSize + boxMargin, alignItems: 'center' }}>
+                    <View key={colIdx} style={{ width: monthLabelWidth, alignItems: 'center' }}>
                       {show ? <ThemedText style={styles.monthLabel}>{monthLabel}</ThemedText> : <View style={{ height: monthHeaderHeight }} />}
                     </View>
                   );
@@ -275,6 +276,7 @@ const styles = StyleSheet.create({
   },
   monthLabel: {
     fontSize: 12,
+    lineHeight: 20,
     fontWeight: '600',
     paddingBottom: 2,
   },

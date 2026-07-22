@@ -45,7 +45,10 @@ export default function FriendsScreen() {
         {friends.map((f) => (
           <Pressable
             key={f.id}
-            style={({ pressed }) => [styles.row, pressed ? styles.rowPressed : null]}
+            style={({ pressed }) => [
+              styles.row,
+              { backgroundColor: pressed ? theme.bubbleBackgroundPressed : theme.bubbleBackground },
+            ]}
             onPress={() => router.push(`/orbits/contacts/${f.id}`)}
           >
             <View style={styles.rowContent}>
@@ -59,20 +62,20 @@ export default function FriendsScreen() {
                 <ThemedText
                   type="defaultSemiBold"
                   lightColor="#2B0F55"
-                  style={{ fontFamily: fonts.sansBold, lineHeight: 20 }}
+                  style={{ fontFamily: fonts.sansBold, lineHeight: 27 }}
                 >
                   {f.name}
                 </ThemedText>
-                <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 20 }}>
+                <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 27 }}>
                   •
                 </ThemedText>
-                <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 20 }}>
+                <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 27 }}>
                   {f.platform}
                 </ThemedText>
-                <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 20 }}>
+                <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 27 }}>
                   •
                 </ThemedText>
-                <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 20 }}>
+                <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 27 }}>
                   {f.cadence}
                 </ThemedText>
               </View>

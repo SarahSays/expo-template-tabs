@@ -3,16 +3,17 @@
  *
  * File-level documentation comment.
  */
+import { KeyboardAvoidingContainer } from '@/components/keyboard-avoiding-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import React, { useState } from 'react';
 import {
-  Modal,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-  useColorScheme,
+    Modal,
+    StyleSheet,
+    TextInput,
+    TouchableOpacity,
+    View,
+    useColorScheme,
 } from 'react-native';
 
 // Keep RecItem for future typed data models (used in planned persistence)
@@ -92,11 +93,12 @@ export default function AddaRecScreen() {
   const isDark = colorScheme === 'dark';
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title">Add a Recommendation</ThemedText>
+    <KeyboardAvoidingContainer style={styles.container}>
+      <ThemedView style={styles.container}>
+        <ThemedText type="title">Add a Recommendation</ThemedText>
 
-      <ThemedView style={styles.section}>
-        <ThemedText type="subtitle">Title</ThemedText>
+        <ThemedView style={styles.section}>
+          <ThemedText type="subtitle">Title</ThemedText>
         <TextInput
           value={title}
           onChangeText={setTitle}
@@ -179,7 +181,8 @@ export default function AddaRecScreen() {
           </View>
         </View>
       </Modal>
-    </ThemedView>
+      </ThemedView>
+    </KeyboardAvoidingContainer>
   );
 }
 

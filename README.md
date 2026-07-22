@@ -19,7 +19,7 @@ The current project includes:
 - Settings screens for appearance, privacy/security, and preferences
 - A `Star Chart` stack with pinch-to-zoom and sharing screens
 - A `Recs` stack for recommendations and awards
-- A `Feed` stack with placeholder feed screens
+- A `Feed` stack with a personal notes page and sample interaction feed
 
 ## What Changed
 
@@ -102,7 +102,7 @@ app/
 │   │   ├── feed/
 │   │   │   ├── _layout.tsx
 │   │   │   ├── index.tsx
-│   │   │   ├── feed.tsx
+│   │   │   ├── notes.tsx
 │   │   │   └── placeholder.tsx
 │   │   ├── starchart/
 │   │   │   ├── _layout.tsx

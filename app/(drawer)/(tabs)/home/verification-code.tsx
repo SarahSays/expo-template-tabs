@@ -3,9 +3,10 @@
  *
  * File-level documentation comment.
  */
+import { KeyboardAvoidingContainer } from '@/components/keyboard-avoiding-view';
 import { useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -37,9 +38,7 @@ export default function VerificationCodeScreen() {
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAvoidingContainer style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
           <View style={styles.headerSection}>
             <ThemedText type="title" style={styles.titleText}>Enter code</ThemedText>
@@ -84,7 +83,7 @@ export default function VerificationCodeScreen() {
             </View>
           </View>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingContainer>
     </ThemedView>
   );
 }

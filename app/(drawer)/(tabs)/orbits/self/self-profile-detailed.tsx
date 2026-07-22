@@ -3,6 +3,7 @@
  *
  * File-level documentation comment.
  */
+import { KeyboardAvoidingContainer } from '@/components/keyboard-avoiding-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors, Fonts } from '@/constants/theme';
@@ -55,12 +56,13 @@ export default function SelfProfileDetailed() {
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
-        <View style={styles.headerRow}>
-          <ThemedText type="title" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>Profile (Nova Star)</ThemedText>
-        </View>
-        <View style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#161423' : '#f2f2f7' }]}> 
-        <View style={styles.section}>
+      <KeyboardAvoidingContainer>
+        <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+          <View style={styles.headerRow}>
+            <ThemedText type="title" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>Profile (Nova Star)</ThemedText>
+          </View>
+          <View style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#161423' : '#f2f2f7' }]}> 
+            <View style={styles.section}>
           <ThemedText type="subtitle" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>Birthday</ThemedText>
           <TouchableOpacity
             style={[styles.input, { backgroundColor: colorScheme === 'dark' ? '#1f1c2a' : '#fff', justifyContent: 'center' }]}
@@ -134,6 +136,7 @@ export default function SelfProfileDetailed() {
         </View>
       </View>
       </ScrollView>
+      </KeyboardAvoidingContainer>
     </ThemedView>
   );
 }

@@ -80,7 +80,8 @@ export default function RecsScreen() {
               key={item.title}
               style={({ pressed }) => [
                 styles.menuItem,
-                pressed ? styles.menuItemPressed : null,
+                { backgroundColor: theme.bubbleBackground },
+                pressed && { backgroundColor: theme.bubbleBackgroundPressed },
               ]}
               onPress={() => router.push(item.href)}>
               <View style={styles.menuText}>
@@ -94,7 +95,7 @@ export default function RecsScreen() {
         <View style={{ marginTop: 6 }}>
           <ThemedText type="subtitle">Sample Recommendations:</ThemedText>
           {recommendations.map((rec) => (
-            <View key={rec.title} style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#151213' : '#f2f2f7' }]}>
+            <View key={rec.title} style={[styles.card, { backgroundColor: theme.bubbleBackground }]}> 
               <ThemedText style={[styles.cardTitle, { color: theme.text, fontFamily: fonts.sansBold }]}>{rec.title}</ThemedText>
               <ThemedText style={[styles.cardDetail, { color: theme.icon, fontFamily: fonts.sans }]}>{rec.type} · {rec.platform}</ThemedText>
               <ThemedText style={[styles.cardFrom, { color: theme.drawerInactiveText, fontFamily: fonts.sans }]}>Recommended by {rec.from}</ThemedText>

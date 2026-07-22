@@ -12,13 +12,14 @@
  */
 
 import { ExternalLink } from '@/components/external-link';
+import { KeyboardAvoidingContainer } from '@/components/keyboard-avoiding-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from 'react-native';
 
 export const screenOptions = {
   title: '',
@@ -48,9 +49,7 @@ export default function EmailEntryScreen() {
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAvoidingContainer style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
           <View style={styles.heroSection}>
             <ThemedText type="title" style={styles.titleText}>
@@ -85,7 +84,7 @@ export default function EmailEntryScreen() {
             <ThemedText style={[styles.policyLink, { color: theme.tint }]}>Learn about security and privacy</ThemedText>
           </ExternalLink>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingContainer>
     </ThemedView>
   );
 }

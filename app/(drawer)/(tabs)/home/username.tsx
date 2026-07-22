@@ -3,9 +3,10 @@
  *
  * File-level documentation comment.
  */
+import { KeyboardAvoidingContainer } from '@/components/keyboard-avoiding-view';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -35,9 +36,7 @@ export default function UsernameScreen() {
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAvoidingContainer style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
           <View style={styles.heroSection}>
             <ThemedText type="title" style={styles.titleText}>Pick a Username</ThemedText>
@@ -65,7 +64,7 @@ export default function UsernameScreen() {
             </Pressable>
           </View>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingContainer>
     </ThemedView>
   );
 }
