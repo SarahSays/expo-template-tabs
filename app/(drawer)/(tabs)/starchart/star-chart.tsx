@@ -148,20 +148,6 @@ export default function StarchartScreen() {
     };
   });
 
-  // Earth orbit ring grows with the slider and fades in as the scene becomes
-  // more “long-range” in duration.
-  const earthOrbitStyle = useAnimatedStyle(() => {
-    const orbit = interpolate(progress.value, [0.2, 1], [0, 132]);
-    const opacity = interpolate(progress.value, [0.15, 0.3], [0, 1]);
-    return {
-      width: orbit * 2,
-      height: orbit * 2,
-      borderRadius: orbit,
-      opacity,
-      transform: [{ translateX: -orbit }, { translateY: -orbit }],
-    };
-  });
-
   // Earth body: shrinks while also orbiting around the sun.
   const earthStyle = useAnimatedStyle(() => {
     const size = interpolate(progress.value, [0, 1], [52, 14]);
@@ -194,23 +180,6 @@ export default function StarchartScreen() {
       height: size,
       borderRadius: size / 2,
       transform: [{ translateX: x }, { translateY: y }],
-    };
-  });
-
-  // Moon orbit ring mirrors the earth orbit so the moon appears to move in a
-  // stable, scaled orbit throughout the journey.
-  const moonOrbitStyle = useAnimatedStyle(() => {
-    const orbit = interpolate(progress.value, [0, 1], [18, 40]);
-    const earthOrbit = interpolate(progress.value, [0, 1], [0, 132]);
-    const angle = progress.value * Math.PI * 3.2;
-    const earthX = earthOrbit * Math.cos(angle);
-    const earthY = earthOrbit * Math.sin(angle);
-    return {
-      width: orbit * 2,
-      height: orbit * 2,
-      borderRadius: orbit,
-      opacity: interpolate(progress.value, [0, 0.25, 1], [0, 0.8, 1]),
-      transform: [{ translateX: earthX - orbit }, { translateY: earthY - orbit }],
     };
   });
 
@@ -269,8 +238,6 @@ export default function StarchartScreen() {
               ))}
             </View>
             <Animated.View style={[styles.sun, sunStyle]} />
-            <Animated.View style={[styles.earthOrbitRing, earthOrbitStyle]} />
-            <Animated.View style={[styles.moonOrbitRing, moonOrbitStyle]} />
             <Animated.View style={[styles.earth, earthStyle]} />
             <Animated.View style={[styles.moon, moonStyle]} />
           </Animated.View>
@@ -406,16 +373,6 @@ const styles = StyleSheet.create({
       shadowRadius: 22,
       shadowOffset: { width: 0, height: 0 },
     }),
-  },
-  earthOrbitRing: {
-    position: 'absolute',
-    borderWidth: 1,
-    borderColor: 'rgba(138, 193, 255, 0.32)',
-  },
-  moonOrbitRing: {
-    position: 'absolute',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.18)',
   },
   earth: {
     position: 'absolute',

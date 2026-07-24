@@ -7,6 +7,15 @@ import { ThemedView } from '@/components/themed-view';
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const activityPalette = ['#60A5FA', '#F8FAFC', '#FDE68A', '#FB923C', '#F87171'];
 
+/**
+ * Creates a deterministic shuffle of the activity palette.
+ *
+ * Why this exists:
+ * - We want each generated layer to feel organic instead of repeating the
+ *   exact same color order.
+ * - We still want visuals to be stable for a given input so re-renders do not
+ *   "jump" colors unexpectedly.
+ */
 const buildRandomizedPalette = (seed: number) => {
   const palette = [...activityPalette];
   let nextSeed = seed;
@@ -22,6 +31,14 @@ const buildRandomizedPalette = (seed: number) => {
   return palette;
 };
 
+/**
+ * Places the 12 month nodes in a circular, clock-like layout.
+ *
+ * Geometry notes for maintainers:
+ * - `centerY` is intentionally fixed so the lower legend has visual space.
+ * - `spiralRadius` introduces a subtle inward drift to avoid a perfect rigid
+ *   ring and keep the composition feeling more "galactic".
+ */
 const createMonthNodes = (fieldWidth: number, paletteSeed: number) => {
   const centerX = fieldWidth / 2;
   const centerY = 300;
@@ -46,6 +63,15 @@ const createMonthNodes = (fieldWidth: number, paletteSeed: number) => {
   });
 };
 
+/**
+ * Builds stars shown inside the selected month lens.
+ *
+ * Behavior contract:
+ * - Seed comes from the selected month index so each month keeps a distinct
+ *   but stable cluster signature.
+ * - Returned points are centered around (0, 0); the caller is responsible for
+ *   translating them into lens space.
+ */
 const createClusterStars = (seed: number) =>
   Array.from({ length: 30 }, (_, index) => {
     const angle = -(index / 30) * Math.PI * 2;
@@ -60,6 +86,11 @@ const createClusterStars = (seed: number) =>
     };
   });
 
+/**
+ * Generates the background star field for the full scene.
+ *
+ * This layer is static per width to avoid expensive per-frame recalculation.
+ */
 const createGalaxyDots = (fieldWidth: number) => {
   const centerX = fieldWidth / 2;
   const centerY = 310;
@@ -89,11 +120,20 @@ const createGalaxyDots = (fieldWidth: number) => {
  */
 export default function PinchZoomScreen() {
   const { width, height } = useWindowDimensions();
+  // Double-tap detection state is kept in refs to avoid re-renders while
+  // tracking short-lived gesture timing values.
   const lastTapRef = useRef<number | null>(null);
   const zoomTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // `zoomLevel` controls lens detail:
+  // 0 = month map only
+  // 1 = lens cluster visible
+  // 2 = lens cluster + orbit overlays
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState(0);
 
+  // Keep scene dimensions responsive while preserving the design's intended
+  // proportions and legend spacing on small screens.
   const fieldWidth = Math.min(width - 12, 900);
   const fieldHeight = Math.min(720, Math.max(580, height - 160));
   const paletteSeed = useMemo(() => Math.floor(Math.random() * 100000) + 1, []);
@@ -102,6 +142,14 @@ export default function PinchZoomScreen() {
   const clusterStars = useMemo(() => createClusterStars(selectedMonth ? monthNames.indexOf(selectedMonth) + 1 : 0), [selectedMonth]);
   const selectedNode = months.find((month) => month.id === selectedMonth);
 
+  /**
+   * Handles month press and double-tap-to-cycle zoom interaction.
+   *
+   * Interaction model:
+   * - First tap selects a month and opens zoom level 1.
+   * - Second tap on the same month (within the time window) advances zoom.
+   * - Zoom cycles through 0 -> 1 -> 2 -> 0 for quick demo exploration.
+   */
   const handleMonthPress = (monthId: string) => {
     const now = Date.now();
     const doubleTapWindow = 500;
@@ -129,6 +177,7 @@ export default function PinchZoomScreen() {
     <ThemedView style={[styles.container, { backgroundColor: '#050312' }]}>
       <View style={styles.fieldShell}>
         <View style={[styles.field, { backgroundColor: '#050312', width: fieldWidth, height: fieldHeight }]}>
+          {/* Full-scene background stars rendered behind all interactive layers. */}
           <View style={styles.galaxyBackdrop}>
             {galaxyDots.map((dot) => (
               <View
@@ -174,6 +223,10 @@ export default function PinchZoomScreen() {
             );
           })}
 
+          {/*
+           * Focus lens appears only once a month is selected.
+           * Level 1 shows cluster stars; level 2 adds ring overlays.
+           */}
           {selectedNode && zoomLevel >= 1 ? (
             <View style={[styles.clusterLens, { left: selectedNode.x - 118, top: selectedNode.y - 118 }]}>
               {clusterStars.map((star) => {
@@ -193,6 +246,7 @@ export default function PinchZoomScreen() {
                       },
                     ]}
                   >
+                    {/* Deeper zoom adds local orbit hints around each point. */}
                     {zoomLevel >= 2 ? (
                       <View
                         style={[
@@ -290,7 +344,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 12,
     right: 12,
-    bottom: 12,
+    // Keep legend pinned to the tab-bar boundary across screen sizes.
+    bottom: 0,
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderRadius: 14,
