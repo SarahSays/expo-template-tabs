@@ -6,6 +6,7 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors, Fonts } from '@/constants/theme';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useIsFocused } from '@react-navigation/native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -52,6 +53,11 @@ export default function ContactProfilePage() {
     ? CAPTION_TO_LABEL[friendState.cadence] || friendState.cadence
     : 'Not set';
 
+  const handleMessagePress = () => {
+    if (friendState?.name) {
+      router.push(`/feed/write-message?name=${encodeURIComponent(friendState.name)}`);
+    }
+  };
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
@@ -64,25 +70,32 @@ export default function ContactProfilePage() {
         <ThemedText type="subtitle" lightColor="#2B0F55" style={{ marginTop: 12 }}>Cadence</ThemedText>
         <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{displayCadence}</ThemedText>
 
-        <TouchableOpacity
-          onPress={() => router.push(`/orbits/cadences?friendId=${id}`)}
-          style={[styles.doneButton, { marginTop: 16 }]}
-        >
-          <ThemedText style={styles.doneButtonText}>How often do you want to talk?</ThemedText>
-        </TouchableOpacity>
+        <View style={styles.actionRow}>
+          <TouchableOpacity
+            onPress={handleMessagePress}
+            style={styles.messageBubble}
+          >
+            <MaterialCommunityIcons name="send" size={18} color="#D7DBFF" />
+          </TouchableOpacity>
 
-        {/* Removed the extra Done button which linked to a non-existing route.
-            Navigation now returns to Friends after saving from the Star Chart. */}
+          <TouchableOpacity
+            onPress={() => router.push(`/orbits/cadences?friendId=${id}`)}
+            style={styles.doneButton}
+          >
+            <ThemedText style={styles.doneButtonText}>How often do you want to talk?</ThemedText>
+          </TouchableOpacity>
+        </View>
       </View>
-
-      {/* Cadence selection now uses the Star Chart slider page */}
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
-  section: { marginTop: 16, paddingVertical: 12, paddingHorizontal: 12, borderRadius: 8 },
+  section: { marginTop: 16, paddingVertical: 18, paddingHorizontal: 18, borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.04)' },
+  actionRow: { marginTop: 24, gap: 12 },
+  messageBubble: { alignSelf: 'flex-start', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 999, backgroundColor: 'rgba(79,70,229,0.18)', borderWidth: 1, borderColor: 'rgba(79,70,229,0.32)' },
+  messageBubbleText: { color: '#D7DBFF', fontWeight: '700', fontSize: 14 },
   doneButton: { paddingVertical: 10, alignItems: 'center', backgroundColor: '#0A84FF', borderRadius: 6 },
   doneButtonText: { color: '#fff', fontWeight: '600', fontSize: 14 },
   modalOverlay: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' },
