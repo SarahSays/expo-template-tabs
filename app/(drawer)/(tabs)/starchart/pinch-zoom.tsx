@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Animated, Easing, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -141,6 +141,7 @@ export default function PinchZoomScreen() {
   // tracking short-lived gesture timing values.
   const lastTapRef = useRef<number | null>(null);
   const zoomTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const expansionAnim = useRef(new Animated.Value(0)).current;
 
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [expandedMonth, setExpandedMonth] = useState<string | null>(null);
@@ -165,6 +166,38 @@ export default function PinchZoomScreen() {
     () => (expandedMonthIndex >= 0 ? createFractalFlorets(expandedMonthIndex + 1) : []),
     [expandedMonthIndex],
   );
+  const expandedScale = expansionAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.42, 1],
+  });
+  const expandedOpacity = expansionAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  });
+
+  const expandMonthScene = (monthId: string) => {
+    setExpandedMonth(monthId);
+    expansionAnim.setValue(0);
+    Animated.timing(expansionAnim, {
+      toValue: 1,
+      duration: 260,
+      easing: Easing.out(Easing.exp),
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const collapseMonthScene = () => {
+    Animated.timing(expansionAnim, {
+      toValue: 0,
+      duration: 190,
+      easing: Easing.in(Easing.cubic),
+      useNativeDriver: true,
+    }).start(({ finished }) => {
+      if (finished) {
+        setExpandedMonth(null);
+      }
+    });
+  };
 
   /**
    * Handles month press and double-tap full-screen expansion.
@@ -182,14 +215,18 @@ export default function PinchZoomScreen() {
     }
 
     if (selectedMonth === monthId && lastTapRef.current && now - lastTapRef.current < doubleTapWindow) {
-      setExpandedMonth((current) => (current === monthId ? null : monthId));
+      if (expandedMonth === monthId) {
+        collapseMonthScene();
+      } else {
+        expandMonthScene(monthId);
+      }
       lastTapRef.current = null;
       return;
     }
 
     setSelectedMonth(monthId);
     if (expandedMonth && expandedMonth !== monthId) {
-      setExpandedMonth(null);
+      collapseMonthScene();
     }
     lastTapRef.current = now;
 
@@ -269,7 +306,16 @@ export default function PinchZoomScreen() {
           })}
 
           {expandedMonth ? (
-            <Pressable style={styles.expandedLayer} onPress={() => setExpandedMonth(null)}>
+            <Pressable style={styles.expandedLayerTouch} onPress={collapseMonthScene}>
+              <Animated.View
+                style={[
+                  styles.expandedLayer,
+                  {
+                    opacity: expandedOpacity,
+                    transform: [{ scale: expandedScale }],
+                  },
+                ]}
+              >
               <View style={styles.expandedHeader}>
                 <ThemedText style={styles.expandedTitle}>{expandedMonth}</ThemedText>
                 <ThemedText style={styles.expandedHint}>Tap anywhere to collapse</ThemedText>
@@ -320,6 +366,7 @@ export default function PinchZoomScreen() {
                   />
                 );
               })}
+              </Animated.View>
             </Pressable>
           ) : null}
 
@@ -456,6 +503,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(5, 7, 20, 0.94)',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  expandedLayerTouch: {
+    ...StyleSheet.absoluteFillObject,
   },
   expandedHeader: {
     position: 'absolute',
