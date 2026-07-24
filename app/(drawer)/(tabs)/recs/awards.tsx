@@ -5,7 +5,26 @@
  */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { StyleSheet } from 'react-native';
+import { Colors } from '@/constants/theme';
+import { StyleSheet, View, useColorScheme } from 'react-native';
+
+const demoAwards = [
+  {
+    title: 'Most Connected',
+    value: 'Avery',
+    details: '5 shared circles',
+  },
+  {
+    title: 'Most Frequently Contacted',
+    value: 'Billie',
+    details: '360 reach-outs this year',
+  },
+  {
+    title: 'Longest Streak',
+    value: 'Casey',
+    details: '365 consecutive days',
+  },
+];
 
 /**
  * AwardsScreen component.
@@ -13,17 +32,22 @@ import { StyleSheet } from 'react-native';
  * Renders the UI for the Awards screen.
  */
 export default function AwardsScreen() {
+  const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
+  const theme = Colors[colorScheme];
+
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={[styles.container, { backgroundColor: theme.background }]}>
       <ThemedText type="title">Awards</ThemedText>
-      <ThemedView style={styles.section}>
-        <ThemedText type="subtitle">Most Connected:</ThemedText>
-        <ThemedText>[Name] with [5] connections</ThemedText>
-        <ThemedText type="subtitle">Most Frequently Contacted:</ThemedText>
-        <ThemedText>[Name] with [360] reach-outs</ThemedText>
-        <ThemedText type="subtitle">Longest Streak</ThemedText>
-        <ThemedText>[Name] with [365] consecutive days</ThemedText>
-      </ThemedView>
+
+      <View style={styles.section}>
+        {demoAwards.map((item) => (
+          <View key={item.title} style={[styles.card, { backgroundColor: theme.bubbleBackground }]}>
+            <ThemedText type="subtitle">{item.title}</ThemedText>
+            <ThemedText style={styles.valueText}>{item.value}</ThemedText>
+            <ThemedText style={[styles.detailsText, { color: theme.drawerInactiveText }]}>{item.details}</ThemedText>
+          </View>
+        ))}
+      </View>
     </ThemedView>
   );
 }
@@ -31,13 +55,26 @@ export default function AwardsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
     justifyContent: 'flex-start',
   },
   section: {
     marginTop: 24,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    gap: 12,
+  },
+  card: {
+    borderRadius: 16,
+    paddingVertical: 14,
+    paddingHorizontal: 14,
+  },
+  valueText: {
+    marginTop: 6,
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  detailsText: {
+    marginTop: 4,
+    fontSize: 13,
   },
 });

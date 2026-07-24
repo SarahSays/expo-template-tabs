@@ -8,12 +8,11 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import React, { useState } from 'react';
 import {
-    Modal,
-    StyleSheet,
-    TextInput,
-    TouchableOpacity,
-    View,
-    useColorScheme,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+  useColorScheme,
 } from 'react-native';
 
 // Keep RecItem for future typed data models (used in planned persistence)
@@ -49,7 +48,6 @@ export default function AddaRecScreen() {
   const [media, setMedia] = useState('');
   const [platform, setPlatform] = useState('');
   const [friend, setFriend] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
   const [savedMessage, setSavedMessage] = useState('');
 
   function clearForm() {
@@ -88,14 +86,13 @@ export default function AddaRecScreen() {
     setTimeout(() => setSavedMessage(''), 1500);
   }
 
-  const sampleFriends = ['Avery', 'Billie', 'Casey', 'Darcy'];
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
 
   return (
-    <KeyboardAvoidingContainer style={styles.container}>
-      <ThemedView style={styles.container}>
-        <ThemedText type="title">Add a Recommendation</ThemedText>
+    <KeyboardAvoidingContainer style={[styles.container, { backgroundColor: isDark ? '#0F0A1A' : '#E8F4FF' }]}>
+      <ThemedView style={[styles.container, { backgroundColor: isDark ? '#0F0A1A' : '#E8F4FF' }]}>
+        <ThemedText type="title" style={styles.title}>Add a Recommendation</ThemedText>
 
         <ThemedView style={styles.section}>
           <ThemedText type="subtitle">Title</ThemedText>
@@ -135,12 +132,16 @@ export default function AddaRecScreen() {
         />
 
         <ThemedText type="subtitle">Who recommended it?</ThemedText>
-        <TouchableOpacity
-          onPress={() => setModalVisible(true)}
-          style={styles.pickerButton}
-        >
-          <ThemedText>{friend || 'Pick a Friend'}</ThemedText>
-        </TouchableOpacity>
+        <TextInput
+          value={friend}
+          onChangeText={setFriend}
+          placeholder="Write a Friend"
+          placeholderTextColor={isDark ? '#999' : '#666'}
+          style={[
+            styles.input,
+            { color: isDark ? '#fff' : '#000', backgroundColor: isDark ? '#111' : '#fff', borderColor: isDark ? '#333' : '#ccc' },
+          ]}
+        />
 
         <TouchableOpacity onPress={saveEntry} style={styles.doneButton}>
           <ThemedText type="subtitle" style={styles.doneButtonText}>Done</ThemedText>
@@ -154,33 +155,6 @@ export default function AddaRecScreen() {
       </ThemedView>
 
       {/* Persistent saved list currently removed for demo */}
-
-      <Modal visible={modalVisible} animationType="slide" transparent>
-        <View style={[styles.modalContainer, { backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.6)' }] }>
-          <View style={[styles.modalContent, { backgroundColor: isDark ? '#111' : '#fff', borderColor: '#0A84FF' }]}>
-            <ThemedText type="title">Pick a Friend</ThemedText>
-            {sampleFriends.map((item) => (
-              <TouchableOpacity
-                key={item}
-                onPress={() => {
-                  setFriend(item);
-                  setModalVisible(false);
-                }}
-                style={styles.friendRow}
-              >
-                <ThemedText>{item}</ThemedText>
-              </TouchableOpacity>
-            ))}
-
-            <TouchableOpacity
-              onPress={() => setModalVisible(false)}
-              style={[styles.doneButton, { marginTop: 12 }]}
-            >
-              <ThemedText style={styles.doneButtonText}>Close</ThemedText>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
       </ThemedView>
     </KeyboardAvoidingContainer>
   );
@@ -189,14 +163,18 @@ export default function AddaRecScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
     justifyContent: 'flex-start',
+  },
+  title: {
+    marginLeft: 16,
+    marginTop: 16,
   },
   section: {
     marginTop: 16,
     paddingVertical: 12,
     paddingHorizontal: 12,
     borderRadius: 8,
+    marginHorizontal: 16,
   },
   input: {
     borderWidth: 1,
@@ -205,14 +183,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginTop: 8,
     marginBottom: 12,
-  },
-  pickerButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderWidth: 1,
-    borderColor: '#0A84FF',
-    borderRadius: 6,
-    marginTop: 8,
   },
   doneButton: {
     marginTop: 16,
@@ -226,19 +196,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   savedBox: { marginTop: 12 },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.6)',
-  },
-  modalContent: {
-    margin: 20,
-    padding: 16,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#0A84FF',
-    borderRadius: 8,
-    maxHeight: '80%'
-  },
-  friendRow: { paddingVertical: 12, borderBottomWidth: 1, borderColor: '#eee' },
 });

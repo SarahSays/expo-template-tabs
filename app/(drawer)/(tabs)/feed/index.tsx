@@ -89,7 +89,7 @@ export default function FeedScreen() {
           {interactions.map((item) => (
             <Pressable
               key={item.id}
-              onPress={() => router.push(`/orbits/contacts/${item.id}`)}
+              onPress={() => router.push({ pathname: '/feed/write-message', params: { name: item.name } })}
               style={({ pressed }) => [
                 styles.interactionRow,
                 { backgroundColor: pressed ? theme.bubbleBackgroundPressed : theme.bubbleBackground },
