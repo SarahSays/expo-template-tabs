@@ -34,7 +34,7 @@ const buildRandomizedPalette = (seed: number) => {
 /**
  * Places the 12 month nodes in a circular, clock-like layout.
  *
- * Geometry notes for maintainers:
+ * Geometry notes:
  * - `centerY` is intentionally fixed so the lower legend has visual space.
  * - `spiralRadius` introduces a subtle inward drift to avoid a perfect rigid
  *   ring and keep the composition feeling more "galactic".
@@ -113,6 +113,23 @@ const createGalaxyDots = (fieldWidth: number) => {
 };
 
 /**
+ * Generates a deterministic set of tiny florets used to draw each month as a
+ * fractal-like head instead of a plain circle.
+ */
+const createFractalFlorets = (seed: number) =>
+  Array.from({ length: 11 }, (_, index) => {
+    const angle = index * 0.88 + (seed % 4) * 0.16;
+    const ring = 3 + Math.floor(index / 3) * 2.2;
+    return {
+      id: `${seed}-${index}`,
+      x: Math.cos(angle) * ring,
+      y: Math.sin(angle) * ring,
+      size: index === 0 ? 8 : index < 5 ? 6 : 4,
+      color: activityPalette[(seed + index) % activityPalette.length],
+    };
+  });
+
+/**
  * PinchZoomScreen component.
  *
  * Renders the star chart as a clock-face Milky Way concept where each month sits
@@ -125,12 +142,8 @@ export default function PinchZoomScreen() {
   const lastTapRef = useRef<number | null>(null);
   const zoomTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // `zoomLevel` controls lens detail:
-  // 0 = month map only
-  // 1 = lens cluster visible
-  // 2 = lens cluster + orbit overlays
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
-  const [zoomLevel, setZoomLevel] = useState(0);
+  const [expandedMonth, setExpandedMonth] = useState<string | null>(null);
 
   // Keep scene dimensions responsive while preserving the design's intended
   // proportions and legend spacing on small screens.
@@ -139,16 +152,26 @@ export default function PinchZoomScreen() {
   const paletteSeed = useMemo(() => Math.floor(Math.random() * 100000) + 1, []);
   const galaxyDots = useMemo(() => createGalaxyDots(fieldWidth), [fieldWidth]);
   const months = useMemo(() => createMonthNodes(fieldWidth, paletteSeed), [fieldWidth, paletteSeed]);
-  const clusterStars = useMemo(() => createClusterStars(selectedMonth ? monthNames.indexOf(selectedMonth) + 1 : 0), [selectedMonth]);
-  const selectedNode = months.find((month) => month.id === selectedMonth);
+  const expandedSurfaceWidth = Math.max(240, fieldWidth - 24);
+  const expandedSurfaceHeight = Math.max(260, fieldHeight - 140);
+  const expandedSurfaceCenterX = expandedSurfaceWidth / 2;
+  const expandedSurfaceCenterY = expandedSurfaceHeight / 2;
+  const expandedMonthIndex = expandedMonth ? monthNames.indexOf(expandedMonth) : -1;
+  const expandedClusterStars = useMemo(
+    () => createClusterStars(expandedMonthIndex >= 0 ? expandedMonthIndex + 1 : 0),
+    [expandedMonthIndex],
+  );
+  const expandedFlorets = useMemo(
+    () => (expandedMonthIndex >= 0 ? createFractalFlorets(expandedMonthIndex + 1) : []),
+    [expandedMonthIndex],
+  );
 
   /**
-   * Handles month press and double-tap-to-cycle zoom interaction.
+   * Handles month press and double-tap full-screen expansion.
    *
    * Interaction model:
-   * - First tap selects a month and opens zoom level 1.
-   * - Second tap on the same month (within the time window) advances zoom.
-   * - Zoom cycles through 0 -> 1 -> 2 -> 0 for quick demo exploration.
+   * - First tap selects a month.
+   * - Double tap on the same month toggles full-screen expansion.
    */
   const handleMonthPress = (monthId: string) => {
     const now = Date.now();
@@ -159,13 +182,15 @@ export default function PinchZoomScreen() {
     }
 
     if (selectedMonth === monthId && lastTapRef.current && now - lastTapRef.current < doubleTapWindow) {
-      setZoomLevel((current) => (current + 1) % 3);
+      setExpandedMonth((current) => (current === monthId ? null : monthId));
       lastTapRef.current = null;
       return;
     }
 
     setSelectedMonth(monthId);
-    setZoomLevel(1);
+    if (expandedMonth && expandedMonth !== monthId) {
+      setExpandedMonth(null);
+    }
     lastTapRef.current = now;
 
     zoomTimerRef.current = setTimeout(() => {
@@ -198,7 +223,10 @@ export default function PinchZoomScreen() {
           </View>
 
           {months.map((month) => {
-            const active = selectedMonth === month.id;
+            const active = selectedMonth === month.id || expandedMonth === month.id;
+            const monthIndex = monthNames.indexOf(month.id);
+            const florets = createFractalFlorets(monthIndex + 1);
+            const broccoliSize = month.size + 10;
             return (
               <Pressable
                 key={month.id}
@@ -206,11 +234,11 @@ export default function PinchZoomScreen() {
                 style={({ pressed }) => [
                   styles.monthStar,
                   {
-                    left: month.x - month.size / 2,
-                    top: month.y - month.size / 2,
-                    width: month.size,
-                    height: month.size,
-                    backgroundColor: month.tint,
+                    left: month.x - broccoliSize / 2,
+                    top: month.y - broccoliSize / 2,
+                    width: broccoliSize,
+                    height: broccoliSize,
+                    backgroundColor: 'transparent',
                     opacity: pressed ? 0.82 : 1,
                     borderColor: active ? '#ffffff' : 'transparent',
                     borderWidth: active ? 2 : 0,
@@ -218,52 +246,81 @@ export default function PinchZoomScreen() {
                   },
                 ]}
               >
-                <ThemedText style={styles.monthLabel}>{month.id}</ThemedText>
+                {florets.map((floret) => (
+                  <View
+                    key={floret.id}
+                    style={[
+                      styles.romanescoFloret,
+                      {
+                        left: broccoliSize / 2 - floret.size / 2 + floret.x,
+                        top: broccoliSize / 2 - floret.size / 2 + floret.y,
+                        width: floret.size,
+                        height: floret.size,
+                        backgroundColor: floret.color,
+                      },
+                    ]}
+                  />
+                ))}
+                <View style={styles.monthLabelChip}>
+                  <ThemedText style={styles.monthLabel}>{month.id}</ThemedText>
+                </View>
               </Pressable>
             );
           })}
 
-          {/*
-           * Focus lens appears only once a month is selected.
-           * Level 1 shows cluster stars; level 2 adds ring overlays.
-           */}
-          {selectedNode && zoomLevel >= 1 ? (
-            <View style={[styles.clusterLens, { left: selectedNode.x - 118, top: selectedNode.y - 118 }]}>
-              {clusterStars.map((star) => {
-                const x = Math.cos(star.angle) * star.radius;
-                const y = Math.sin(star.angle) * star.radius;
+          {expandedMonth ? (
+            <Pressable style={styles.expandedLayer} onPress={() => setExpandedMonth(null)}>
+              <View style={styles.expandedHeader}>
+                <ThemedText style={styles.expandedTitle}>{expandedMonth}</ThemedText>
+                <ThemedText style={styles.expandedHint}>Tap anywhere to collapse</ThemedText>
+              </View>
+
+              <View
+                style={[
+                  styles.expandedRomanesco,
+                  {
+                    width: expandedSurfaceWidth,
+                    height: expandedSurfaceHeight,
+                  },
+                ]}
+              >
+                {expandedFlorets.map((floret) => (
+                  <View
+                    key={`expanded-${floret.id}`}
+                    style={[
+                      styles.expandedFloret,
+                      {
+                        left: expandedSurfaceCenterX + floret.x * 14,
+                        top: expandedSurfaceCenterY + floret.y * 14,
+                        width: floret.size * 5,
+                        height: floret.size * 5,
+                        backgroundColor: floret.color,
+                      },
+                    ]}
+                  />
+                ))}
+              </View>
+
+              {expandedClusterStars.map((star) => {
+                const x = Math.cos(star.angle) * star.radius * 2.6;
+                const y = Math.sin(star.angle) * star.radius * 2.3;
                 return (
                   <View
-                    key={star.id}
+                    key={`expanded-cluster-${star.id}`}
                     style={[
                       styles.clusterStar,
                       {
-                        left: 118 + x,
-                        top: 118 + y,
-                        width: star.size,
-                        height: star.size,
+                        left: fieldWidth / 2 + x,
+                        top: fieldHeight / 2 + y + 24,
+                        width: star.size + 2,
+                        height: star.size + 2,
                         backgroundColor: star.glow,
                       },
                     ]}
-                  >
-                    {/* Deeper zoom adds local orbit hints around each point. */}
-                    {zoomLevel >= 2 ? (
-                      <View
-                        style={[
-                          styles.planetOrbit,
-                          {
-                            left: -6,
-                            top: -6,
-                            width: star.size + 12,
-                            height: star.size + 12,
-                          },
-                        ]}
-                      />
-                    ) : null}
-                  </View>
+                  />
                 );
               })}
-            </View>
+            </Pressable>
           ) : null}
 
           <View style={styles.legendCard}>
@@ -331,14 +388,30 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
     shadowOpacity: 0.5,
     shadowRadius: 14,
     shadowOffset: { width: 0, height: 0 },
   },
+  romanescoFloret: {
+    position: 'absolute',
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.14)',
+  },
   monthLabel: {
-    fontSize: 10,
+    fontSize: 9,
     fontWeight: '700',
-    color: '#1F1B2E',
+    color: '#ECF7FF',
+    textShadowColor: 'rgba(0, 0, 0, 0.55)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
+  monthLabelChip: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 999,
+    backgroundColor: 'rgba(6, 10, 24, 0.62)',
   },
   legendCard: {
     position: 'absolute',
@@ -378,15 +451,47 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.18)',
   },
-  clusterLens: {
+  expandedLayer: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(5, 7, 20, 0.94)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  expandedHeader: {
     position: 'absolute',
-    width: 236,
-    height: 236,
+    top: 22,
+    left: 20,
+    right: 20,
+    alignItems: 'center',
+    gap: 6,
+  },
+  expandedTitle: {
+    color: '#EAF5FF',
+    fontSize: 26,
+    fontWeight: '800',
+    letterSpacing: 0.6,
+  },
+  expandedHint: {
+    color: 'rgba(222, 234, 255, 0.84)',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  expandedRomanesco: {
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: 'rgba(203, 222, 255, 0.36)',
+    backgroundColor: 'rgba(128, 158, 255, 0.1)',
+    overflow: 'hidden',
+  },
+  expandedFloret: {
+    position: 'absolute',
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: '#C4B5FD',
-    backgroundColor: 'rgba(179, 157, 255, 0.12)',
-    overflow: 'hidden',
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    shadowColor: '#fff',
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 0 },
   },
   clusterStar: {
     position: 'absolute',
@@ -395,11 +500,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.45,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 0 },
-  },
-  planetOrbit: {
-    position: 'absolute',
-    borderRadius: 999,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.75)',
   },
 });
