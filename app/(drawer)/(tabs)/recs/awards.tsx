@@ -1,7 +1,7 @@
 /**
  * awards.tsx
  *
- * File-level documentation comment.
+ * Maintainer notes:`r`n * - This route file is intentionally lightweight and focused on screen composition.`r`n * - Keep navigation contracts and route params in sync with sibling screens.
  */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -29,7 +29,7 @@ const demoAwards = [
 /**
  * AwardsScreen component.
  *
- * Renders the UI for the Awards screen.
+ * Renders this route UI and centralizes local interaction and state wiring.`r`n *`r`n * Maintainer guidance:`r`n * - Keep side effects near the top-level component for visibility.`r`n * - Treat this component as the route contract for downstream navigation and params.
  */
 export default function AwardsScreen() {
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';

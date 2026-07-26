@@ -1,7 +1,7 @@
 /**
  * username.tsx
  *
- * File-level documentation comment.
+ * Maintainer notes:`r`n * - This route file is intentionally lightweight and focused on screen composition.`r`n * - Keep navigation contracts and route params in sync with sibling screens.
  */
 import { KeyboardAvoidingContainer } from '@/components/keyboard-avoiding-view';
 import { useRouter } from 'expo-router';
