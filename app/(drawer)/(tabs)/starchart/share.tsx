@@ -15,10 +15,10 @@ import { StyleSheet } from 'react-native';
 export default function ShareScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">Placeholder</ThemedText>
+      <ThemedText type="title">Social media sharing</ThemedText>
       <ThemedView style={styles.section}>
-        <ThemedText type="subtitle">General</ThemedText>
-        <ThemedText>Placeholder text...</ThemedText>
+        <ThemedText type="subtitle">Constellations</ThemedText>
+        <ThemedText>Here will be a modal for sharing your starchart on social media.</ThemedText>
       </ThemedView>
     </ThemedView>
   );

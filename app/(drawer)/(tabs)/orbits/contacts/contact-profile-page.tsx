@@ -11,7 +11,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, useColorScheme, View } from 'react-native';
-import { getFriend } from './_friendsStore';
+import { formatBirthdayForDisplay, getFriend } from './_friendsStore';
 
 /**
  * ContactProfilePage component.
@@ -31,6 +31,9 @@ export default function ContactProfilePage() {
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const theme = Colors[colorScheme];
   const fonts = Fonts ?? { sans: undefined, sansBold: undefined };
+  const messageBubbleBackground = colorScheme === 'dark' ? 'rgba(79,70,229,0.18)' : '#DCE4FF';
+  const messageBubbleBorder = colorScheme === 'dark' ? 'rgba(79,70,229,0.32)' : '#5B70D8';
+  const messageIconColor = colorScheme === 'dark' ? '#D7DBFF' : '#253B80';
 
   if (!friendState) {
     return (
@@ -70,12 +73,20 @@ export default function ContactProfilePage() {
         <ThemedText type="subtitle" lightColor="#2B0F55" style={{ marginTop: 12 }}>Cadence</ThemedText>
         <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{displayCadence}</ThemedText>
 
+        <ThemedText type="subtitle" lightColor="#2B0F55" style={{ marginTop: 12 }}>Birthday</ThemedText>
+        <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>
+          {formatBirthdayForDisplay(friendState?.birthday)}
+        </ThemedText>
+
         <View style={styles.actionRow}>
           <TouchableOpacity
             onPress={handleMessagePress}
-            style={styles.messageBubble}
+            style={[
+              styles.messageBubble,
+              { backgroundColor: messageBubbleBackground, borderColor: messageBubbleBorder },
+            ]}
           >
-            <MaterialCommunityIcons name="send" size={18} color="#D7DBFF" />
+            <MaterialCommunityIcons name="send" size={18} color={messageIconColor} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -94,7 +105,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   section: { marginTop: 16, paddingVertical: 18, paddingHorizontal: 18, borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.04)' },
   actionRow: { marginTop: 24, gap: 12 },
-  messageBubble: { alignSelf: 'flex-start', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 999, backgroundColor: 'rgba(79,70,229,0.18)', borderWidth: 1, borderColor: 'rgba(79,70,229,0.32)' },
+  messageBubble: { alignSelf: 'flex-start', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 999, borderWidth: 1 },
   messageBubbleText: { color: '#D7DBFF', fontWeight: '700', fontSize: 14 },
   doneButton: { paddingVertical: 10, alignItems: 'center', backgroundColor: '#0A84FF', borderRadius: 6 },
   doneButtonText: { color: '#fff', fontWeight: '600', fontSize: 14 },

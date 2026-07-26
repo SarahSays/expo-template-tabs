@@ -1,6 +1,7 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useLocalSearchParams } from 'expo-router';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,6 +10,7 @@ import { KeyboardAvoidingContainer } from '@/components/keyboard-avoiding-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
+import { getFriends } from '../orbits/contacts/_friendsStore';
 
 type MessageEntry = {
   id: string;
@@ -60,7 +62,8 @@ async function writeStoredMessages(storageKey: string, messages: MessageEntry[])
  * Renders a lightweight compose-new-message page for a selected feed friend.
  */
 export default function WriteNewMessageScreen() {
-  const { name } = useLocalSearchParams<{ name?: string }>();
+  const { name, draft: draftParam } = useLocalSearchParams<{ name?: string; draft?: string }>();
+  const router = useRouter();
   const [draft, setDraft] = useState('');
   const [messages, setMessages] = useState<MessageEntry[]>([]);
   const [isHydrated, setIsHydrated] = useState(false);
@@ -68,13 +71,25 @@ export default function WriteNewMessageScreen() {
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const theme = Colors[colorScheme];
   const insets = useSafeAreaInsets();
+  const tabBarHeight = useBottomTabBarHeight();
   const friendName = useMemo(() => (typeof name === 'string' && name.trim() ? name : 'Friend'), [name]);
+  const matchedFriend = useMemo(
+    () => getFriends().find((friend) => friend.name.toLowerCase() === friendName.toLowerCase()),
+    [friendName],
+  );
+
+  useEffect(() => {
+    if (typeof draftParam === 'string' && draftParam.trim()) {
+      setDraft(draftParam);
+    }
+  }, [draftParam]);
 
   const storageKey = useMemo(() => `demo-feed-thread-${friendName.toLowerCase().replace(/\s+/g, '-')}`, [friendName]);
   const placeholderColor = colorScheme === 'dark' ? '#9CA3AF' : '#6B7280';
   const inputBackground = colorScheme === 'dark' ? '#111827' : '#F8FAFC';
   const borderColor = colorScheme === 'dark' ? '#374151' : '#CBD5E1';
-  const composerBottomPadding = Math.max(insets.bottom + 12, 74);
+  // Keep the composer safely above the persistent tab bar on all devices.
+  const composerBottomPadding = Math.max(tabBarHeight + 12, insets.bottom + 12);
 
   useEffect(() => {
     let isMounted = true;
@@ -133,10 +148,26 @@ export default function WriteNewMessageScreen() {
     setDraft('');
   };
 
+  const handleFriendTitlePress = () => {
+    if (!matchedFriend) {
+      return;
+    }
+
+    router.push(`/orbits/contacts/${matchedFriend.id}`);
+  };
+
   return (
     <KeyboardAvoidingContainer style={[styles.keyboardContainer, { backgroundColor: theme.background }]}>
       <ThemedView style={[styles.container, { backgroundColor: theme.background }]}>
-        <ThemedText type="title">{friendName}</ThemedText>
+        {matchedFriend ? (
+          <Pressable onPress={handleFriendTitlePress} style={styles.friendTitleButton}>
+            <ThemedText type="title" style={[styles.friendTitleText, { color: theme.tint }]}> 
+              {friendName}
+            </ThemedText>
+          </Pressable>
+        ) : (
+          <ThemedText type="title">{friendName}</ThemedText>
+        )}
         <ThemedText style={[styles.introText, { color: theme.drawerInactiveText }]}>
           This is the beginning of your message history with {friendName}.
         </ThemedText>
@@ -211,6 +242,12 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
+  },
+  friendTitleButton: {
+    alignSelf: 'flex-start',
+  },
+  friendTitleText: {
+    textDecorationLine: 'underline',
   },
   introText: {
     marginTop: 8,

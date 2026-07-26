@@ -8,7 +8,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Fonts } from '@/constants/theme';
 import { useLocalSearchParams } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
-import { getFriend } from './_friendsStore';
+import { formatBirthdayForDisplay, getFriend } from './_friendsStore';
 
 /**
  * ContactProfileDetailed component.
@@ -32,6 +32,11 @@ export default function ContactProfileDetailed() {
 
         <ThemedText type="subtitle" lightColor="#2B0F55" style={{ marginTop: 12 }}>Cadence</ThemedText>
         <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>{friend.cadence || 'Not set'}</ThemedText>
+
+        <ThemedText type="subtitle" lightColor="#2B0F55" style={{ marginTop: 12 }}>Birthday</ThemedText>
+        <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans }}>
+          {formatBirthdayForDisplay(friend.birthday)}
+        </ThemedText>
       </View>
     </ThemedView>
   );
