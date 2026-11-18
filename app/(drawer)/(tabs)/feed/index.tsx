@@ -5,6 +5,7 @@
  */
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useRouter } from 'expo-router';
+import type { ComponentProps } from 'react';
 import { useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
 
@@ -13,7 +14,9 @@ import { ThemedView } from '@/components/themed-view';
 import { Colors, Fonts } from '@/constants/theme';
 import { getFriends } from '../orbits/contacts/_friendsStore';
 
-const platformIcons: Record<string, { name: string; color: string }> = {
+type MaterialCommunityIconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
+
+const platformIcons: Record<string, { name: MaterialCommunityIconName; color: string }> = {
   Instagram: { name: 'instagram', color: '#E1306C' },
   Signal: { name: 'message', color: '#3A76F0' },
   Discord: { name: 'controller', color: '#5865F2' },
