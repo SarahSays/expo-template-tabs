@@ -27,6 +27,7 @@ import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors, Fonts } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 /**
  * Initializes bottom tab navigation with 5 main app sections
@@ -45,6 +46,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
  */
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tabs
@@ -60,9 +62,9 @@ export default function TabLayout() {
         },
         tabBarButton: HapticTab,
         tabBarStyle: {
-          paddingBottom: 0,
-          height: 80,
-          position: 'absolute',
+          height: 72 + insets.bottom,
+          paddingTop: 6,
+          paddingBottom: Math.max(insets.bottom, 6),
           backgroundColor: Colors[colorScheme ?? 'light'].tabBarBackground,
         },
       }}>

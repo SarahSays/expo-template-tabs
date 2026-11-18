@@ -1,7 +1,9 @@
 /**
  * self-profile-detailed.tsx
  *
- * Maintainer notes:`r`n * - This route file is intentionally lightweight and focused on screen composition.`r`n * - Keep navigation contracts and route params in sync with sibling screens.
+ * Maintainer notes:
+ * This route file is intentionally lightweight and focused on screen composition. 
+ * Keep navigation contracts and route params in sync with sibling screens.
  */
 import { KeyboardAvoidingContainer } from '@/components/keyboard-avoiding-view';
 import { ThemedText } from '@/components/themed-text';
@@ -21,7 +23,9 @@ const savedSelfProfileData = {
 /**
  * SelfProfileDetailed component.
  *
- * Renders this route UI and centralizes local interaction and state wiring.`r`n *`r`n * Maintainer guidance:`r`n * - Keep side effects near the top-level component for visibility.`r`n * - Treat this component as the route contract for downstream navigation and params.
+ * Renders this route UI and centralizes local interaction and state wiring. 
+ * Maintainer guidance: Keep side effects near the top-level component for visibility.
+ * Treat this component as the route contract for downstream navigation and params.
  */
 export default function SelfProfileDetailed() {
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';

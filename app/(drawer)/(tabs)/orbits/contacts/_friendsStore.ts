@@ -2,11 +2,33 @@
  * In-memory demo store for contacts/friends.
  *
  * This lightweight module provides a small API for listing friends,
- * getting a friend by id, and updating a friend's cadence setting.
+ * getting a friend by id, and updating a friend's profile and cadence.
  * It is intentionally non-persistent to keep the demo runnable in
  * Expo Go without native AsyncStorage. Replace with Context or
  * persistent storage (AsyncStorage) in production.
  */
+
+export type ContactProfile = {
+  weeHoursOk: boolean;
+  timeZone: string; // IANA timezone, e.g. 'America/New_York'
+  broadcast: {
+    reachability: boolean;
+    timeZone: boolean;
+    favoriteThings: boolean;
+    slingshots: boolean;
+    icebreakers: boolean;
+  };
+  favoriteThings: {
+    loveLanguages: string[];
+    giftIdeas: string[];
+  };
+  slingshots: string[];
+  icebreakers: {
+    askMeAbout: string;
+    infoDumpOn: string;
+    dontGetMeStartedOn: string;
+  };
+};
 
 export type Friend = {
   id: string;
@@ -15,16 +37,17 @@ export type Friend = {
   cadence?: string; // e.g. '1 day', '1 week'
   status?: 'online' | 'offline';
   birthday?: string; // ISO-like date string e.g. '1994-03-18' (demo only)
+  profile: ContactProfile;
 };
 
 let friends: Friend[] = [
-  { id: '1', name: 'Avery', platform: 'Instagram', cadence: '1 week', status: 'online', birthday: '1994-03-18' },
-  { id: '2', name: 'Billie', platform: 'Bluesky', cadence: '1 month', status: 'offline', birthday: '1996-07-07' },
-  { id: '3', name: 'Casey', platform: 'Signal', cadence: '1 week', status: 'online', birthday: '1992-11-24' },
-  { id: '4', name: 'Darcy', platform: 'Discord', cadence: '1 day', status: 'offline', birthday: '1995-02-03' },
-  { id: '5', name: 'Emory', platform: 'SMS', cadence: '1 year', status: 'online', birthday: '1993-08-29' },
-  { id: '6', name: 'Finley', platform: 'Facebook', cadence: '2 years', status: 'online', birthday: '1991-05-12' },
-  { id: '7', name: 'Gianny', platform: 'G-Message', cadence: '3 months', status: 'online', birthday: '1990-12-15' },
+  { id: '1', name: 'Avery', platform: 'Instagram', cadence: '1 week', status: 'online', birthday: '1994-03-18', profile: { weeHoursOk: false, timeZone: 'America/Los_Angeles', broadcast: { reachability: true, timeZone: true, favoriteThings: true, slingshots: true, icebreakers: true }, favoriteThings: { loveLanguages: ['Quality time'], giftIdeas: ['Used books', 'Coffee'] }, slingshots: ['Ask how the new job is going'], icebreakers: { askMeAbout: 'My rescue dog', infoDumpOn: 'Indie films', dontGetMeStartedOn: 'Bad public transit' } } },
+  { id: '2', name: 'Billie', platform: 'Bluesky', cadence: '1 month', status: 'offline', birthday: '1996-07-07', profile: { weeHoursOk: true, timeZone: 'America/New_York', broadcast: { reachability: true, timeZone: true, favoriteThings: true, slingshots: false, icebreakers: true }, favoriteThings: { loveLanguages: ['Words of affirmation'], giftIdeas: ['House plants'] }, slingshots: ['Check in about the move'], icebreakers: { askMeAbout: 'Their garden', infoDumpOn: 'Birds', dontGetMeStartedOn: 'Reality TV' } } },
+  { id: '3', name: 'Casey', platform: 'Signal', cadence: '1 week', status: 'online', birthday: '1992-11-24', profile: { weeHoursOk: false, timeZone: 'Europe/London', broadcast: { reachability: true, timeZone: true, favoriteThings: true, slingshots: true, icebreakers: true }, favoriteThings: { loveLanguages: ['Acts of service'], giftIdeas: ['Board games'] }, slingshots: ['Follow up on the pottery class'], icebreakers: { askMeAbout: 'Weekend hikes', infoDumpOn: 'Fantasy novels', dontGetMeStartedOn: 'Spoilers' } } },
+  { id: '4', name: 'Darcy', platform: 'Discord', cadence: '1 day', status: 'offline', birthday: '1995-02-03', profile: { weeHoursOk: true, timeZone: 'Europe/Paris', broadcast: { reachability: true, timeZone: false, favoriteThings: false, slingshots: true, icebreakers: true }, favoriteThings: { loveLanguages: ['Quality time'], giftIdeas: ['Concert tickets'] }, slingshots: ['Ask how the band audition went'], icebreakers: { askMeAbout: 'Travel stories', infoDumpOn: 'Baking', dontGetMeStartedOn: 'Airport security lines' } } },
+  { id: '5', name: 'Emory', platform: 'SMS', cadence: '1 year', status: 'online', birthday: '1993-08-29', profile: { weeHoursOk: false, timeZone: 'America/Chicago', broadcast: { reachability: false, timeZone: true, favoriteThings: true, slingshots: false, icebreakers: true }, favoriteThings: { loveLanguages: ['Gifts'], giftIdeas: ['Fancy tea'] }, slingshots: ['Remember their upcoming race'], icebreakers: { askMeAbout: 'Their cat', infoDumpOn: 'Running shoes', dontGetMeStartedOn: 'Spoiled endings' } } },
+  { id: '6', name: 'Finley', platform: 'Facebook', cadence: '2 years', status: 'online', birthday: '1991-05-12', profile: { weeHoursOk: false, timeZone: 'Europe/Berlin', broadcast: { reachability: true, timeZone: true, favoriteThings: false, slingshots: false, icebreakers: true }, favoriteThings: { loveLanguages: ['Physical touch'], giftIdeas: ['Vinyl records'] }, slingshots: ['Ask about the family reunion'], icebreakers: { askMeAbout: 'Local food', infoDumpOn: 'Music history', dontGetMeStartedOn: 'Online arguments' } } },
+  { id: '7', name: 'Gianny', platform: 'G-Message', cadence: '3 months', status: 'online', birthday: '1990-12-15', profile: { weeHoursOk: true, timeZone: 'America/Denver', broadcast: { reachability: true, timeZone: true, favoriteThings: true, slingshots: true, icebreakers: false }, favoriteThings: { loveLanguages: ['Acts of service'], giftIdeas: ['Trail maps'] }, slingshots: ['Check on the home renovation'], icebreakers: { askMeAbout: 'Mountain biking', infoDumpOn: 'Space exploration', dontGetMeStartedOn: 'Long checkout lines' } } },
 ];
 
 /**
@@ -73,7 +96,7 @@ export function getTodaysBirthdayFriends(date = new Date()): Friend[] {
  * Executes the getFriends behavior.
  */
 export function getFriends(): Friend[] {
-  return friends.slice();
+  return friends.map(cloneFriend);
 }
 
 /**
@@ -82,7 +105,24 @@ export function getFriends(): Friend[] {
  * Executes the getFriend behavior.
  */
 export function getFriend(id: string): Friend | undefined {
-  return friends.find((f) => f.id === id);
+  const friend = friends.find((f) => f.id === id);
+  return friend ? cloneFriend(friend) : undefined;
+}
+
+function cloneFriend(friend: Friend): Friend {
+  return {
+    ...friend,
+    profile: {
+      ...friend.profile,
+      broadcast: { ...friend.profile.broadcast },
+      favoriteThings: {
+        loveLanguages: [...friend.profile.favoriteThings.loveLanguages],
+        giftIdeas: [...friend.profile.favoriteThings.giftIdeas],
+      },
+      slingshots: [...friend.profile.slingshots],
+      icebreakers: { ...friend.profile.icebreakers },
+    },
+  };
 }
 
 /**
