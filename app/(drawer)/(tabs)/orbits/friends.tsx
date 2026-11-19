@@ -1,15 +1,32 @@
 /**
  * friends.tsx
  *
- * Maintainer notes:`r`n * - This route file is intentionally lightweight and focused on screen composition.`r`n * - Keep navigation contracts and route params in sync with sibling screens.
+ * Maintainer notes: 
+ * This route file is intentionally lightweight and focused on screen composition. 
+ * Keep navigation contracts and route params in sync with sibling screens.
  */
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors, Fonts } from '@/constants/theme';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useRouter } from 'expo-router';
+import type { ComponentProps } from 'react';
 import { Pressable, StyleSheet, useColorScheme, View } from 'react-native';
 import { getBirthdayPromptSettings } from './contacts/_birthdayPromptStore';
 import { formatBirthdayForDisplay, getFriends, getTodaysBirthdayFriends } from './contacts/_friendsStore';
+
+type MaterialCommunityIconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
+
+const platformIcons: Record<string, { name: MaterialCommunityIconName; color: string }> = {
+  Instagram: { name: 'instagram', color: '#E1306C' },
+  Signal: { name: 'message', color: '#3A76F0' },
+  Discord: { name: 'controller', color: '#5865F2' },
+  SMS: { name: 'message-text-outline', color: '#0F766E' },
+  Facebook: { name: 'facebook-messenger', color: '#0084FF' },
+  Bluesky: { name: 'butterfly', color: '#1DA1F2' },
+  'G-Message': { name: 'gmail', color: '#EA4335' },
+  default: { name: 'message-text', color: '#6B7280' },
+};
 
 /**
  * screenOptions options object.
@@ -107,14 +124,20 @@ export default function FriendsScreen() {
             onPress={() => router.push(`/orbits/contacts/${f.id}`)}
           >
             <View style={styles.rowContent}>
-              <View
-                style={[
-                  styles.statusDot,
-                  f.status === 'online' ? styles.onlineDot : styles.offlineDot,
-                ]}
-              />
+              <View style={styles.avatar}>
+                <ThemedText style={[styles.avatarInitials, { color: theme.bubbleText, fontFamily: fonts.sansBold }]}>
+                  {f.name.split(' ').map((part) => part[0]).slice(0, 2).join('')}
+                </ThemedText>
+                <View style={[styles.platformMarker, { backgroundColor: (platformIcons[f.platform] ?? platformIcons.default).color }]}>
+                  <MaterialCommunityIcons name={(platformIcons[f.platform] ?? platformIcons.default).name} size={12} color="#fff" />
+                </View>
+              </View>
               <View style={styles.rowMeta}>
                 <View style={styles.rowInfoLine}>
+                  <View
+                    accessibilityLabel={f.status === 'online' ? 'Online' : 'Offline'}
+                    style={[styles.statusDot, f.status === 'online' ? styles.onlineDot : styles.offlineDot]}
+                  />
                   <ThemedText
                     type="defaultSemiBold"
                     lightColor="#2B0F55"
@@ -125,13 +148,13 @@ export default function FriendsScreen() {
                   <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 24 }}>
                     •
                   </ThemedText>
-                  <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 24 }}>
+                  <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, fontSize: 15, lineHeight: 24 }}>
                     {f.platform}
                   </ThemedText>
                   <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 24 }}>
                     •
                   </ThemedText>
-                  <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, lineHeight: 24 }}>
+                  <ThemedText lightColor="#2B0F55" style={{ fontFamily: fonts.sans, fontSize: 15, lineHeight: 24 }}>
                     {f.cadence}
                   </ThemedText>
                 </View>
@@ -202,6 +225,30 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 12,
   },
+  avatar: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+    backgroundColor: '#9CA3AF',
+  },
+  avatarInitials: {
+    fontSize: 15,
+  },
+  platformMarker: {
+    position: 'absolute',
+    right: -2,
+    bottom: -2,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
   rowMeta: {
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -213,7 +260,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
   },
-  statusDot: { width: 10, height: 10, borderRadius: 5, marginRight: 8 },
-  onlineDot: { backgroundColor: '#34D399' },
-  offlineDot: { backgroundColor: '#9CA3AF' },
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  onlineDot: {
+    backgroundColor: '#34D399',
+  },
+  offlineDot: {
+    backgroundColor: '#9CA3AF',
+  },
 });

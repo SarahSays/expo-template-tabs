@@ -1,7 +1,8 @@
 /**
  * index.tsx
  *
- * Maintainer notes:`r`n * - This route file is intentionally lightweight and focused on screen composition.`r`n * - Keep navigation contracts and route params in sync with sibling screens.
+ * Maintainer notes: This route file is intentionally lightweight and focused on screen composition. 
+ * Keep navigation contracts and route params in sync with sibling screens.
  */
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useRouter } from 'expo-router';
