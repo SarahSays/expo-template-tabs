@@ -4,9 +4,9 @@
  * Navigation Hierarchy:
  * Tabs Navigator (this file)
  *  └── Tab Stacks:
- *      - home (app/(drawer)/(tabs)/home/_layout.tsx)
- *      - orbits (app/(drawer)/(tabs)/orbits/_layout.tsx)
+ *      - inbox (app/(drawer)/(tabs)/inbox/_layout.tsx)
  *      - feed (app/(drawer)/(tabs)/feed/_layout.tsx)
+ *      - orbits (app/(drawer)/(tabs)/orbits/_layout.tsx)
  *      - starchart (app/(drawer)/(tabs)/starchart/_layout.tsx)
  *      - recs (app/(drawer)/(tabs)/recs/_layout.tsx)
  * 
@@ -20,7 +20,7 @@
  * - Each tab has independent navigation stack for sub-screens
  */
 
-import { Tabs, usePathname } from 'expo-router';
+import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
@@ -47,8 +47,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const insets = useSafeAreaInsets();
-  const pathname = usePathname();
-  const isOnboardingRoute = pathname.startsWith('/home');
 
   return (
     <Tabs
@@ -56,7 +54,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
         // CRITICAL: Hide tabs-level headers
-        // Each tab's stack (home, orbits, feed, etc.) manages its own headers
+        // Each tab's stack manages its own headers
         // This prevents header duplication while maintaining back button functionality
         headerShown: false,
         headerTitleStyle: {
@@ -64,7 +62,6 @@ export default function TabLayout() {
         },
         tabBarButton: HapticTab,
         tabBarStyle: {
-          display: isOnboardingRoute ? 'none' : 'flex',
           height: 72 + insets.bottom,
           paddingTop: 6,
           paddingBottom: Math.max(insets.bottom, 6),
@@ -76,12 +73,6 @@ export default function TabLayout() {
         options={{
           title: 'Inbox',
           tabBarIcon: ({ color }) => <IconSymbol size={25} name="tray.full" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="home"
-        options={{
-          href: null,
         }}
       />
       {/* Public audience-facing posts */}
