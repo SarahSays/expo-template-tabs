@@ -18,10 +18,9 @@
  * - Coordinates with drawer menu
  */
 
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import React from 'react';
 import { Pressable } from 'react-native';
 
@@ -49,7 +48,6 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 export default function FeedLayout() {
   const colorScheme = useColorScheme();
   const navigation = useNavigation<DrawerNavigationProp<any>>();
-  const router = useRouter();
 
   return (
     <Stack
@@ -80,22 +78,7 @@ export default function FeedLayout() {
         ),
       }}
     >
-      <Stack.Screen
-        name="write-message"
-        options={{
-          headerLeft: () => (
-            <Pressable
-              onPress={() => router.replace('/feed')}
-              style={{ marginLeft: 8, paddingHorizontal: 8, paddingVertical: 6 }}>
-              <MaterialCommunityIcons
-                name="arrow-left"
-                size={22}
-                color={Colors[colorScheme ?? 'light'].headerText}
-              />
-            </Pressable>
-          ),
-        }}
-      />
+      <Stack.Screen name="index" options={{ title: 'Feed' }} />
     </Stack>
   );
 }

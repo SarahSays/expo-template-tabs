@@ -75,12 +75,12 @@ const DrawerLayout = () => {
                     },
                 }),
             }}>
-            {/* Main tabs navigation - home, orbits, feed, starchart, recs */}
+            {/* Main tabs navigation - inbox, feed, orbits, starchart, recs */}
             <Drawer.Screen
                 name="(tabs)"
                 options={{
                     swipeEnabled: false,
-                    drawerLabel: 'Home',
+                    drawerLabel: 'Inbox',
                 }}
             />
             {/* Chat account management screen */}

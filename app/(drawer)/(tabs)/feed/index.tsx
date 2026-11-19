@@ -1,215 +1,108 @@
-/**
- * index.tsx
- *
- * Maintainer notes: This route file is intentionally lightweight and focused on screen composition. 
- * Keep navigation contracts and route params in sync with sibling screens.
- */
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { useRouter } from 'expo-router';
 import type { ComponentProps } from 'react';
-import { useMemo } from 'react';
-import { Pressable, ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
+import { useState } from 'react';
+import { RefreshControl, ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors, Fonts } from '@/constants/theme';
-import { getFriends } from '../orbits/contacts/_friendsStore';
 
-type MaterialCommunityIconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
-
-const platformIcons: Record<string, { name: MaterialCommunityIconName; color: string }> = {
-  Instagram: { name: 'instagram', color: '#E1306C' },
-  Signal: { name: 'message', color: '#3A76F0' },
-  Discord: { name: 'controller', color: '#5865F2' },
-  SMS: { name: 'message-text-outline', color: '#0F766E' },
-  Facebook: { name: 'facebook-messenger', color: '#0084FF' },
-  Bluesky: { name: 'butterfly', color: '#1DA1F2' },
-  'G-Message': { name: 'gmail', color: '#EA4335' },
-  default: { name: 'message-text', color: '#6B7280' },
+type IconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
+const platformStyles: Record<string, { icon: IconName; color: string }> = {
+  Facebook: { icon: 'facebook', color: '#1877F2' },
+  X: { icon: 'twitter', color: '#111827' },
+  Bluesky: { icon: 'butterfly', color: '#1DA1F2' },
 };
 
-const timestamps = ['2:02 PM', '12:31 PM', 'Monday', 'Saturday', 'Friday'];
+const publicPosts = [
+  { id: 'post-1', author: 'Maya Singh', handle: '@maya.exit', platform: 'Bluesky', time: '2h', text: 'Public field notes from the co-op this morning — harvest share this week has chard, three kinds of squash, and the usual optimism.', replies: 41, reposts: 62, likes: 248 },
+  { id: 'post-2', author: 'Avery', handle: 'Avery Parker', platform: 'Facebook', time: '4h', text: 'Finally finished the little free-library map for the neighborhood. If you have a favorite stop, add it to the comments!', replies: 18, reposts: 7, likes: 93 },
+  { id: 'post-3', author: 'Casey', handle: '@casey_reads', platform: 'X', time: '1d', text: 'A reminder that a rainy afternoon and a good fantasy novel are a perfectly valid weekend plan.', replies: 12, reposts: 5, likes: 76 },
+];
 
-/**
- * screenOptions options object.
- *
- * Configuration object for screen options.
- */
- export const screenOptions = {
-  title: 'Feed',
-  headerBackTitle: '',
-  headerShown: true,
-};
+export const screenOptions = { title: 'Feed', headerBackTitle: '', headerShown: true };
 
-/**
- * Feed screen component.
- */
 export default function FeedScreen() {
-  const router = useRouter();
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const theme = Colors[colorScheme];
   const fonts = Fonts ?? { sans: undefined, sansBold: undefined };
+  const [refreshing, setRefreshing] = useState(false);
 
-  const friends = useMemo(() => getFriends(), []);
-  const interactions = useMemo(
-    () => friends.map((friend, index) => {
-      const platformData = platformIcons[friend.platform] ?? platformIcons.default;
-      return {
-        id: friend.id,
-        name: friend.name,
-        preview: `Hello from ${friend.platform}`,
-        time: timestamps[index % timestamps.length],
-        initials: friend.name
-          .split(' ')
-          .map((part) => part[0])
-          .slice(0, 2)
-          .join(''),
-        platformIcon: platformData.name,
-        platformColor: platformData.color,
-      };
-    }),
-    [friends],
-  );
+  const handleRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 1200);
+  };
 
   return (
-    <ThemedView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+    <ThemedView style={[styles.container, { backgroundColor: theme.background }]}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            tintColor={theme.tint}
+            colors={[theme.tint]}
+            title={refreshing ? 'Refreshing feed…' : undefined}
+            titleColor={theme.drawerInactiveText}
+          />
+        }
+      >
         <ThemedText type="title">Feed</ThemedText>
-
-        <Pressable
-          style={({ pressed }) => [
-            styles.menuCard,
-            { backgroundColor: pressed ? theme.bubbleBackgroundPressed : theme.bubbleBackground },
-          ]}
-          onPress={() => router.push('/feed/notes')}
-        >
-          <View style={styles.menuCardText}>
-            <ThemedText type="subtitle" style={styles.menuCardTitle}>📝 Notes to self</ThemedText>
-          </View>
-          <ThemedText type="link">›</ThemedText>
-        </Pressable>
-
-        <View style={styles.interactionList}>
-          {interactions.map((item) => (
-            <Pressable
-              key={item.id}
-              onPress={() => router.push({ pathname: '/feed/write-message', params: { name: item.name } })}
-              style={({ pressed }) => [
-                styles.interactionRow,
-                { backgroundColor: pressed ? theme.bubbleBackgroundPressed : theme.bubbleBackground },
-              ]}
-            >
-              <View style={styles.interactionLeft}>
-                <View style={[styles.avatar, { backgroundColor: '#9CA3AF' }]}> 
-                  <ThemedText style={[styles.avatarInitials, { color: theme.bubbleText, fontFamily: fonts.sansBold }]}>{item.initials}</ThemedText>
-                  <View style={[styles.platformMarker, { backgroundColor: item.platformColor }]}> 
-                    <MaterialCommunityIcons name={item.platformIcon} size={12} color="#fff" />
-                  </View>
+        <ThemedText style={styles.subtitle}>Public posts from your connected networks.</ThemedText>
+        {publicPosts.map((post) => {
+          const platform = platformStyles[post.platform] ?? { icon: 'earth' as IconName, color: theme.tint };
+          return (
+            <View key={post.id} style={[styles.postCard, { backgroundColor: colorScheme === 'dark' ? '#1B1B22' : '#fff', borderColor: colorScheme === 'dark' ? '#30303A' : '#E5E7EB' }]}>
+              <View style={styles.postHeader}>
+                <View style={[styles.avatar, { backgroundColor: platform.color }]}>
+                  <ThemedText style={styles.avatarInitial}>{post.author.slice(0, 1)}</ThemedText>
                 </View>
-
-                <View style={styles.interactionMeta}>
-                  <ThemedText type="subtitle" style={[styles.interactionName, { fontFamily: fonts.sansBold }]}>{item.name}</ThemedText>
-                  <ThemedText style={[styles.interactionPreview, { color: theme.text }]} numberOfLines={1}>{item.preview}</ThemedText>
+                <View style={styles.authorInfo}>
+                  <View style={styles.authorLine}>
+                    <ThemedText type="defaultSemiBold" style={{ fontFamily: fonts.sansBold }}>{post.author}</ThemedText>
+                    <View style={styles.publicIndicator}>
+                      <MaterialCommunityIcons name="earth" size={12} color={theme.tint} />
+                      <ThemedText style={[styles.publicLabel, { color: theme.tint }]}>Public</ThemedText>
+                    </View>
+                  </View>
+                  <ThemedText style={[styles.meta, { color: theme.drawerInactiveText }]}>{post.handle} · {post.time}</ThemedText>
+                </View>
+                <View style={[styles.platformIcon, { backgroundColor: `${platform.color}22` }]}>
+                  <MaterialCommunityIcons name={platform.icon} size={19} color={platform.color} />
                 </View>
               </View>
-
-              <ThemedText style={[styles.interactionTime, { color: theme.drawerInactiveText }]}>{item.time}</ThemedText>
-            </Pressable>
-          ))}
-        </View>
+              <ThemedText style={styles.postText}>{post.text}</ThemedText>
+              <View style={styles.engagementRow}>
+                <ThemedText style={[styles.engagement, { color: theme.drawerInactiveText }]}><MaterialCommunityIcons name="heart-outline" size={13} color={theme.drawerInactiveText} /> {post.likes}</ThemedText>
+                <ThemedText style={[styles.engagement, { color: theme.drawerInactiveText }]}><MaterialCommunityIcons name="message-reply-outline" size={13} color={theme.drawerInactiveText} /> {post.replies} replies</ThemedText>
+                <ThemedText style={[styles.engagement, { color: theme.drawerInactiveText }]}><MaterialCommunityIcons name="repeat" size={13} color={theme.drawerInactiveText} /> {post.reposts} reposts</ThemedText>
+              </View>
+            </View>
+          );
+        })}
+        <ThemedText style={styles.disclaimer}>Demo posts shown for layout purposes. A live feed would include public posts shared by connected accounts.</ThemedText>
       </ScrollView>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    padding: 16,
-    paddingBottom: 79,
-    justifyContent: 'flex-start',
-  },
-  menuCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    borderRadius: 16,
-    marginBottom: 16,
-  },
-  menuCardText: {
-    flex: 1,
-    marginRight: 12,
-  },
-  menuCardTitle: {
-    fontSize: 16,
-    marginBottom: 2,
-  },
-  menuCardDescription: {
-    color: '#6B7280',
-    fontSize: 13,
-  },
-  interactionList: {
-    marginTop: 0,
-  },
-  interactionRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 14,
-    paddingHorizontal: 12,
-    borderRadius: 16,
-    marginBottom: 10,
-    backgroundColor: 'rgba(0,0,0,0.03)',
-  },
-  interactionRowPressed: {
-    opacity: 0.92,
-  },
-  interactionLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-    marginRight: 10,
-  },
-  avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  avatarInitials: {
-    fontSize: 15,
-  },
-  platformMarker: {
-    position: 'absolute',
-    right: -2,
-    bottom: -2,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: '#fff',
-  },
-  interactionMeta: {
-    flex: 1,
-    minWidth: 0,
-  },
-  interactionName: {
-    marginBottom: 2,
-  },
-  interactionPreview: {
-    color: '#6B7280',
-    fontSize: 13,
-  },
-  interactionTime: {
-    fontSize: 12,
-  },
+  container: { flex: 1 },
+  scrollContent: { flexGrow: 1, padding: 16, paddingBottom: 92, gap: 12 },
+  subtitle: { marginTop: -8, marginBottom: 4, opacity: 0.75 },
+  postCard: { borderWidth: 1, borderRadius: 18, padding: 16, gap: 12 },
+  postHeader: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  avatar: { width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center' },
+  avatarInitial: { color: '#fff', fontSize: 18, fontWeight: '700' },
+  authorInfo: { flex: 1, minWidth: 0 },
+  authorLine: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6 },
+  publicIndicator: { flexDirection: 'row', alignItems: 'center', gap: 3 },
+  publicLabel: { fontSize: 12, fontWeight: '600' },
+  meta: { fontSize: 12, marginTop: 1 },
+  platformIcon: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },
+  postText: { fontSize: 15, lineHeight: 22 },
+  engagementRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 14, paddingTop: 2 },
+  engagement: { fontSize: 12 },
+  disclaimer: { marginTop: 2, paddingHorizontal: 2, fontSize: 12, lineHeight: 18, opacity: 0.65 },
 });

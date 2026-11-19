@@ -4,7 +4,7 @@
  * Maintainer notes:`r`n * - This route file is intentionally lightweight and focused on screen composition.`r`n * - Keep navigation contracts and route params in sync with sibling screens.
  */
 import { KeyboardAvoidingContainer } from '@/components/keyboard-avoiding-view';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
 
@@ -30,30 +30,23 @@ export const screenOptions = {
  */
 export default function NotificationsScreen() {
   const router = useRouter();
+  const { email } = useLocalSearchParams<{ email?: string }>();
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const theme = Colors[colorScheme];
-  const [demoMode, setDemoMode] = useState(true);
   const [showDemoPrompt, setShowDemoPrompt] = useState(false);
-  const [permissionDecision, setPermissionDecision] = useState<'allow' | 'deny' | null>(null);
 
-  const handleAllowNotificationsPress = () => {
-    if (demoMode) {
-      setShowDemoPrompt(true);
-      return;
-    }
-
-    // Non-demo fallback keeps the previous route flow.
-    // In production, this should call expo-notifications permission APIs.
-    router.push('/home/modal');
-  };
+  const handleAllowNotificationsPress = () => setShowDemoPrompt(true);
 
   const handleDemoDecision = (decision: 'allow' | 'deny') => {
-    setPermissionDecision(decision);
     setShowDemoPrompt(false);
+    router.replace({
+      pathname: '/home/username',
+      params: { email: email ?? '', notificationsEnabled: decision === 'allow' ? 'true' : 'false' },
+    });
+  };
 
-    if (decision === 'allow') {
-      router.push('/home/username');
-    }
+  const skipNotifications = () => {
+    router.replace({ pathname: '/home/username', params: { email: email ?? '', notificationsEnabled: 'false' } });
   };
 
   return (
@@ -62,20 +55,6 @@ export default function NotificationsScreen() {
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
           <View style={styles.heroSection}>
             <ThemedText type="title" style={styles.titleText}>Turn on Notifications</ThemedText>
-            <View style={styles.modeToggleRow}>
-              <Pressable
-                onPress={() => setDemoMode(true)}
-                style={[styles.modeChip, demoMode ? styles.modeChipActive : styles.modeChipInactive]}
-              >
-                <ThemedText style={[styles.modeChipText, demoMode ? styles.modeChipTextActive : undefined]}>Demo prompt</ThemedText>
-              </Pressable>
-              <Pressable
-                onPress={() => setDemoMode(false)}
-                style={[styles.modeChip, !demoMode ? styles.modeChipActive : styles.modeChipInactive]}
-              >
-                <ThemedText style={[styles.modeChipText, !demoMode ? styles.modeChipTextActive : undefined]}>Live flow</ThemedText>
-              </Pressable>
-            </View>
             <Image source={require('@/assets/images/react-logo.png')} style={styles.heroImage} />
             <Pressable
               onPress={handleAllowNotificationsPress}
@@ -86,11 +65,10 @@ export default function NotificationsScreen() {
               ]}>
               <ThemedText style={styles.ctaButtonText}>Allow notifications</ThemedText>
             </Pressable>
-            {permissionDecision ? (
-              <ThemedText style={styles.resultText}>
-                Last demo decision: {permissionDecision === 'allow' ? 'Allowed' : "Don't allow"}
-              </ThemedText>
-            ) : null}
+            <Pressable onPress={skipNotifications} style={styles.skipButton}>
+              <ThemedText style={[styles.skipButtonText, { color: theme.tint }]}>Not now</ThemedText>
+            </Pressable>
+            <ThemedText style={styles.demoNote}>Demo only — this does not request real device permission.</ThemedText>
           </View>
         </ScrollView>
 
@@ -110,7 +88,7 @@ export default function NotificationsScreen() {
                 onPress={() => handleDemoDecision('deny')}
                 style={[styles.promptButton, styles.promptDenyButton]}
               >
-                <ThemedText style={styles.promptButtonText}>Don&apos;t allow</ThemedText>
+                <ThemedText style={styles.promptButtonText}>Not now</ThemedText>
               </Pressable>
             </View>
           </View>
@@ -135,32 +113,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 28,
     marginTop: 24,
-  },
-  modeToggleRow: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  modeChip: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 999,
-    borderWidth: 1,
-  },
-  modeChipActive: {
-    backgroundColor: 'rgba(59, 130, 246, 0.22)',
-    borderColor: 'rgba(147, 197, 253, 0.7)',
-  },
-  modeChipInactive: {
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  modeChipText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#CBD5E1',
-  },
-  modeChipTextActive: {
-    color: '#E0E7FF',
   },
   titleText: {
     textAlign: 'center',
@@ -192,6 +144,19 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 17,
     fontWeight: '600',
+  },
+  skipButton: {
+    paddingVertical: 8,
+    alignItems: 'center',
+  },
+  skipButtonText: {
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  demoNote: {
+    fontSize: 12,
+    opacity: 0.7,
+    textAlign: 'center',
   },
   resultText: {
     marginTop: -10,

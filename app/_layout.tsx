@@ -14,8 +14,9 @@
  * - Tab Stacks control per-screen headers with back buttons
  */
 
+import { SessionProvider, useSession } from '@/contexts/SessionContext';
 import { useFonts } from 'expo-font';
-import { Stack, usePathname, useRouter } from "expo-router";
+import { Redirect, Stack, usePathname, type Href } from "expo-router";
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
@@ -29,7 +30,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
  * Exported constant for unstable_settings.
  */
 export const unstable_settings = {
-  anchor: '(tabs)',
+  anchor: '(drawer)',
 };
 
 /**
@@ -60,8 +61,6 @@ export default function RootLayout() {
   // but intentionally retained as placeholders.
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const colorScheme = useColorScheme();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const router = useRouter();
   const pathname = usePathname();
 
   /**
@@ -83,15 +82,21 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        // CRITICAL: Hide root header to prevent conflicts with child navigators
-        // Each navigator level (Drawer, Tabs, Stacks) manages its own headers
-        // This ensures no navigator fights another for header control
-        headerShown: false,
-      }}
-    />
+    <SessionProvider>
+      <SessionGate pathname={pathname} />
+    </SessionProvider>
   );
+}
+
+function SessionGate({ pathname }: { pathname: string }) {
+  const { session, isLoading } = useSession();
+  if (isLoading) return null;
+
+  const isOnboardingRoute = pathname === '/' || pathname === '/index' || pathname.startsWith('/home');
+  if (!session && !isOnboardingRoute) return <Redirect href="/" />;
+  if (session && isOnboardingRoute) return <Redirect href={'/inbox' as Href} />;
+
+  return <Stack screenOptions={{ headerShown: false }} />;
 }
 
 // Keep `styles` for future custom tab-bar rendering. Suppress unused

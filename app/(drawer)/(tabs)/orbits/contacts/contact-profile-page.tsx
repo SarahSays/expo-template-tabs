@@ -86,7 +86,7 @@ export default function ContactProfilePage() {
 
   const handleMessagePress = () => {
     if (friendState?.name) {
-      router.push(`/feed/write-message?name=${encodeURIComponent(friendState.name)}`);
+      router.push(`/inbox/write-message?name=${encodeURIComponent(friendState.name)}`);
     }
   };
 

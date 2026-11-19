@@ -4,13 +4,15 @@
  * Maintainer notes:`r`n * - This route file is intentionally lightweight and focused on screen composition.`r`n * - Keep navigation contracts and route params in sync with sibling screens.
  */
 import { KeyboardAvoidingContainer } from '@/components/keyboard-avoiding-view';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
+import { useSession } from '@/contexts/SessionContext';
+import { getDemoAccount, normalizeEmail } from '@/services/demoAuthStore';
 
 /**
  * screenOptions options object.
@@ -29,12 +31,32 @@ export const screenOptions = {
  */
 export default function VerificationCodeScreen() {
   const router = useRouter();
+  const { email: emailParam } = useLocalSearchParams<{ email?: string }>();
+  const { startSession } = useSession();
   const [code, setCode] = useState('');
+  const [codeMessage, setCodeMessage] = useState('Demo mode: enter any six digits; no email is sent.');
   const inputRef = useRef<TextInput>(null);
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const theme = Colors[colorScheme];
 
   const digits = code.padEnd(6, ' ').split('');
+  const email = normalizeEmail(emailParam ?? '');
+
+  const handleVerifyCode = async () => {
+    if (!email || code.length !== 6) {
+      setCodeMessage(email ? 'Enter all six digits to continue.' : 'Go back and enter your email address first.');
+      return;
+    }
+
+    const account = await getDemoAccount(email);
+    if (account?.onboardingComplete) {
+      await startSession('email', email);
+      router.replace('/inbox' as Href);
+      return;
+    }
+
+    router.push({ pathname: '/home/notifications', params: { email } });
+  };
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
@@ -42,7 +64,7 @@ export default function VerificationCodeScreen() {
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
           <View style={styles.headerSection}>
             <ThemedText type="title" style={styles.titleText}>Enter code</ThemedText>
-            <ThemedText style={[styles.subtitleText, { color: theme.text }]}>Check your email for the sign in code.</ThemedText>
+            <ThemedText style={[styles.subtitleText, { color: theme.text }]}>Enter the sign-in code for {email || 'your email'}.</ThemedText>
           </View>
 
           <Pressable style={styles.codeRow} onPress={() => inputRef.current?.focus()}>
@@ -52,6 +74,8 @@ export default function VerificationCodeScreen() {
               </View>
             ))}
           </Pressable>
+
+          <ThemedText style={[styles.codeMessage, { color: theme.drawerInactiveText }]}>{codeMessage}</ThemedText>
 
           <TextInput
             ref={inputRef}
@@ -66,18 +90,20 @@ export default function VerificationCodeScreen() {
 
           <View style={styles.actionSection}>
             <Pressable
-              onPress={() => router.push('/home/notifications')}
+              onPress={handleVerifyCode}
+              disabled={code.length !== 6 || !email}
               style={({ pressed }) => [
                 styles.primaryButton,
                 { backgroundColor: Colors.light.tint },
+                (code.length !== 6 || !email) && styles.primaryButtonDisabled,
                 pressed && styles.primaryButtonPressed,
               ]}>
-              <ThemedText style={styles.primaryButtonText}>Sign In</ThemedText>
+              <ThemedText style={styles.primaryButtonText}>Verify email</ThemedText>
             </Pressable>
 
             <View style={styles.resendRow}>
               <ThemedText style={styles.resendText}>Didn&apos;t get a code?</ThemedText>
-              <Pressable onPress={() => console.log('Resend code')}>
+              <Pressable onPress={() => { setCode(''); setCodeMessage('Demo mode: enter any six digits; no email is sent.'); }}>
                 <ThemedText style={[styles.resendLink, { color: theme.tint }]}>Resend</ThemedText>
               </Pressable>
             </View>
@@ -112,6 +138,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
     maxWidth: 300,
+  },
+  codeMessage: {
+    textAlign: 'center',
+    fontSize: 13,
+    marginTop: -18,
+    marginBottom: 16,
   },
   codeRow: {
     flexDirection: 'row',
@@ -154,6 +186,9 @@ const styles = StyleSheet.create({
   },
   primaryButtonPressed: {
     opacity: 0.92,
+  },
+  primaryButtonDisabled: {
+    opacity: 0.5,
   },
   primaryButtonText: {
     color: '#fff',

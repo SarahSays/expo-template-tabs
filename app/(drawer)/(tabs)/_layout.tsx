@@ -20,7 +20,7 @@
  * - Each tab has independent navigation stack for sub-screens
  */
 
-import { Tabs } from 'expo-router';
+import { Tabs, usePathname } from 'expo-router';
 import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
@@ -47,6 +47,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const insets = useSafeAreaInsets();
+  const pathname = usePathname();
+  const isOnboardingRoute = pathname.startsWith('/home');
 
   return (
     <Tabs
@@ -62,18 +64,32 @@ export default function TabLayout() {
         },
         tabBarButton: HapticTab,
         tabBarStyle: {
+          display: isOnboardingRoute ? 'none' : 'flex',
           height: 72 + insets.bottom,
           paddingTop: 6,
           paddingBottom: Math.max(insets.bottom, 6),
           backgroundColor: Colors[colorScheme ?? 'light'].tabBarBackground,
         },
       }}>
-      {/* Index tab - entry point with sign-in/skip options */}
       <Tabs.Screen
-        name="index"
+        name="inbox"
         options={{
-          title: 'Index',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Inbox',
+          tabBarIcon: ({ color }) => <IconSymbol size={25} name="tray.full" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="home"
+        options={{
+          href: null,
+        }}
+      />
+      {/* Public audience-facing posts */}
+      <Tabs.Screen
+        name="feed"
+        options={{
+          title: 'Feed',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="thermometer.variable" color={color} />,
         }}
       />
       {/* Orbits tab - social connections and friend groups */}
@@ -82,14 +98,6 @@ export default function TabLayout() {
         options={{
           title: 'Orbits',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="rotate.3d" color={color} />,
-        }}
-      />
-      {/* Feed tab - content and activity stream */}
-      <Tabs.Screen
-        name="feed"
-        options={{
-          title: 'Feed',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="thermometer.variable" color={color} />,
         }}
       />
       {/* Star Chart tab - user analytics and stats visualization */}
@@ -106,14 +114,6 @@ export default function TabLayout() {
         options={{
           title: 'Recs',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="bookmark.fill" color={color} />,
-        }}
-      />
-      {/* Home tab */}
-      <Tabs.Screen
-        name="home"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="chevron.down" color={color} />,
         }}
       />
     </Tabs>

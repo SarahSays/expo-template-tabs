@@ -78,7 +78,7 @@ export default function FriendsScreen() {
                   const friend = todaysBirthdays[0];
                   if (!friend) return;
                   router.push({
-                    pathname: '/feed/write-message',
+                    pathname: '/inbox/write-message',
                     params: {
                       name: friend.name,
                       draft: `Happy birthday ${friend.name}! Hope your day is amazing.`,
@@ -97,7 +97,7 @@ export default function FriendsScreen() {
                   const friend = todaysBirthdays[0];
                   if (!friend) return;
                   router.push({
-                    pathname: '/feed/write-message',
+                    pathname: '/inbox/write-message',
                     params: {
                       name: friend.name,
                       draft: `Hey ${friend.name}, wishing you a very happy birthday from all of us.`,

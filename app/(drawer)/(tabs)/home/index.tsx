@@ -44,8 +44,19 @@ export const screenOptions = {
 export default function EmailEntryScreen() {
   const router = useRouter();
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const theme = Colors[colorScheme];
+
+  const continueWithEmail = () => {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+      setEmailError('Enter a valid email address to continue.');
+      return;
+    }
+    setEmailError('');
+    router.push({ pathname: '/home/verification-code', params: { email: normalizedEmail } });
+  };
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
@@ -54,6 +65,9 @@ export default function EmailEntryScreen() {
           <View style={styles.heroSection}>
             <ThemedText type="title" style={styles.titleText}>
               Enter Your Email
+            </ThemedText>
+            <ThemedText style={[styles.subtitleText, { color: theme.text }]}>
+              We’ll send a one-time code. New users will finish a short profile setup; returning users go straight to Inbox.
             </ThemedText>
             <Image source={require('@/assets/images/react-logo.png')} style={styles.heroImage} />
           </View>
@@ -67,10 +81,12 @@ export default function EmailEntryScreen() {
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
+              onSubmitEditing={continueWithEmail}
               style={[styles.input, { backgroundColor: colorScheme === 'dark' ? '#14101F' : '#F3F4F6', color: theme.text }]}
             />
+            {emailError ? <ThemedText style={styles.errorText}>{emailError}</ThemedText> : null}
             <Pressable
-              onPress={() => router.push('/home/verification-code')}
+              onPress={continueWithEmail}
               style={({ pressed }) => [
                 styles.button,
                 { backgroundColor: Colors.light.tint },
@@ -107,6 +123,12 @@ const styles = StyleSheet.create({
   titleText: {
     textAlign: 'center',
     marginBottom: 24,
+  },
+  subtitleText: {
+    textAlign: 'center',
+    fontSize: 15,
+    lineHeight: 22,
+    marginBottom: 14,
   },
   heroImage: {
     width: 220,
@@ -148,5 +170,11 @@ const styles = StyleSheet.create({
     marginTop: 24,
     fontSize: 15,
     textDecorationLine: 'underline',
+  },
+  errorText: {
+    color: '#D92D20',
+    marginTop: -12,
+    marginBottom: 12,
+    textAlign: 'center',
   },
 });

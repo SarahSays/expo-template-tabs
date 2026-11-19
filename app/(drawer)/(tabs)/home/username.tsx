@@ -4,13 +4,15 @@
  * Maintainer notes:`r`n * - This route file is intentionally lightweight and focused on screen composition.`r`n * - Keep navigation contracts and route params in sync with sibling screens.
  */
 import { KeyboardAvoidingContainer } from '@/components/keyboard-avoiding-view';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
+import { useSession } from '@/contexts/SessionContext';
+import { normalizeEmail, saveDemoAccount } from '@/services/demoAuthStore';
 import { Image } from 'expo-image';
 
 /**
@@ -30,9 +32,34 @@ export const screenOptions = {
  */
 export default function UsernameScreen() {
   const router = useRouter();
+  const { email: emailParam, notificationsEnabled } = useLocalSearchParams<{ email?: string; notificationsEnabled?: string }>();
+  const { startSession } = useSession();
   const [username, setUsername] = useState('');
+  const [usernameError, setUsernameError] = useState('');
   const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const theme = Colors[colorScheme];
+
+  const finishProfile = async () => {
+    const email = normalizeEmail(emailParam ?? '');
+    const cleanUsername = username.trim().replace(/^@/, '');
+    if (!email) {
+      router.replace('/home');
+      return;
+    }
+    if (cleanUsername.length < 2) {
+      setUsernameError('Choose a username with at least two characters.');
+      return;
+    }
+
+    await saveDemoAccount({
+      email,
+      username: cleanUsername,
+      notificationsEnabled: notificationsEnabled === 'true',
+      onboardingComplete: true,
+    });
+    await startSession('email', email);
+    router.replace('/inbox' as Href);
+  };
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
@@ -52,16 +79,18 @@ export default function UsernameScreen() {
               style={[styles.input, { backgroundColor: colorScheme === 'dark' ? '#14101F' : '#F3F4F6', color: theme.text, borderColor: colorScheme === 'dark' ? '#333' : '#E5E7EB' }]}
               autoCapitalize="none"
               autoCorrect={false}
+              onSubmitEditing={finishProfile}
             />
             <Pressable
-              onPress={() => router.push('/home/connect-chats')}
+              onPress={finishProfile}
               style={({ pressed }) => [
                 styles.ctaButton,
                 { backgroundColor: Colors.light.tint },
                 pressed && styles.ctaButtonPressed,
               ]}>
-              <ThemedText style={[styles.ctaButtonText, { color: '#fff' }]}>Next</ThemedText>
+              <ThemedText style={[styles.ctaButtonText, { color: '#fff' }]}>Finish setup</ThemedText>
             </Pressable>
+            {usernameError ? <ThemedText style={styles.errorText}>{usernameError}</ThemedText> : null}
           </View>
         </ScrollView>
       </KeyboardAvoidingContainer>
@@ -122,5 +151,9 @@ const styles = StyleSheet.create({
   ctaButtonText: {
     fontSize: 17,
     fontWeight: '600',
+  },
+  errorText: {
+    color: '#D92D20',
+    textAlign: 'center',
   },
 });
