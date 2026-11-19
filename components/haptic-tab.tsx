@@ -5,8 +5,8 @@
  * Provides a subtle haptic pulse on iOS to enhance user experience.
  */
 
-import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
-import { PlatformPressable } from '@react-navigation/elements';
+import type { BottomTabBarButtonProps } from 'expo-router/js-tabs';
+import { PlatformPressable } from 'expo-router/react-navigation';
 import * as Haptics from 'expo-haptics';
 
 /**

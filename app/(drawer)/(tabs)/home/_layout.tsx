@@ -19,9 +19,8 @@
  * - Coordinates with drawer menu for access to other app sections
  */
 
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { useNavigation } from '@react-navigation/native';
-import { Stack } from 'expo-router';
+import { Stack, useNavigation } from 'expo-router';
+import type { DrawerNavigationProp } from 'expo-router/drawer';
 import React from 'react';
 import { Pressable } from 'react-native';
 
@@ -47,6 +46,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 export default function HomeLayout() {
   const colorScheme = useColorScheme();
   const navigation = useNavigation<DrawerNavigationProp<any>>();
+  const theme = colorScheme === 'dark' ? Colors.dark : Colors.light;
 
   return (
     <Stack
@@ -59,9 +59,9 @@ export default function HomeLayout() {
           fontFamily: Fonts.sans,
         },
         headerStyle: {
-          backgroundColor: Colors[colorScheme ?? 'light'].headerBackground,
+          backgroundColor: theme.headerBackground,
         },
-        headerTintColor: Colors[colorScheme ?? 'light'].headerText,
+        headerTintColor: theme.headerText,
         // Drawer toggle button in header right position
         headerRight: () => (
           <Pressable
@@ -70,7 +70,7 @@ export default function HomeLayout() {
             <IconSymbol
               name="line.3.horizontal"
               size={24}
-              color={Colors[colorScheme ?? 'light'].headerText}
+              color={theme.headerText}
             />
           </Pressable>
         ),

@@ -18,9 +18,8 @@
  * - Coordinates with drawer menu
  */
 
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { useNavigation } from '@react-navigation/native';
-import { Stack } from 'expo-router';
+import type { DrawerNavigationProp } from 'expo-router/drawer';
+import { Stack, useNavigation } from 'expo-router';
 import React from 'react';
 import { Pressable } from 'react-native';
 
