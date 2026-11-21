@@ -34,7 +34,7 @@ export default function WelcomeScreen() {
       <ThemedView style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <ThemedText style={styles.description}>
-            Keep up with your people, their posts, and the conversations that matter.
+            The Reconnection App
           </ThemedText>
 
           <View style={styles.footer}>
@@ -61,7 +61,7 @@ export default function WelcomeScreen() {
               style={({ pressed }) => [styles.demoButton, pressed && styles.demoButtonPressed]}
               onPress={enterDemo}
             >
-              <ThemedText style={styles.demoButtonText}>Skip sign-in and explore the demo</ThemedText>
+              <ThemedText style={styles.demoButtonText}>Skip sign-in and explore demo</ThemedText>
             </Pressable>
           </View>
         </ScrollView>

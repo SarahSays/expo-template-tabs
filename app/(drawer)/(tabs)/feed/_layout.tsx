@@ -78,6 +78,7 @@ export default function FeedLayout() {
       }}
     >
       <Stack.Screen name="index" options={{ title: 'Feed' }} />
+      <Stack.Screen name="contacts/[id]" options={{ title: 'Profile' }} />
     </Stack>
   );
 }

@@ -4,8 +4,8 @@
  * Navigation Hierarchy:
  * Tabs Navigator (this file)
  *  └── Tab Stacks:
- *      - inbox (app/(drawer)/(tabs)/inbox/_layout.tsx)
  *      - feed (app/(drawer)/(tabs)/feed/_layout.tsx)
+ *      - inbox (app/(drawer)/(tabs)/inbox/_layout.tsx)
  *      - orbits (app/(drawer)/(tabs)/orbits/_layout.tsx)
  *      - starchart (app/(drawer)/(tabs)/starchart/_layout.tsx)
  *      - recs (app/(drawer)/(tabs)/recs/_layout.tsx)
@@ -68,19 +68,19 @@ export default function TabLayout() {
           backgroundColor: Colors[colorScheme ?? 'light'].tabBarBackground,
         },
       }}>
-      <Tabs.Screen
-        name="inbox"
-        options={{
-          title: 'Inbox',
-          tabBarIcon: ({ color }) => <IconSymbol size={25} name="tray.full" color={color} />,
-        }}
-      />
       {/* Public audience-facing posts */}
       <Tabs.Screen
         name="feed"
         options={{
           title: 'Feed',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="thermometer.variable" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="inbox"
+        options={{
+          title: 'Inbox',
+          tabBarIcon: ({ color }) => <IconSymbol size={25} name="tray.full" color={color} />,
         }}
       />
       {/* Orbits tab - social connections and friend groups */}
