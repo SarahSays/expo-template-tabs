@@ -41,7 +41,10 @@ const SCENE_SIZE = 320;
 /**
  * StarchartScreen component.
  *
- * Renders this route UI and centralizes local interaction and state wiring.`r`n *`r`n * Maintainer guidance:`r`n * - Keep side effects near the top-level component for visibility.`r`n * - Treat this component as the route contract for downstream navigation and params.
+ * Renders this route UI and centralizes local interaction and state wiring. 
+ * Maintainer guidance: 
+ * Keep side effects near the top-level component for visibility.
+ * Treat this component as the route contract for downstream navigation and params.
  */
 export default function StarchartScreen() {
   const colorScheme = useColorScheme() ?? 'light';
@@ -285,7 +288,7 @@ export default function StarchartScreen() {
         <View style={[styles.sliderTickRow, { width: trackWidth }]}> 
           {[
             { label: 'Day', position: 0, align: 'flex-start' as const },
-            { label: 'Week', position: 0.12 },
+            { label: 'Week', position: 0.13 },
             { label: 'Month', position: 0.28 },
             { label: 'Year', position: 0.55 },
             { label: '10 Years', position: 1, align: 'flex-end' as const },
@@ -294,11 +297,13 @@ export default function StarchartScreen() {
               key={tick.label}
               style={[
                 styles.tickItem,
-                {
-                  left: tick.position * trackWidth,
-                  alignItems: tick.align ?? 'center',
-                  transform: tick.position === 0 || tick.position === 1 ? [] : [{ translateX: -32 }],
-                },
+                tick.position === 1
+                  ? { right: 0, alignItems: tick.align ?? 'center' }
+                  : {
+                      left: tick.position * trackWidth,
+                      alignItems: tick.align ?? 'center',
+                      transform: tick.position === 0 ? [] : [{ translateX: -32 }],
+                    },
               ]}>
               <View style={[styles.tickMark, { backgroundColor: tickMarkColor }]} />
               <ThemedText style={[styles.tickLabel, { color: tickColor }]}>{tick.label}</ThemedText>
