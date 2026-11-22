@@ -9,9 +9,10 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors, Fonts } from '@/constants/theme';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from 'expo-router';
 import type { ComponentProps } from 'react';
-import { Pressable, StyleSheet, useColorScheme, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
 import { getBirthdayPromptSettings } from './contacts/_birthdayPromptStore';
 import { formatBirthdayForDisplay, getFriends, getTodaysBirthdayFriends } from './contacts/_friendsStore';
 
@@ -25,8 +26,10 @@ const platformIcons: Record<string, { name: MaterialCommunityIconName; color: st
   Facebook: { name: 'facebook-messenger', color: '#0084FF' },
   Bluesky: { name: 'butterfly', color: '#1DA1F2' },
   'G-Message': { name: 'gmail', color: '#EA4335' },
+  Telegram: { name: 'send', color: '#229ED9' },
   default: { name: 'message-text', color: '#6B7280' },
 };
+const telegramColor = '#229ED9';
 
 /**
  * screenOptions options object.
@@ -46,7 +49,10 @@ export const screenOptions = {
 /**
  * FriendsScreen component.
  *
- * Renders this route UI and centralizes local interaction and state wiring.`r`n *`r`n * Maintainer guidance:`r`n * - Keep side effects near the top-level component for visibility.`r`n * - Treat this component as the route contract for downstream navigation and params.
+ * Renders this route UI and centralizes local interaction and state wiring.
+ * Maintainer guidance:
+ * - Keep side effects near the top-level component for visibility.
+ * - Treat this component as the route contract for downstream navigation and params.
  */
 export default function FriendsScreen() {
   const router = useRouter();
@@ -60,6 +66,7 @@ export default function FriendsScreen() {
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: theme.background }]}> 
+      <ScrollView contentContainerStyle={styles.scrollContent}>
       <ThemedText type="title" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>Friends</ThemedText>
 
       {birthdaySettings.promptOnBirthday && todaysBirthdays.length > 0 ? (
@@ -128,8 +135,12 @@ export default function FriendsScreen() {
                 <ThemedText style={[styles.avatarInitials, { color: theme.bubbleText, fontFamily: fonts.sansBold }]}>
                   {f.name.split(' ').map((part) => part[0]).slice(0, 2).join('')}
                 </ThemedText>
-                <View style={[styles.platformMarker, { backgroundColor: (platformIcons[f.platform] ?? platformIcons.default).color }]}>
-                  <MaterialCommunityIcons name={(platformIcons[f.platform] ?? platformIcons.default).name} size={12} color="#fff" />
+                <View style={[styles.platformMarker, { backgroundColor: f.platform === 'Telegram' ? telegramColor : (platformIcons[f.platform] ?? platformIcons.default).color }]}>
+                  {f.platform === 'Telegram' ? (
+                    <MaterialIcons name="send" size={12} color="#fff" />
+                  ) : (
+                    <MaterialCommunityIcons name={(platformIcons[f.platform] ?? platformIcons.default).name} size={12} color="#fff" />
+                  )}
                 </View>
               </View>
               <View style={styles.rowMeta}>
@@ -167,6 +178,7 @@ export default function FriendsScreen() {
           </Pressable>
         ))}
       </View>
+      </ScrollView>
     </ThemedView>
   );
 }
@@ -176,6 +188,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     justifyContent: 'flex-start',
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 32,
   },
   list: {
     marginTop: 12,

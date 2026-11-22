@@ -1,4 +1,5 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from 'expo-router';
 import type { ComponentProps } from 'react';
 import { useMemo } from 'react';
@@ -20,6 +21,7 @@ const platformIcons: Record<string, { name: IconName; color: string }> = {
   'G-Message': { name: 'gmail', color: '#EA4335' },
   default: { name: 'message-text', color: '#6B7280' },
 };
+const telegramColor = '#229ED9';
 const timestamps = ['2:02 PM', '12:31 PM', 'Monday', 'Saturday', 'Friday'];
 
 export const screenOptions = { title: 'Inbox', headerBackTitle: '', headerShown: true };
@@ -37,7 +39,7 @@ export default function InboxScreen() {
       preview: `Hello from ${friend.platform}!`,
       time: timestamps[index % timestamps.length],
       platformIcon: platform.name,
-      platformColor: platform.color,
+      platformColor: friend.platform === 'Telegram' ? telegramColor : platform.color,
     };
   }), []);
 
@@ -70,7 +72,11 @@ export default function InboxScreen() {
                 <View style={styles.avatar}>
                   <ThemedText style={[styles.avatarInitials, { color: theme.bubbleText, fontFamily: fonts.sansBold }]}>{thread.initials}</ThemedText>
                   <View style={[styles.platformMarker, { backgroundColor: thread.platformColor }]}>
-                    <MaterialCommunityIcons name={thread.platformIcon} size={12} color="#fff" />
+                    {thread.platform === 'Telegram' ? (
+                      <MaterialIcons name="send" size={12} color="#fff" />
+                    ) : (
+                      <MaterialCommunityIcons name={thread.platformIcon} size={12} color="#fff" />
+                    )}
                   </View>
                 </View>
                 <View style={styles.threadMeta}>
