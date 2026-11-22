@@ -35,7 +35,7 @@ export function HelloWave() {
         lineHeight: 32,
         marginTop: -6,
         animationName: {
-          '50%': { transform: [{ rotate: '25deg' }] },
+          '50%': { transform: [{ rotate: '10deg' }] },
         },
         animationIterationCount: 4,
         animationDuration: '300ms',

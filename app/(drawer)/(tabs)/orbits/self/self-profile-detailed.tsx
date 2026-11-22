@@ -20,6 +20,12 @@ const savedSelfProfileData = {
   slingshots: '',
 };
 
+function formatDateInputValue(date: Date) {
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+
 /**
  * SelfProfileDetailed component.
  *
@@ -67,28 +73,58 @@ export default function SelfProfileDetailed() {
           </View>
           <View style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#161423' : '#f2f2f7' }]}> 
             <View style={styles.section}>
-          <ThemedText type="subtitle" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>Birthday</ThemedText>
-          <TouchableOpacity
-            style={[styles.input, { backgroundColor: colorScheme === 'dark' ? '#1f1c2a' : '#fff', justifyContent: 'center' }]}
-            onPress={() => setShowBirthdayPicker(true)}>
-            <ThemedText lightColor={theme.text} style={{ fontFamily: fonts.sans }}>
-              {birthday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
-            </ThemedText>
-          </TouchableOpacity>
-          {showBirthdayPicker && (
-            <DateTimePicker
-              value={birthday}
-              mode="date"
-              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-              onChange={(_, selectedDate) => {
-                setShowBirthdayPicker(Platform.OS === 'ios');
-                if (selectedDate) {
-                  setBirthday(selectedDate);
-                }
-              }}
-            />
-          )}
-        </View>
+              <ThemedText type="subtitle" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>Birthday</ThemedText>
+              {Platform.OS === 'web' ? (
+                React.createElement('input', {
+                  type: 'date',
+                  'aria-label': 'Birthday',
+                  value: formatDateInputValue(birthday),
+                  onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+                    const [year, month, day] = event.currentTarget.value.split('-').map(Number);
+                    if (year && month && day) {
+                      setBirthday(new Date(year, month - 1, day));
+                    }
+                  },
+                  style: {
+                    width: '100%',
+                    minHeight: 52,
+                    boxSizing: 'border-box',
+                    marginTop: 8,
+                    padding: 12,
+                    borderWidth: 1,
+                    borderStyle: 'solid',
+                    borderColor: 'rgba(0,0,0,0.1)',
+                    borderRadius: 14,
+                    backgroundColor: colorScheme === 'dark' ? '#1f1c2a' : '#fff',
+                    color: theme.text,
+                    fontSize: 16,
+                  },
+                })
+              ) : (
+                <>
+                  <TouchableOpacity
+                    style={[styles.input, { backgroundColor: colorScheme === 'dark' ? '#1f1c2a' : '#fff', justifyContent: 'center' }]}
+                    onPress={() => setShowBirthdayPicker(true)}>
+                    <ThemedText lightColor={theme.text} style={{ fontFamily: fonts.sans }}>
+                      {birthday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+                    </ThemedText>
+                  </TouchableOpacity>
+                  {showBirthdayPicker && (
+                    <DateTimePicker
+                      value={birthday}
+                      mode="date"
+                      display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                      onChange={(_, selectedDate) => {
+                        setShowBirthdayPicker(Platform.OS === 'ios');
+                        if (selectedDate) {
+                          setBirthday(selectedDate);
+                        }
+                      }}
+                    />
+                  )}
+                </>
+              )}
+            </View>
         <View style={styles.section}>
           <ThemedText type="subtitle" lightColor="#2B0F55" style={{ fontFamily: fonts.sansBold }}>Wee hours OK/not OK to message me in</ThemedText>
           <Switch value={weeHours} onValueChange={setWeeHours} />

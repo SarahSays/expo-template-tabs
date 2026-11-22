@@ -14,9 +14,10 @@ import { ThemedView } from '@/components/themed-view';
 import React from 'react';
 import {
   Alert,
+  Platform,
+  Pressable,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
   useWindowDimensions,
   View
 } from 'react-native';
@@ -126,6 +127,9 @@ export default function HistoryScreen() {
   // stays responsive and the chunks don't recompute on every render.
   const days = React.useMemo(() => generatePlaceholderDays(365), []);
   const weeks = React.useMemo(() => chunkIntoWeeks(days), [days]);
+  const [selectedDay, setSelectedDay] = React.useState<DayCell | null>(null);
+  const [hoveredDay, setHoveredDay] = React.useState<number | null>(null);
+  const [focusedDay, setFocusedDay] = React.useState<number | null>(null);
 
   // Responsive sizing rules:
   // - cap the number of visible columns to a single year of weekly buckets
@@ -197,24 +201,45 @@ export default function HistoryScreen() {
                       const day = week.find((d) => d.date.getDay() === weekday);
                       const count = day ? day.count : 0;
                       const date = day ? day.date : undefined;
+                      const dateKey = date?.getTime() ?? null;
                       return (
-                        <TouchableOpacity
+                        <Pressable
                           key={weekday}
-                          activeOpacity={0.8}
+                          accessible={Boolean(date)}
+                          accessibilityRole="button"
+                          accessibilityLabel={date
+                            ? `${date.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}, ${count} ${count === 1 ? 'use' : 'uses'}`
+                            : undefined}
+                          accessibilityHint={date ? 'Activate to view activity for this day.' : undefined}
+                          focusable={Boolean(date)}
+                          disabled={!date}
                           onPress={() => {
-                            if (!date) return;
-                            Alert.alert(
-                              `${count} uses`,
-                              `${date.toDateString()} — ${count} times`,
-                            );
+                            if (!day) return;
+                            if (Platform.OS === 'web') {
+                              setSelectedDay(day);
+                            } else {
+                              Alert.alert(
+                                `${count} uses`,
+                                `${day.date.toDateString()} — ${count} times`,
+                              );
+                            }
                           }}
-                          style={{
-                            width: boxSize,
-                            height: boxSize,
-                            marginBottom: boxMargin,
-                            backgroundColor: colorForCount(count),
-                            borderRadius: 3,
-                          }}
+                          onHoverIn={() => setHoveredDay(dateKey)}
+                          onHoverOut={() => setHoveredDay(null)}
+                          onFocus={() => setFocusedDay(dateKey)}
+                          onBlur={() => setFocusedDay(null)}
+                          style={({ pressed }) => [
+                            styles.activityCell,
+                            {
+                              width: boxSize,
+                              height: boxSize,
+                              marginBottom: boxMargin,
+                              backgroundColor: colorForCount(count),
+                            },
+                            dateKey !== null && hoveredDay === dateKey && styles.activityCellHovered,
+                            dateKey !== null && focusedDay === dateKey && styles.activityCellFocused,
+                            pressed && styles.activityCellPressed,
+                          ]}
                         />
                       );
                     })}
@@ -224,6 +249,16 @@ export default function HistoryScreen() {
             </View>
           </ScrollView>
         </View>
+
+        {selectedDay && Platform.OS === 'web' && (
+          <View accessibilityLiveRegion="polite">
+            <ThemedText style={styles.selectedDay}>
+              {selectedDay.date.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+              {' — '}
+              {selectedDay.count} {selectedDay.count === 1 ? 'use' : 'uses'}
+            </ThemedText>
+          </View>
+        )}
 
         <View style={styles.legendRow}>
           <ThemedText>Less</ThemedText>
@@ -266,6 +301,24 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 2,
     marginHorizontal: 4,
+  },
+  activityCell: {
+    borderRadius: 3,
+  },
+  activityCellHovered: {
+    opacity: 0.72,
+  },
+  activityCellFocused: {
+    borderWidth: 2,
+    borderColor: '#2563eb',
+  },
+  activityCellPressed: {
+    opacity: 0.55,
+  },
+  selectedDay: {
+    marginTop: 12,
+    fontSize: 14,
+    fontWeight: '600',
   },
   weekdayLabel: {
     fontSize: 12,

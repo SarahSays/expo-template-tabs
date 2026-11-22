@@ -1,9 +1,8 @@
 import { Image } from 'expo-image';
 import { useRouter, type Href } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { ExternalLink } from '@/components/external-link';
-import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -13,6 +12,8 @@ import { useSession } from '@/contexts/SessionContext';
 export default function WelcomeScreen() {
   const router = useRouter();
   const { startSession } = useSession();
+  const { height: windowHeight, width: windowWidth } = useWindowDimensions();
+  const emojiSize = Math.min(windowHeight * 0.25, windowWidth * 0.85);
 
   const enterDemo = async () => {
     await startSession('demo');
@@ -29,8 +30,13 @@ export default function WelcomeScreen() {
         />
       }
     >
-      <ThemedText type="title">Orbits!</ThemedText>
-      <HelloWave />
+      <ThemedText type="title">Start Orbiting</ThemedText>
+      <Image
+        source={require('@/assets/images/dizzy.webp')}
+        style={{ width: emojiSize, height: emojiSize, alignSelf: 'center' }}
+        contentFit="contain"
+        autoplay
+      />
       <ThemedView style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <ThemedText style={styles.description}>
