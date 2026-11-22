@@ -4,10 +4,11 @@
  * Maintainer notes:`r`n * - This route file is intentionally lightweight and focused on screen composition.`r`n * - Keep navigation contracts and route params in sync with sibling screens.
  */
 import { useRouter } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Colors } from '@/constants/theme';
 
 const menuItems = [
   { title: 'Share', description: 'Share to social media', href: '/starchart/share' },
@@ -34,9 +35,11 @@ const menuItems = [
  */
 export default function StarChartScreen() {
   const router = useRouter();
+  const colorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
+  const theme = Colors[colorScheme];
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={[styles.container, { backgroundColor: theme.background }]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* <ThemedText type="title">Star Chart</ThemedText> */}
         <View style={styles.menu}>
@@ -45,12 +48,14 @@ export default function StarChartScreen() {
               key={item.title}
               style={({ pressed }) => [
                 styles.menuItem,
-                pressed ? styles.menuItemPressed : null,
+                {
+                  backgroundColor: pressed ? theme.bubbleBackgroundPressed : theme.bubbleBackground,
+                },
               ]}
               onPress={() => router.push(item.href)}>
               <View style={styles.menuText}>
-                <ThemedText type="subtitle">{item.title}</ThemedText>
-                <ThemedText>{item.description}</ThemedText>
+                <ThemedText type="subtitle" style={{ color: theme.bubbleText }}>{item.title}</ThemedText>
+                <ThemedText style={{ color: theme.bubbleText }}>{item.description}</ThemedText>
               </View>
               <ThemedText type="link">›</ThemedText>
             </Pressable>
@@ -80,11 +85,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 16,
     borderRadius: 12,
-    backgroundColor: 'rgba(0,0,0,0.04)',
     marginBottom: 12,
-  },
-  menuItemPressed: {
-    backgroundColor: 'rgba(0,0,0,0.1)',
   },
   menuText: {
     flex: 1,
