@@ -16,7 +16,7 @@ export default function WelcomeScreen() {
 
   const enterDemo = async () => {
     await startSession('demo');
-    router.replace('/inbox' as Href);
+    router.replace('/feed' as Href);
   };
 
   return (

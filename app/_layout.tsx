@@ -94,7 +94,7 @@ function SessionGate({ pathname }: { pathname: string }) {
 
   const isOnboardingRoute = pathname === '/' || pathname === '/index' || pathname.startsWith('/home');
   if (!session && !isOnboardingRoute) return <Redirect href="/" />;
-  if (session && isOnboardingRoute) return <Redirect href={'/inbox' as Href} />;
+  if (session && isOnboardingRoute) return <Redirect href={'/feed' as Href} />;
 
   return <Stack screenOptions={{ headerShown: false }} />;
 }

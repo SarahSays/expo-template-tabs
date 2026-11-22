@@ -58,7 +58,7 @@ export default function UsernameScreen() {
       onboardingComplete: true,
     });
     await startSession('email', email);
-    router.replace('/inbox' as Href);
+    router.replace('/feed' as Href);
   };
 
   return (

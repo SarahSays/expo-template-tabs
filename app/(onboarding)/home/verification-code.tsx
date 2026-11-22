@@ -51,7 +51,7 @@ export default function VerificationCodeScreen() {
     const account = await getDemoAccount(email);
     if (account?.onboardingComplete) {
       await startSession('email', email);
-      router.replace('/inbox' as Href);
+      router.replace('/feed' as Href);
       return;
     }
 
