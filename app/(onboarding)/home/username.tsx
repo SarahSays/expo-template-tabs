@@ -5,7 +5,7 @@
  */
 import { KeyboardAvoidingContainer } from '@/components/keyboard-avoiding-view';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
@@ -67,7 +67,7 @@ export default function UsernameScreen() {
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
           <View style={styles.heroSection}>
             <ThemedText type="title" style={styles.titleText}>Pick a Username</ThemedText>
-            <Image source={require('@/assets/images/react-logo.png')} style={styles.heroImage} />
+            <Image source={require('@/assets/images/react-logo3x.png')} style={styles.heroImage} />
           </View>
 
           <View style={styles.inputSection}>

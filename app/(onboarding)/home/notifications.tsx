@@ -1,11 +1,13 @@
 /**
  * notifications.tsx
  *
- * Maintainer notes:`r`n * - This route file is intentionally lightweight and focused on screen composition.`r`n * - Keep navigation contracts and route params in sync with sibling screens.
+ * Maintainer notes:
+ * - This route file is intentionally lightweight and focused on screen composition.
+ * - Keep navigation contracts and route params in sync with sibling screens.
  */
 import { KeyboardAvoidingContainer } from '@/components/keyboard-avoiding-view';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
@@ -26,7 +28,10 @@ export const screenOptions = {
 /**
  * NotificationsScreen component.
  *
- * Renders this route UI and centralizes local interaction and state wiring.`r`n *`r`n * Maintainer guidance:`r`n * - Keep side effects near the top-level component for visibility.`r`n * - Treat this component as the route contract for downstream navigation and params.
+ * Renders this route UI and centralizes local interaction and state wiring.
+ * Maintainer guidance:
+ * - Keep side effects near the top-level component for visibility.
+ * - Treat this component as the route contract for downstream navigation and params.
  */
 export default function NotificationsScreen() {
   const router = useRouter();
@@ -55,7 +60,7 @@ export default function NotificationsScreen() {
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
           <View style={styles.heroSection}>
             <ThemedText type="title" style={styles.titleText}>Turn on Notifications</ThemedText>
-            <Image source={require('@/assets/images/react-logo.png')} style={styles.heroImage} />
+            <Image source={require('@/assets/images/react-logo3x.png')} style={styles.heroImage} />
             <Pressable
               onPress={handleAllowNotificationsPress}
               style={({ pressed }) => [

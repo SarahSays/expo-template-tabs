@@ -39,7 +39,10 @@ export const screenOptions = {
 /**
  * EmailEntryScreen component.
  *
- * Renders this route UI and centralizes local interaction and state wiring.`r`n *`r`n * Maintainer guidance:`r`n * - Keep side effects near the top-level component for visibility.`r`n * - Treat this component as the route contract for downstream navigation and params.
+ * Renders this route UI and centralizes local interaction and state wiring.
+ * Maintainer guidance:
+ * - Keep side effects near the top-level component for visibility.
+ * - Treat this component as the route contract for downstream navigation and params.
  */
 export default function EmailEntryScreen() {
   const router = useRouter();
@@ -67,9 +70,9 @@ export default function EmailEntryScreen() {
               Enter Your Email
             </ThemedText>
             <ThemedText style={[styles.subtitleText, { color: theme.text }]}>
-              We’ll send a one-time code. New users will finish a short profile setup; returning users go straight to Inbox.
+              We’ll send a one-time code. New users will finish a short profile setup; returning users go straight to Feed.
             </ThemedText>
-            <Image source={require('@/assets/images/react-logo.png')} style={styles.heroImage} />
+            <Image source={require('@/assets/images/react-logo3x.png')} style={styles.heroImage} />
           </View>
 
           <View style={styles.inputSection}>
